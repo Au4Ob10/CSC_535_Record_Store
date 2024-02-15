@@ -9,8 +9,6 @@ mydb=mysql.connector.connect(
 
 mycursor = mydb.cursor()
 
-mycursor.execute("CREATE DATABASE test")
-
 mycursor.execute("SHOW DATABASES")
 
 for db in mycursor:
