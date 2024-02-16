@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template
-from Website import createdb
+# from Website import createdb
 
 app = Flask(__name__)
 
