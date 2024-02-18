@@ -5,8 +5,15 @@ CREATE TABLE records_list (
 record_id varchar(30) primary key,
 title varchar(100),
 artist varchar(100),
-genre varchar(100),
-sales int
+price decimal (4,2),
+genre varchar(100)
+);
+
+CREATE TABLE records_stats (
+record_id varchar(30) primary key,
+unit_sales int,
+rating decimal (2,1),
+
 );
 
 CREATE TABLE current_transactions (
