@@ -18,11 +18,14 @@
     <button type="button" class="btn btn-primary">Our Locations</button>
   </div>
 
-  <p class="h1 text-center mt-3">(Name) Records</p>
+  
  
   <div class="container mt-5 mb-4">
-    
-      <div class="col-10 col-md-6 mr-auto ml-auto">
+    <div class="row align-items-center">
+      <div class="col-4">
+      <p class="h1 text-center mt-3 mr-5">(Name) Records</p>
+    </div>
+      <div class="col-10 col-md-6 ml-auto">
         <form class="d-flex">
           <div class="input-group">
             <input class="form-control" type="search" placeholder="Search by name, album or genre" aria-label="Search">
@@ -30,7 +33,46 @@
           </div>
         </form>
       </div>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Account
+      </button>
+    </div>
+  </div>
+     
     
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">My Account</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <div class="col">
+                  <div class="row">
+                    <p>Email or Username</p>
+              <input class="form-control" type="search" aria-label="Search">
+              <p>Password</p>
+              <input class="form-control" type="search" aria-label="Search">
+            </div>
+           
+            <div class="modal-footer">
+              <div class="container">
+                <div class="col md-1">
+                  <div class="row d-flex align-items-center">
+              <p>New user?</p>
+              <button type="button" class="btn btn-secondary">Create an Account</button>
+            </div>
+          </div>
+          </div>
+        </div>
+          </div>
+        </div>
+      </div>
+    </div>
     </div>
   </div>
 
@@ -109,6 +151,7 @@
         </div>
       </div>
     </div>
+    <p class="h3 text-center mb-4">Classic Rock</p>
     <div class="row">
       <div class="col">
         <div class="card" style="width: 18rem;">
