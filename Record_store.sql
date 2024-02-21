@@ -12,7 +12,7 @@ genre varchar(100)
 CREATE TABLE records_stats (
 record_id varchar(30) primary key,
 unit_sales int,
-rating decimal (2,1),
+rating decimal (2,1)
 
 );
 
@@ -44,5 +44,11 @@ first_name char(30),
 last_name char(30)
 );
 
+CREATE TABLE user_accounts (
+customer_id varchar(15) primary key,
+cust_email varchar(90),
+cust_username varchar(40),
+cust_password varchar(25)
+);
 
 
