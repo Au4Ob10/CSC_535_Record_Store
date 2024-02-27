@@ -1,5 +1,5 @@
-from flask import Flask, request, render_template, redirect, url_for
-# from Website import createdb
+from flask import Flask, request, render_template
+from Website import __init__
 
 app = Flask(__name__)
 
