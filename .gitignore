@@ -2,3 +2,6 @@ __pycache__
 createdb.py
 venv
 .flaskenv
+/RecordStoreVenv/
+db_config.py
+df
