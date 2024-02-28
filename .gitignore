@@ -2,3 +2,4 @@ __pycache__
 createdb.py
 venv
 .flaskenv
+db_config.py
