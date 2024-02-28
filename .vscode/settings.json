@@ -1,0 +1,30 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "record_store_conn",
+            "database": "Local Instance MySQL80",
+            "username": "root"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "MySQL80",
+            "database": "record_store",
+            "username": "root"
+        }
+    ]
+}
