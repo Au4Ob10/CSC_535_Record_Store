@@ -1,5 +1,5 @@
-from flask import Flask, request, render_template
-from Website import __init__
+from flask import Flask, request, render_template, redirect, url_for
+# from Website import createdb
 
 app = Flask(__name__)
 
@@ -7,6 +7,8 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+
 if __name__=='__main__':
     app.run(debug=True)
+
     
