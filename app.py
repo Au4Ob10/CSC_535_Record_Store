@@ -1,6 +1,4 @@
 from flask import Flask, request, render_template
-from Website import createdb
-
 app = Flask(__name__)
 
 @app.route('/')
