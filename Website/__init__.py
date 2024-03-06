@@ -1,7 +1,8 @@
-from flask import Flask
+from flask import Flask, request, render_template, redirect, url_for
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv
 from os import environ
+
 
 
 app = Flask(__name__)
@@ -23,6 +24,5 @@ def init_cursor():
     return mysql.connection.cursor(dictionary=True)
 
 
-from Website.routes import *
 
 #read_sql("create_tables")
