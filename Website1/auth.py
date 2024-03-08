@@ -3,7 +3,8 @@ from app import mysql
 auth1 = Blueprint('auth1',__name__,static_folder="Website1/static", template_folder='Website1/templates')
 
 def init_cursor():
-    return mysql.connection.cursor(dictionary=True)
+    cursor = mysql.connection.cursor(dictionary=True)
+    return cursor
 
 
 
@@ -32,7 +33,7 @@ def create_account():
             email = request.form['email']
             phone_num = request.form['phone_num']
             address = request.form['address']
-            address2 = request.form.get('address2', '')  # Optional field
+            address2 = request.form.get('address2', '') 
             city = request.form['city']
             state = request.form['state']
             postal_code = request.form['postal_code']
