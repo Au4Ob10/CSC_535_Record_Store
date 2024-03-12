@@ -1,4 +1,4 @@
-
+drop database record_store;
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
@@ -37,6 +37,11 @@ CREATE TABLE IF NOT EXISTS `record_store`.`customer` (
   `if_register` TINYINT(1) NULL,
   PRIMARY KEY (`customer_id`)
 ) ENGINE = InnoDB;
+INSERT INTO customer (customer_id, first_name, last_name, email, phone_num, if_register)
+VALUES
+    (1, 'John', 'Doe', 'john.doe@example.com', '123-456-7890', 1),
+    (2, 'Jane', 'Smith', 'jane.smith@example.com', '987-654-3210', 0),
+    (3, 'Alice', 'Johnson', 'alice.johnson@example.com', '555-555-5555', 1);
 
 -- Table record_store.records_detail
 
