@@ -1,4 +1,4 @@
-
+drop database record_store;
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
@@ -26,10 +26,10 @@ CREATE TABLE IF NOT EXISTS `record_store`.`account` (
   `if_auto_log` TINYINT(1) NULL,
   PRIMARY KEY (`account_id`)
 ) ENGINE = InnoDB;
-
+select * from account;
 -- Table record_store.customer
 CREATE TABLE IF NOT EXISTS `record_store`.`customer` (
-  `customer_id` INT NOT NULL,
+  `customer_id` INT NOT NULL AUTO_INCREMENT,
   `first_name` VARCHAR(45) NULL,
   `last_name` VARCHAR(45) NULL,
   `email` VARCHAR(45) NULL,
@@ -38,6 +38,13 @@ CREATE TABLE IF NOT EXISTS `record_store`.`customer` (
   PRIMARY KEY (`customer_id`)
 ) ENGINE = InnoDB;
 
+INSERT INTO customer (first_name, last_name, email, phone_num, if_register)
+VALUES
+    ('John', 'Doe', 'john.doe@example.com', '123-456-7890', 1),
+    ('Jane', 'Smith', 'jane.smith@example.com', '987-654-3210', 0),
+    ('Alice', 'Johnson', 'alice.johnson@example.com', '555-555-5555', 1);
+
+select * from customer;
 -- Table record_store.records_detail
 
 CREATE TABLE IF NOT EXISTS `record_store`.`records_detail` (
@@ -65,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `address` (
   `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`customer_id`)
 ) ENGINE=InnoDB;
-
+select * from address;
 -- Table record_store.staff
 
 CREATE TABLE IF NOT EXISTS `staff_list` (
