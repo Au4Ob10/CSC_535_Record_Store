@@ -1,10 +1,6 @@
 from flask import Blueprint, request, session, redirect, render_template, url_for, flash
-from app import mysql
+from app import store_db, cur
 auth1 = Blueprint('auth1',__name__,static_folder="Website1/static", template_folder='Website1/templates')
-
-def init_cursor():
-    cursor = mysql.connection.cursor(dictionary=True)
-    return cursor
 
 
 
@@ -27,7 +23,7 @@ def create_account_form():
 def create_account():
     if request.method == 'POST':
         try:
-            cursor = init_cursor()
+
             first_name = request.form['first_name']
             last_name = request.form['last_name']
             email = request.form['email']
@@ -39,17 +35,17 @@ def create_account():
             postal_code = request.form['postal_code']
 
             # Insert data into the database
-            cursor.execute("INSERT INTO customer (first_name, last_name, email, phone_num, if_register) VALUES (%s, %s, %s, %s, 1)",
+            cur.execute("INSERT INTO customer (first_name, last_name, email, phone_num, if_register) VALUES (%s, %s, %s, %s, 1)",
                            (first_name, last_name, email, phone_num))
-            mysql.connection.commit()
+            store_db.commit()
 
             # Get the customer ID of the newly inserted record
-            customer_id = cursor.lastrowid
+            customer_id = cur.lastrowid
 
             # Insert address into the database
-            cursor.execute("INSERT INTO address (customer_id, address, address2, city, state, postal_code) VALUES (%s, %s, %s, %s, %s, %s)",
+            cur.execute("INSERT INTO address (customer_id, address, address2, city, state, postal_code) VALUES (%s, %s, %s, %s, %s, %s)",
                            (customer_id, address, address2, city, state, postal_code))
-            mysql.connection.commit()
+            store_db.commit()
 
             flash('Account created successfully!', 'success')
             return redirect(url_for('index'))
@@ -57,9 +53,9 @@ def create_account():
         except Exception as e:
             # Handle database errors
             print(e)
-            mysql.connection.rollback()
+            store_db.rollback()
             flash('An error occurred while creating the account. Please try again.', 'error')
             return redirect(url_for('index'))
 
         finally:
-            cursor.close()
+            cur.close()

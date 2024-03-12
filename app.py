@@ -45,8 +45,6 @@ def test_mysql_connection():
         print("MySQL Database Version:", db_version)
 
         # Close cursor and database connection
-        cur.close()
-        store_db.close()
 
         return True  # Return True if connection and query execution were successful
 
@@ -56,7 +54,6 @@ def test_mysql_connection():
         return False  # Return False if there was an error
 
 
-# Call the function to test the connection
 test_result = test_mysql_connection()
 
 if test_result:
