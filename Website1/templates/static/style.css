@@ -1,9 +1,9 @@
-body {
-    background-color: #124076;
-    color: white;
-    font-family: "Roboto", sans-serif;
-    font-weight: 400;
-    font-style: normal;
+.row label {
+    width: 13rem;
+    display: inline-block;
 }
 
-  
+#username, #password {
+    width: 15rem;
+    display: inline-block;
+}
