@@ -3,7 +3,40 @@ from app import store_db, cur
 auth1 = Blueprint('auth1',__name__,static_folder="Website1/static", template_folder='Website1/templates')
 
 
+def get_current_employee_id():
+    return session.get('employeeID', None)
 
+@auth1.route('/login', methods=['GET', 'POST'])
+def login():
+    entered_pin = request.form.get('pin')
+
+    if request.method == 'POST':
+        try:
+            # Check manager PIN
+            cur.execute("SELECT employeeID, is_manager FROM Employees WHERE pin = %s", (entered_pin,))
+            result = cur.fetchone()
+
+            if result:
+                    employeeID, is_manager = result
+                    session['employeeID'] = employeeID  # Store employeeID in the session
+
+                    if is_manager:
+                        flash('Login successful as Manager!', category='success')
+                        return render_template("Manager.html")
+                    else:
+                        flash('Login successful as Employee!', category='success')
+                        return redirect(url_for('auth.create_order'))
+            else:
+                flash('Invalid pin please try again', category='error')
+                        
+        except Exception as e:
+            flash(f'Error fetching orders: {e}', category='error')
+
+    return render_template("login.html", boolean=True)
+
+@auth1.route('/portal', methods=['GET','POST'])
+def portal():
+    return render_template("orders.html")
 # @auth1.route("/")
 # def index():
 #     user_id = session.get("usr_id", None)
