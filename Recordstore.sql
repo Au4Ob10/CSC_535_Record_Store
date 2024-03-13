@@ -33,13 +33,13 @@ CREATE TABLE IF NOT EXISTS `record_store`.`customer` (
   `first_name` VARCHAR(45) NULL,
   `last_name` VARCHAR(45) NULL,
   `email` VARCHAR(45) NULL,
-  'password' VARCHAR(45) NULL,
+  `passw` VARCHAR(45) NULL,
   `phone_num` varchar(20) NOT NULL,
   `if_register` TINYINT(1) NULL,
   PRIMARY KEY (`customer_id`)
 ) ENGINE = InnoDB;
 
-INSERT INTO customer (first_name, last_name, email, password, phone_num, if_register)
+INSERT INTO customer (first_name, last_name, email, passw, phone_num, if_register)
 VALUES
     ('John', 'Doe', 'john.doe@example.com','0000', '123-456-7890', 1),
     ('Jane', 'Smith', 'jane.smith@example.com','0001', '987-654-3210', 1),
@@ -90,8 +90,12 @@ CREATE TABLE IF NOT EXISTS `staff_credentials` (
   `username` varchar(16) NOT NULL,
   `password` varchar(40) NOT NULL,
   `email` varchar(50) NOT NULL,
+  `isadmin` tinyint NOT NULL,
   PRIMARY KEY (`staff_id`)
 ) ENGINE=InnoDB;
+insert into staff_credentials(username,password,email,isadmin)
+Values ('admin','admin','recordstore@gmail.com', 1);
+select * from staff_credentials;
 
 -- Add other table definitions here...
 
@@ -100,4 +104,3 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
-hello

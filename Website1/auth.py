@@ -71,7 +71,7 @@ def create_account():
             city = request.form['city']
             state = request.form['state']
             postal_code = request.form['postal_code']
-
+            # Check password 1 and 2 see if they match
             if passw == passw2:
 
                 # Insert data into the database

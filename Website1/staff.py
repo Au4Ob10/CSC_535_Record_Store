@@ -6,8 +6,8 @@ staff = Blueprint('staff',__name__,static_folder="Website1/static", template_fol
 
 @staff.route('/portal', methods=['GET', 'POST'])
 def portal():
-    if 'email' not in session:
+    if 'username' not in session:
         flash('You need to login first.', 'error')
         return redirect(url_for('auth1.login'))
     
-    return render_template("index.html")
+    return render_template("staff_index.html")

@@ -6,8 +6,14 @@ admin = Blueprint('admin',__name__,static_folder="Website1/static", template_fol
 
 @admin.route('/portal', methods=['GET', 'POST'])
 def portal():
-    if 'email' not in session:
+    if 'username' not in session:
         flash('You need to login first.', 'error')
         return redirect(url_for('auth1.login'))
     
-    return render_template("index.html")
+    return render_template("admin_index.html")
+@admin.route('/staff',methods=['GET','POST'])
+def Add():
+    return render_template("staff.html")
+    
+def Remove():
+    return render_template("staff.html")
