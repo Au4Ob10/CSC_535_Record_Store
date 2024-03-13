@@ -33,16 +33,17 @@ CREATE TABLE IF NOT EXISTS `record_store`.`customer` (
   `first_name` VARCHAR(45) NULL,
   `last_name` VARCHAR(45) NULL,
   `email` VARCHAR(45) NULL,
+  'password' VARCHAR(45) NULL,
   `phone_num` varchar(20) NOT NULL,
   `if_register` TINYINT(1) NULL,
   PRIMARY KEY (`customer_id`)
 ) ENGINE = InnoDB;
 
-INSERT INTO customer (first_name, last_name, email, phone_num, if_register)
+INSERT INTO customer (first_name, last_name, email, password, phone_num, if_register)
 VALUES
-    ('John', 'Doe', 'john.doe@example.com', '123-456-7890', 1),
-    ('Jane', 'Smith', 'jane.smith@example.com', '987-654-3210', 0),
-    ('Alice', 'Johnson', 'alice.johnson@example.com', '555-555-5555', 1);
+    ('John', 'Doe', 'john.doe@example.com','0000', '123-456-7890', 1),
+    ('Jane', 'Smith', 'jane.smith@example.com','0001', '987-654-3210', 1),
+    ('Alice', 'Johnson', 'alice.johnson@example.com','0002', '555-555-5555', 1);
 
 select * from customer;
 -- Table record_store.records_detail
