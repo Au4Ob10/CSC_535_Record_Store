@@ -102,3 +102,10 @@ def create_account():
 
         finally:
             cur.close()
+
+@auth1.route("/logout", methods=['GET','POST'])
+def logout():
+    session['username'] = ''
+    session['email'] = ''
+    flash('Logged Out!', 'success')
+    return render_template('index.html')

@@ -28,18 +28,43 @@
     <button onclick=location.href="/logout">Logout</button>
     </head>
   <body>
+    <form method="POST">
+        <div class="form-group">
+            <label for="firstname">First Name</label>
+            <input type=text class="form-control"
+            id="firstname"
+            name="firstname"
+            placeholder="First name"
+            />
+        </div>
+        <div class="form-group">
     
-
-  
-      <h2>Staff List</h2>
-      <ul>
-          {% for employee in employee_list %}
-              <li>
-                  ID - {{ employee[0] }} | FirstName - {{ employee[1] }} | LastName - {{ employee[2] }} | (PIN: {{ employee[3] }})
-                  <button type="submit" name="remove_employee_id" value="{{ employee[0] }}" class="btn btn-danger">Remove</button>
-              </li>
-          {% endfor %}
-      </ul>
-  </form>
-  </body>
-  {% endblock %}
+            <label for="lastname">Last Name</label>
+            <input type=text class="form-control"
+            id="lastname"
+            name="lastname"
+            placeholder="Last name"
+            />
+        </div>
+        <div class="form-group">
+    
+            <label for="Pin1">Pin</label>
+            <input type=password class="form-control"
+            id="Pin1"
+            name="Pin1"
+            placeholder="Insert a pin"
+            />
+        </div>
+        <div class="form-group">
+    
+            <label for="Pin2">Pin (Confirm)</label>
+            <input type=password class="form-control"
+            id="Pin2"
+            name="Pin2"
+            placeholder="Reinsert pin"
+            />
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary">Register Employee</button>
+    </form>
+    {% endblock %}  
