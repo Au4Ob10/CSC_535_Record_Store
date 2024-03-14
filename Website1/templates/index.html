@@ -9,7 +9,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-
+  <!-- Flash messages section -->
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div class="alert alert-dismissible alert-danger">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <ul>
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+      </ul>
+  </div>
+  {% endif %}
+  {% endwith %}
 </head>
 
 <body>
@@ -75,6 +87,38 @@
               <div class="row d-flex justify-content-end">
                 <button class="btn btn-success">Login</button>
               </div>
+     
+    
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">My Account</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <div class="col">
+                  <div class="row">
+                    <form method="POST" action="/login">
+                      <div class="form-group">
+                          <label for="email_or_username">Email</label>
+                          <input class="form-control" type="text" id="email_or_username" name="email_or_username" aria-label="Email or Username">
+                      </div>
+                      <div class="form-group">
+                          <label for="password">Password</label>
+                          <input class="form-control" type="password" id="password" name="password" aria-label="Password">
+                      </div>
+                      <button type="submit" class="btn btn-primary">Login</button>
+                  </form>
+            <div class="modal-footer">
+              <div class="container">
+                <div class="col md-1">
+                  <div class="row d-flex align-items-center">
+              <p>New user?</p>
+              <button type="button" class="btn btn-primary" onclick="window.location.href='/create_account_form'">Create Account</button>
             </div>
           </div>
         </div>
