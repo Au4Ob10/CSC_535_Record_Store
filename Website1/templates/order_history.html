@@ -7,4 +7,23 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Order History</title>
+        <button onclick=location.href="/admin/staff">Staff List</button>
+      <button onclick=location.href="/admin/addstaff">Add Staff</button>
+    <button onclick=location.href="/admin/orderhistory">Order History</button>
+    <button onclick=location.href="/logout">Logout</button>
         <h1>Order History</h1>
+        {% block content %}
+        <!-- Flash messages section -->
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div class="alert alert-dismissible alert-danger">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <ul>
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+      </ul>
+  </div>
+  {% endif %}
+  {% endwith %}
+    {% endblock %}

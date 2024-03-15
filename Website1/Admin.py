@@ -17,10 +17,30 @@ def Staff():
 def Remove():
     return render_template("staff.html")
 
-@admin.route('/addstaff')
+@admin.route('/addstaff', methods=['GET','POST'])
 def Add():
+    if request.method == 'POST':
+        try:
+            usern = request.form['username']
+            email = request.form['email']
+            pass1 = request.form['pass1']
+            pass2 = request.form['pass2']
+            if pass1 == pass2:
+                cur.execute("Insert Into staff_credentials(username,password,email,isadmin) VALUES (%s,%s,%s,0)",
+                            (usern,pass1,email))
+                store_db.commit()
+                flash('Staff member added to database!','success')
+                return render_template("add_staff.html")
+        except Exception as e:
+            print(e)
+            store_db.rollback()
+            flash('An error occurred while creating staff member. Please try again.', 'error')
+            return render_template("add_staff.html")
+        finally:
+            cur.close
     return render_template("add_staff.html")
 
 @admin.route('/orderhistory')    
 def History():
     return render_template('order_history.html')
+
