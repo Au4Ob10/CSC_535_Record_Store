@@ -1,45 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <link rel="stylesheet" href="./style.css">
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Staff List</title>
-      </head>
-      {% block content %}
-        <!-- Flash messages section -->
-  {% with messages = get_flashed_messages() %}
-  {% if messages %}
-  <div class="alert alert-dismissible alert-danger">
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <ul>
-          {% for message in messages %}
-          <li>{{ message }}</li>
-          {% endfor %}
-      </ul>
-  </div>
-  {% endif %}
-  {% endwith %}
-      <button onclick=location.href="/admin/staff">Staff List</button>
-      <button onclick=location.href="/admin/addstaff">Add Staff</button>
+    <link rel="stylesheet" href="./style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff List</title>
+    <button onclick=location.href="/admin/staff">Staff List</button>
+    <button onclick=location.href="/admin/addstaff">Add Staff</button>
     <button onclick=location.href="/admin/orderhistory">Order History</button>
     <button onclick=location.href="/logout">Logout</button>
-    </head>
-  <body>
-    
+</head>
+<body>
+<div class="container">
+    {% block content %}
+        <!-- Flash messages section -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert alert-dismissible alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
 
-  
-      <h2>Staff List</h2>
-      <ul>
-          {% for employee in employee_list %}
-              <li>
-                  ID - {{ employee[0] }} | FirstName - {{ employee[1] }} | LastName - {{ employee[2] }} | (PIN: {{ employee[3] }})
-                  <button type="submit" name="remove_employee_id" value="{{ employee[0] }}" class="btn btn-danger">Remove</button>
-              </li>
-          {% endfor %}
-      </ul>
-  </form>
-  </body>
-  {% endblock %}
+
+        <h2>Staff List</h2>
+        <ul>
+            {% for staff in staff_list %}
+                <li>
+                    ID - {{ staff[0] }} | FirstName - {{ staff[1] }} | LastName - {{ staff[2] }} | (PIN: {{ staff[3] }})
+                    <form method="post" action="/admin/remove_staff">
+                        <input type="hidden" name="remove_staff_id" value="{{ staff[0] }}">
+                        <button type="submit" class="btn btn-danger">Remove</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endblock %}
+</div>
+</body>
+</html>

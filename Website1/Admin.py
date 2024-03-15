@@ -12,11 +12,38 @@ def portal():
     
     return render_template("admin_index.html")
 @admin.route('/staff',methods=['GET','POST'])
-def Staff():
-    return render_template("staff.html")
-def Remove():
-    return render_template("staff.html")
+def get_staff():
+    try:
+        cur.execute("SELECT * FROM staff_credentials WHERE isadmin = 0")
+        staff_list = cur.fetchall()
+        return render_template("staff.html", staff_list=staff_list)
+    except Exception as e:
+        print(e)
+        flash('An error occurred while retrieving staff list. Please try again.', 'error')
+        return render_template("staff.html", staff_list=None)
+    finally:
+        cur.close
 
+def Staff():
+    return get_staff()
+@admin.route('/remove_staff', methods=['GET','POST'])
+def Remove():
+    if request.method == 'POST':
+        try:
+            staff_id_to_remove = request.form.get('remove_staff_id')
+            remove_cursor = store_db.cursor()  # Create a new cursor
+            remove_cursor.execute("DELETE FROM staff_credentials WHERE staff_id = %s", (staff_id_to_remove,))
+            store_db.commit()
+            flash('Staff member removed from database!', 'success')
+        except Exception as e:
+            print(e)
+            store_db.rollback()
+            flash('An error occurred while removing staff member. Please try again.', 'error')
+        finally:
+            remove_cursor.close()  # Close the cursor
+        return redirect(url_for('admin.get_staff'))
+    return redirect(url_for('admin.get_staff'))
+        
 @admin.route('/addstaff', methods=['GET','POST'])
 def Add():
     if request.method == 'POST':
