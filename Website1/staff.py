@@ -11,3 +11,7 @@ def portal():
         return redirect(url_for('auth1.login'))
     
     return render_template("staff_index.html")
+
+@staff.route('/orderhistory')    
+def History():
+    return render_template('staff_order_history.html')

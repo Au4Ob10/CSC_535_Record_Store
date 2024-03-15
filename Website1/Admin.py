@@ -12,8 +12,15 @@ def portal():
     
     return render_template("admin_index.html")
 @admin.route('/staff',methods=['GET','POST'])
-def Add():
+def Staff():
     return render_template("staff.html")
-    
 def Remove():
     return render_template("staff.html")
+
+@admin.route('/addstaff')
+def Add():
+    return render_template("add_staff.html")
+
+@admin.route('/orderhistory')    
+def History():
+    return render_template('order_history.html')
