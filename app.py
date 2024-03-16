@@ -58,6 +58,9 @@ cur = store_db.cursor(buffered=True)
 from Website1.auth import auth1
 app.register_blueprint(auth1, url_prefix="")
 
+from Website1.user import user
+app.register_blueprint(user, url_prefix="/user")
+
 from Website1.staff import staff
 app.register_blueprint(staff, url_prefix="/staff")
 
