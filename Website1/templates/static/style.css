@@ -3,9 +3,34 @@
     display: inline-block;
 }
 
-body {
 
-}
 #email_or_username, #password{
     display: inline-block;
 }
+html, body {
+    height: 100%;
+}
+#vert_bar_content {
+    background-color: #6C757D;
+    display: inline-block;
+    width: auto;
+    height: 100%;
+   
+}
+
+#admin-icon {
+    font-size: 25px;
+}
+.fa-home {
+    color: white;
+}
+
+.pg-title {
+    color: white;
+}
+
+.fa-id-badge, .fa-user, .fa-shopping-cart, .fa-sign-out{
+    color: white;
+    font-size: 16px; 
+}
+
