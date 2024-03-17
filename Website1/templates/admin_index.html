@@ -12,7 +12,7 @@
 
 </head>
 
-<body>
+<body class="admin_home_body">
   {% block content %}
   <!-- Flash messages section -->
   {% with messages = get_flashed_messages() %}
@@ -68,8 +68,19 @@
             </div>
           </div>
 
-
-
+          <div class="container">
+          <div class="row mt-5">  
+            <div class="col d-flex justify-content-center">
+              
+          <p class="h1 text-center mb-3">Welcome, Admin</p>
+        </div>
+      </div>
+      <div class="row">  
+        <div class="col d-flex justify-content-center">
+          <p class="h1 text-center">Click on a link to get started...</p>
+        </div>
+        </div>
+      </div>
 
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

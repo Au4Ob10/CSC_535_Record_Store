@@ -1,4 +1,4 @@
-from flask import Blueprint, request, session, redirect, render_template, url_for, flash
+from flask import Blueprint, request, session, redirect, render_template, url_for, flash, jsonify
 from app import store_db, cur
 auth1 = Blueprint('auth1',__name__,static_folder="Website1/static", template_folder='Website1/templates')
 
@@ -109,3 +109,16 @@ def logout():
     session['email'] = ''
     flash('Logged Out!', 'success')
     return render_template('index.html')
+
+def orderList():
+   my_cur = store_db.cursor()
+   my_cur.execute("SELECT * FROM orders", multi=True)
+   order_data = my_cur.fetchall()
+   
+   my_cur.close()
+   return order_data
+    
+@auth1.route('/orderdata')
+def fetch_data():
+    order_data = orderList()
+    return jsonify(order_data)

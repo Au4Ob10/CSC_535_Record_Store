@@ -9,7 +9,16 @@
 }
 html, body {
     height: 100%;
+    
 }
+
+
+.add-staff, .admin_home_body, .add_staff_body {
+    background-color: #0275d8;
+    color: white;
+}
+
+staff
 #vert_bar_content {
     background-color: #6C757D;
     display: inline-block;
@@ -17,6 +26,7 @@ html, body {
     height: 100%;
    
 }
+
 
 #admin-icon {
     font-size: 25px;

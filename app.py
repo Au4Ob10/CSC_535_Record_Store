@@ -28,6 +28,12 @@ auth_plugin="mysql_native_password"
 cur = store_db.cursor(buffered=True)
 
 
+
+
+
+
+
+
 # def test_mysql_connection():
 #     try:
 #         # Execute a simple query to test the connection

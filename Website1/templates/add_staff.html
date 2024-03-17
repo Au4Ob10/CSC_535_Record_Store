@@ -25,7 +25,7 @@
   {% endwith %}
    
     </head>
-  <body>
+    <body class="add_staff_body">
     <div class="container-fluid">
     
         <div class="row bg-primary bg-gradient pt-2">
@@ -44,7 +44,8 @@
                 <i class="fa-solid fa-user" id="admin-icon"></i>
             </div>
             </div>
-    
+
+            
             <div class="container-fluid">
                 <div class="row bg-secondary d-flex justify-content-center" id="nav-row">
                     <div class="col text-center">
@@ -65,43 +66,44 @@
                     </div>
                 </div>
               </div>
-    <form method="POST">
-        <div class="form-group">
-            <label for="firstname">First Name</label>
-            <input type=text class="form-control"
-            id="firstname"
-            name="firstname"
-            placeholder="First name"
-            />
-        </div>
-        <div class="form-group">
-    
-            <label for="lastname">Last Name</label>
-            <input type=text class="form-control"
-            id="lastname"
-            name="lastname"
-            placeholder="Last name"
-            />
-        </div>
-        <div class="form-group">
-    
-            <label for="Pin1">Pin</label>
-            <input type=password class="form-control"
-            id="Pin1"
-            name="Pin1"
-            placeholder="Insert a pin"
-            />
-        </div>
-        <div class="form-group">
-    
-            <label for="Pin2">Pin (Confirm)</label>
-            <input type=password class="form-control"
-            id="Pin2"
-            name="Pin2"
-            placeholder="Reinsert pin"
-            />
-        </div>
-        <br />
-        <button type="submit" class="btn btn-primary">Register Employee</button>
-    </form>
+        
+        
+        
+        <h2 class="text-center mb-3">Add Staff Member</h2>
+        <div class="d-flex justify-content-center">                               
+        <form action="/admin/addstaff" method="post">
+            <div class="input-group">
+               
+            <label for="username">Username</label><br>
+                </div>      
+                <div class="input-group-prepend mb-3"> 
+            <input type="text" id="username" name="username" required><br>
+        </div> 
+        <div class="input-group">
+          
+            <label for="email">Email</label><br> 
+        </div>    
+        <div class="input-group-prepend mb-3">   
+            <input type="email" id="email" name="email" required><br>
+        </div> 
+        <div class="input-group">
+           
+            <label for="pass1">Password</label><br>   
+        </div>     
+        <div class="input-group-prepend mb-3">
+            <input type="password" id="pass1" name="pass1" required><br>
+        </div>     
+        <div class="input-group">
+            
+            <label for="pass2">Confirm Password</label><br>
+        </div>       
+        <div class="input-group-prepend mb-3">     
+            <input type="password" id="pass2" name="pass2" required><br> 
+        </div>  
+
+            <input class="btn btn-success" type="submit" value="Add Staff Member">
+        </form>
+    </div>
+
+    </body>
     {% endblock %}  
