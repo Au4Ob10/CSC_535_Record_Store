@@ -12,41 +12,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Staff List</title>
 </head>
+
 <body class="staff_list_body">
-{% block content %}
-<!-- Flash messages section -->
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-<div class="alert alert-dismissible alert-danger">
-    <button type="button" class="close" data-dismiss="alert">&times;</button>
-    <ul>
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-</div>
-{% endif %}
-{% endwith %}
+    {% block content %}
+    <!-- Flash messages section -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="alert alert-dismissible alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    {% endwith %}
 
-<div class="container-fluid">
-    
-    <div class="row bg-primary bg-gradient pt-2">
+    <div class="container-fluid">
         
-        <div class="col-auto">
-
-            <p class="h5 pg-title">
-                Staff List
-            </p>
-        </div>
-        <div class="col d-flex justify-content-end">
-            <p class="h5 pg-title">
-                Admin
-            </p>
+        <div class="row bg-primary bg-gradient pt-2">
+            
+            <div class="col-auto">
+    
+                <p class="h5 pg-title">
+                    Staff List
+                </p>
             </div>
-            <i class="fa-solid fa-user" id="admin-icon"></i>
+            <div class="col d-flex justify-content-end">
+                <p class="h5 pg-title">
+                    Admin
+                </p>
+                </div>
+                <i class="fa-solid fa-user" id="admin-icon"></i>
+            </div>
         </div>
-        </div>
-
+    
         <div class="container-fluid">
             <div class="row bg-secondary d-flex justify-content-center" id="nav-row">
                 <div class="col text-center">
@@ -66,66 +67,22 @@
                     <button class="btn btn-secondary" onclick="location.href='/logout'">Logout</button>
                 </div>
             </div>
-        
-        
-        <div class="row mt-3">
-            <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
-                    <th scope="col">PIN</th>
-            
-                  </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td scope="row">John</th>
-                        <td>Doe</td>
-                        <td>12345</td>
-                       
-                      </tr>
-                      <tr>
-                        <td scope="row">Jane</th>
-                        <td>Jones</td>
-                        <td>7890</td>
-                       
-                      </tr>
-                </tbody>
-              </table>
-
+                
+            <h2>Staff List</h2>
+            <ul>
+                {% for staff in staff_list %}
+                <li>
+                    ID - {{ staff[0] }} | Username - {{ staff[1] }} | Password - {{ staff[2] }} | Email: {{ staff[3] }}
+                    <form method="post" action="/admin/remove_staff">
+                        <input type="hidden" name="remove_staff_id" value="{{ staff[0] }}">
+                        <button type="submit" class="btn btn-danger">Remove</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
         </div>
-   
-            
-    
-    
-
-    
-
-
-
-
-
-
-
-
-
-<body>
-
-
-
-
-    <ul>
-        {% for employee in employee_list %}
-        <li>
-            ID - {{ employee[0] }} | FirstName - {{ employee[1] }} | LastName - {{ employee[2] }} | (PIN:
-            {{ employee[3] }})
-            <button type="submit" name="remove_employee_id" value="{{ employee[0] }}"
-                class="btn btn-danger">Remove</button>
-        </li>
-        {% endfor %}
-    </ul>
-    </form>
+    </div>
+    {% endblock %}
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
@@ -137,4 +94,4 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
     </script>
 </body>
-{% endblock %}
+</html>
