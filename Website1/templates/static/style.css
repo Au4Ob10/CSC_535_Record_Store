@@ -1,0 +1,9 @@
+.row label {
+    width: 13rem;
+    display: inline-block;
+}
+
+#username, #password {
+    width: 15rem;
+    display: inline-block;
+}
