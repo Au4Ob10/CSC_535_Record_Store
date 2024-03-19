@@ -1,5 +1,6 @@
-from flask import Blueprint, request, session, redirect, render_template, url_for, flash
+from flask import Blueprint, request, session, redirect, render_template, url_for, flash, jsonify
 from app import store_db, cur
+
 
 admin = Blueprint('admin',__name__,static_folder="Website1/static", template_folder='Website1/templates')
 
@@ -67,7 +68,21 @@ def Add():
             cur.close
     return render_template("add_staff.html")
 
+#Retrieve OrderID & Info from mysql
+
+
+def getOrderData():
+    cur.execute("SELECT * FROM orders")
+    col_data = cur.fetchall()
+    
+    return col_data
+    
+    
 @admin.route('/orderhistory')    
 def History():
-    return render_template('order_history.html')
+    
+    order_data = getOrderData()
+    
+    
+    return render_template('order_history.html',order_data=order_data)
 

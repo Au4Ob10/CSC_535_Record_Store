@@ -1,3 +1,5 @@
+-- Active: 1708706294364@@127.0.0.1@3306
+
 drop schema record_store;
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
