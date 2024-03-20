@@ -2,6 +2,8 @@ from flask import Blueprint, request, session, redirect, render_template, url_fo
 from app import store_db, cur
 auth1 = Blueprint('auth1',__name__,static_folder="Website1/static", template_folder='Website1/templates')
 
+#Only Authentification related functions in this route please creating accounts,portals,login
+
 
 @auth1.route('/login', methods=['GET', 'POST'])
 def login():
@@ -87,6 +89,8 @@ def create_account():
                             (customer_id, address, address2, city, state, postal_code))
                 store_db.commit()
 
+                #Create customers cart here!
+
                 flash('Account created successfully!', 'success')
                 return redirect(url_for('index'))
             else:
@@ -102,7 +106,7 @@ def create_account():
 
         finally:
             cur.close()
-
+#Function for clearing session!
 @auth1.route("/logout", methods=['GET','POST'])
 def logout():
     session['username'] = ''

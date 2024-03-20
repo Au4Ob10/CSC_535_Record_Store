@@ -4,6 +4,9 @@ from dotenv import load_dotenv
 from os import environ
 import mysql.connector
 
+#app.py has blueprints to all routes and calls them please do not put routes in this function besides the ones currently here 
+#If you need a new route and are not sure where to put said route since the other blueprints dont fit the functionality you can make a new one here
+
 # Load environment variables
 load_dotenv('.flaskenv')
 # Debug for DB info
