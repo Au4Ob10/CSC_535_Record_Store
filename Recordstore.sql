@@ -67,10 +67,12 @@ select * from customer;
 -- Table record_store.records_detail
 
 CREATE TABLE IF NOT EXISTS `record_store`.`records_detail` (
-  `record_id` INT NOT NULL,
+  `record_id` INT NOT NULL AUTO_INCREMENT,
   `record_name` VARCHAR(45) NOT NULL,
   `artist` VARCHAR(45) NOT NULL,
   `genre` VARCHAR(45) NOT NULL,
+  `img_link` VARCHAR(255),  -- Assuming the link can be up to 255 characters long
+  `quantity` INT DEFAULT 0, -- Default quantity set to 0
   PRIMARY KEY (`record_id`)
 ) ENGINE = InnoDB;
 
