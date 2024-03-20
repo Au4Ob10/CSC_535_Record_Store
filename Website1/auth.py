@@ -2,8 +2,6 @@ from flask import Blueprint, request, session, redirect, render_template, url_fo
 from app import store_db, cur
 auth1 = Blueprint('auth1',__name__,static_folder="Website1/static", template_folder='Website1/templates')
 
-#Only Authentification related functions in this route please creating accounts,portals,login
-
 
 @auth1.route('/login', methods=['GET', 'POST'])
 def login():
@@ -89,7 +87,33 @@ def create_account():
                             (customer_id, address, address2, city, state, postal_code))
                 store_db.commit()
 
-                #Create customers cart here!
+                # cur.execute(f"CREATE TABLE IF NOT EXISTS {ordername}_{last_listID} (orderID int auto_increment primary key, posid int,\
+                # employeeID int,listID int, ordername VARCHAR(255),ItemID int,Item_name VARCHAR(255),cost double,quantity int,\
+                #     foreign key (employeeID) References Employees(employeeID),\
+                #         foreign key (listID) References orderlist(listid),\
+                #             foreign key (ItemID) References Itemlist(itemID))")
+                
+                # cur.execute(f"CREATE TABLE IF NOT EXISTS {email}`cart` (
+                #         `itemID` INT NOT NULL AUTO_INCREMENT,
+                #         `record_id` INT,
+                #         `customer_id` INT,
+                #         PRIMARY KEY (`itemID`),
+                #         FOREIGN KEY (`record_id`) REFERENCES `records_detail`(`record_id`),
+                #         FOREIGN KEY (`customer_id`) REFERENCES `customer`(`customer_id`)
+                #     )
+                # ")
+
+                cur.execute(f"""
+                        CREATE TABLE IF NOT EXISTS `{email}_cart` (
+                            `itemID` INT NOT NULL AUTO_INCREMENT,
+                            `record_id` INT,
+                            `customer_id` INT,
+                            PRIMARY KEY (`itemID`),
+                            FOREIGN KEY (`record_id`) REFERENCES `records_detail`(`record_id`),
+                            FOREIGN KEY (`customer_id`) REFERENCES `customer`(`customer_id`)
+                        )
+                    """)
+
 
                 flash('Account created successfully!', 'success')
                 return redirect(url_for('index'))
@@ -106,7 +130,7 @@ def create_account():
 
         finally:
             cur.close()
-#Function for clearing session!
+
 @auth1.route("/logout", methods=['GET','POST'])
 def logout():
     session['username'] = ''
