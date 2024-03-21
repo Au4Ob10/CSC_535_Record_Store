@@ -76,17 +76,21 @@ CREATE TABLE IF NOT EXISTS `record_store`.`records_detail` (
   PRIMARY KEY (`record_id`)
 ) ENGINE = InnoDB;
 
-INSERT INTO records_detail (record_id,record_name,artist,genre,price)
-VALUES
-(1001, "Winning Days", "The Vines", "Indie Rock", 24.99),
-(1002, "Arctic Monkeys", "Favourite Worst Nightmare", "Indie Rock", 19.99),
-(1003, "Dinosaur Jr.", "You're Living All Over Me", "Indie Rock", 22.99),
-(1004, "Swearin'", "Swearin'", "Indie Punk", 18.99),
-(1005, "Sonic Youth", "Evol", "Indie Punk", 24.99),
-(1006, "The Pixies", "Doolittle", "Indie Punk", 22.99),
-(1007, "Led Zeppelin", "Mothership", "Classic Rock", 28.99),
-(1008, "Pink Floyd", "The Dark Side of the Moon", "Classic Rock", 32.99),
-(1009, "Rush", "2112", "Classic Rock", 26.99);
+
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) 
+VALUES ('Thriller', 'Michael Jackson', 'Pop', 'https://cdn.smehost.net/michaeljacksoncom-uslegacyprod/wp-content/uploads/2009/03/thriller-album-michaeljackson-og.jpg', 100);
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) 
+VALUES ('Back in Black', 'AC/DC', 'Rock', 'https://example.com/back_in_black.jpg', 80);
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('The Dark Side of the Moon', 'Pink Floyd', 'Progressive Rock', 'https://example.com/dark_side_of_the_moon.jpg', 90);
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('Abbey Road', 'The Beatles', 'Rock', 'https://example.com/abbey_road.jpg', 110);
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('Rumours', 'Fleetwood Mac', 'Soft Rock', 'https://example.com/rumours.jpg', 85);
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('Led Zeppelin IV', 'Led Zeppelin', 'Hard Rock', 'https://example.com/led_zeppelin_iv.jpg', 95);
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('Nevermind', 'Nirvana', 'Grunge', 'https://example.com/nevermind.jpg', 75);
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('Hotel California', 'Eagles', 'Rock', 'https://example.com/hotel_california.jpg', 105);
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('The Wall', 'Pink Floyd', 'Progressive Rock', 'https://example.com/the_wall.jpg', 120);
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('Sgt. Pepper''s Lonely Hearts Club Band', 'The Beatles', 'Rock', 'https://example.com/sgt_pepper.jpg', 100);
+
+
 
 -- Table record_store.record_images
 
