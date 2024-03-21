@@ -77,6 +77,7 @@ from Website1.img_display import img_display
 app.register_blueprint(img_display, url_prefix="/img_display")
 
 
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html')
