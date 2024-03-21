@@ -8,6 +8,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <!-- Flash messages section -->
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div class="alert alert-dismissible alert-danger">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <ul>
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+      </ul>
+  </div>
+  {% endif %}
+  {% endwith %}
 </head>
 
 <body>
@@ -50,15 +63,18 @@
               </button>
             </div>
             <div class="modal-body">
-              <div class="container">
-                <div class="col">
-                  <div class="row">
-                    <p>Email or Username</p>
-              <input class="form-control" type="search" aria-label="Search">
-              <p>Password</p>
-              <input class="form-control" type="search" aria-label="Search">
-            </div>
-           
+                    <form method="POST" action="/login">
+                      <div class="form-group">
+                          <label for="email_or_username">Email</label>
+                          <input class="form-control" type="text" id="email_or_username" name="email_or_username" aria-label="Email or Username">
+                      </div>
+                      <div class="form-group">
+                          <label for="password">Password</label>
+                          <input class="form-control" type="password" id="password" name="password" aria-label="Password">
+                      </div>
+                      <button type="submit" class="btn btn-primary">Login</button>
+                  </form>
+                </div>
             <div class="modal-footer">
               <div class="container">
                 <div class="col md-1">
@@ -75,119 +91,98 @@
     </div>
     </div>
   </div>
+</div>
 
 
-
-  <p class="h2 text-center">Indie Rock</p>
-  <div class="container">
-    <div class="row mt-4 mb-4">
-      <div class="col gap-0">
-        <div class="card" style="width: 18rem;">
-          
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card" style="width: 18rem;">
-          
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card" style="width: 18rem;">
-          
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <p class="h3 text-center mb-4">Indie Punk</p>
-    <div class="row">
-      <div class="col">
-        <div class="card" style="width: 18rem;">
-          
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card" style="width: 18rem;">
-          
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card" style="width: 18rem;">
-          
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <p class="h3 text-center mb-4">Classic Rock</p>
-    <div class="row">
-      <div class="col">
-        <div class="card" style="width: 18rem;">
-          
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card" style="width: 18rem;">
-          
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card" style="width: 18rem;">
-          
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-4">
+      <div style="width: 16rem;">
+        <p class="h2 text-center">Indie Rock</p>
       </div>
     </div>
   </div>
+
+  <div class="row mt-4 mb-4 ">
+    <div class="col-4">
+      <div class="card" style="width: 16rem;">
+        <img src="./static/homepage_images/the_vines_indie_rock.jpg">
+
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card" style="width: 16rem;">
+        <img src="./static/homepage_images/arctic_monkeys_indie_rock.jpg" class="rounded">
+      </div>
+    </div>
+
+    <div class="col-4">
+      <div class="card" style="width: 16rem;">
+        <img src="./static/homepage_images/dinosaur_jr_indie_rock.jpg" class="rounded">
+
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-4">
+      <div style="width: 16rem;">
+        <p class="h2 text-center">Indie Punk</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4 mb-4 d-flex justify-content-center">
+    <div class="col">
+      <div class="card" style="width: 16rem;">
+        <img src="./static/homepage_images/swearin_indie_punk.jpg" class="rounded">
+
+      </div>
+    </div>
+    <div class="col">
+      <div class="card" style="width: 16rem;">
+        <img src="./static/homepage_images/sonic_youth_indie_punk.jpg" class="rounded">
+      </div>
+    </div>
+    <div class="col">
+      <div class="card" style="width: 16rem;">
+        <img src="./static/homepage_images/pixies_indie_punk.jpg" class="rounded">
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-4">
+      <div style="width: 16rem;">
+        <p class="h2 text-center">Classic Rock</p>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-4 mb-4 d-flex justify-content-center">
+    <div class="col">
+      <div class="card" style="width: 16rem;">
+        <img src="./static/homepage_images/led_zeppelin_classic_rock.jpg" class="rounded"
+          style="height: 254.4; width: 254.4;">
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card" style="width: 16rem;">
+
+        <img src="./static/homepage_images/pink_floyd_classic_rock.jpg" class="rounded"
+          style="height: 254.4; width: 254.4;">
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card" style="height: 16rem; width: 16rem;">
+
+        <img src="./static/homepage_images/rush_classic_rock.jpg" class="rounded"
+          style="height: 254.4; width: 254.4;">
+      </div>
+    </div>
+  </div>
+</div>
 
   <script src="script.js"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

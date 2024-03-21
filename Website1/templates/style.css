@@ -51,3 +51,8 @@
       border: 1px solid #ccc;
     }
   }
+  .alert-success {
+    color: #155724;  /* Text color */
+    background-color: #d4edda;  /* Background color */
+    border-color: #c3e6cb;  /* Border color */
+}

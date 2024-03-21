@@ -11,12 +11,29 @@
     <body>
         <h1>Create Account</h1>
         <form method="POST" action="/create_account">
+          <!-- Flash messages section -->
+          {% with messages = get_flashed_messages() %}
+          {% if messages %}
+          <div class="alert alert-dismissible alert-danger">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <ul>
+                  {% for message in messages %}
+                  <li>{{ message }}</li>
+                  {% endfor %}
+              </ul>
+          </div>
+          {% endif %}
+          {% endwith %}
             <label for="first_name">First Name:</label><br>
             <input type="text" id="first_name" name="first_name"><br>
             <label for="last_name">Last Name:</label><br>
             <input type="text" id="last_name" name="last_name"><br>
             <label for="email">Email:</label><br>
             <input type="email" id="email" name="email"><br>
+            <label for="Password">Password:</label><br>
+            <input type="password" id="pass1" name="pass1"><br>
+            <label for="Password2">Please Renter Password:</label><br>
+            <input type="password" id="pass2" name="pass2"><br>
             <label for="phone_num">Phone Number:</label><br>
             <input type="text" id="phone_num" name="phone_num"><br>
             <label for="address">Address:</label><br>
