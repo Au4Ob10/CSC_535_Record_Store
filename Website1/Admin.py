@@ -4,6 +4,9 @@ from app import store_db, cur
 
 admin = Blueprint('admin',__name__,static_folder="Website1/static", template_folder='Website1/templates')
 
+#Only admin related functions within this route adding new staff members, accessing orders, order history, managing staff members, adding albums, 
+#restocking, discounting items 
+
 
 @admin.route('/portal', methods=['GET', 'POST'])
 def portal():
