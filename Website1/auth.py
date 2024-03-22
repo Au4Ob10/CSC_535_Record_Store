@@ -45,7 +45,7 @@ def portal():
         flash('You need to login first.', 'error')
         return redirect(url_for('auth1.login'))
     
-    return render_template("index.html")
+    return redirect(url_for("user.home"))
 
 @auth1.route('/', methods=['GET', 'POST'])
 def index():
