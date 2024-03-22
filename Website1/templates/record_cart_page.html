@@ -20,9 +20,15 @@
         <tbody>
             {% for record in records %}
             <tr>
-                <td>{{ record[0] }}</td>
                 <td>{{ record[1] }}</td>
+                <td>{{ record[2] }}</td>
                 <td><img src="{{ record[2] }}" alt="Record Image" height="100"></td>
+                <td>
+                    <form method="post" action="/user/add_to_cart">
+                    <input type="hidden" name="record_id" value="{{record[0]}}">
+                    <button type="submit">Add To Cart</button>
+                </form>
+            </td>
             </tr>
             {% endfor %}
         </tbody>
