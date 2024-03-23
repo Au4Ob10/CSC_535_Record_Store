@@ -10,7 +10,7 @@ def display_records():
     cursor = store_db.cursor()
     cursor.execute("SELECT record_name, artist, img_link FROM records_detail")
     records = cursor.fetchall()
-    return render_template('record_cart_page.html', records=records)
+    return render_template('record_store_homepage.html', records=records)
 
 # if __name__ == '__main__':
 #     app.run(debug=True)
