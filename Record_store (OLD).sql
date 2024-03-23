@@ -1,3 +1,4 @@
+-- Active: 1696536729822@@127.0.0.1@3306@savin_rock_school
 CREATE DATABASE records_store;
 USE records_store;
 

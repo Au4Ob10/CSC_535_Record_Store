@@ -7,11 +7,11 @@ import mysql.connector
 # Load environment variables
 load_dotenv('.flaskenv')
 # Debug for DB info
-# print("MySQL Host:", environ.get('MYSQL_HOST'))
-# print("MySQL User:", environ.get('MYSQL_USER'))
-# print("MySQL Password:", environ.get('MYSQL_PASSWORD'))
-# print("MySQL Database:", environ.get('MYSQL_DB'))
-# print("MySQL Port:", int(environ.get('MYSQL_PORT')))
+print("MySQL Host:", environ.get('MYSQL_HOST'))
+print("MySQL User:", environ.get('MYSQL_USER'))
+print("MySQL Password:", environ.get('MYSQL_PASSWORD'))
+print("MySQL Database:", environ.get('MYSQL_DB'))
+print("MySQL Port:", int(environ.get('MYSQL_PORT')))
 
 app = Flask(__name__, template_folder='Website1/templates')
 
