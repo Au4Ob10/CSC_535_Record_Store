@@ -4,9 +4,6 @@ from dotenv import load_dotenv
 from os import environ
 import mysql.connector
 
-#app.py has blueprints to all routes and calls them please do not put routes in this function besides the ones currently here 
-#If you need a new route and are not sure where to put said route since the other blueprints dont fit the functionality you can make a new one here
-
 # Load environment variables
 load_dotenv('.flaskenv')
 # Debug for DB info
@@ -23,7 +20,7 @@ app.secret_key = "csc-535-record-store-app"
 store_db = mysql.connector.connect(
 host= environ.get('MYSQL_HOST', 'localhost'),
 user= environ.get('MYSQL_USER'),
-passwd= environ.get('MYSQL_PASSWORD', 'password'),
+passwd= environ.get('MYSQL_PASSWORD', 'root'),
 database= environ.get('MYSQL_DB'),
 port= int(environ.get('MYSQL_PORT')),
 auth_plugin="mysql_native_password"
@@ -75,6 +72,10 @@ app.register_blueprint(staff, url_prefix="/staff")
 
 from Website1.Admin import admin
 app.register_blueprint(admin, url_prefix="/admin")
+
+from Website1.img_display import img_display
+app.register_blueprint(img_display, url_prefix="/img_display")
+
 
 
 @app.route('/', methods=['GET', 'POST'])

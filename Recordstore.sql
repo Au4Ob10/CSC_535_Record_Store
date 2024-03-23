@@ -1,13 +1,9 @@
 -- Active: 1708706294364@@127.0.0.1@3306
 
-drop schema record_store;
-
+DROP DATABASE IF EXISTS record_store;
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
-
-
-
 
 
 -- Schema record_store
@@ -66,6 +62,7 @@ VALUES
 select * from customer;
 -- Table record_store.records_detail
 
+
 CREATE TABLE IF NOT EXISTS `record_store`.`records_detail` (
   `record_id` INT NOT NULL AUTO_INCREMENT,
   `record_name` VARCHAR(45) NOT NULL,
@@ -76,12 +73,41 @@ CREATE TABLE IF NOT EXISTS `record_store`.`records_detail` (
   PRIMARY KEY (`record_id`)
 ) ENGINE = InnoDB;
 
-INSERT INTO records_detail (record_id,record_name,artist,genre)
+
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) 
+VALUES ('Thriller', 'Michael Jackson', 'Pop', 'https://cdn.smehost.net/michaeljacksoncom-uslegacyprod/wp-content/uploads/2009/03/thriller-album-michaeljackson-og.jpg', 100);
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) 
+VALUES ('Back in Black', 'AC/DC', 'Rock', 'https://example.com/back_in_black.jpg', 80);
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('The Dark Side of the Moon', 'Pink Floyd', 'Progressive Rock', 'https://example.com/dark_side_of_the_moon.jpg', 90);
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('Abbey Road', 'The Beatles', 'Rock', 'https://example.com/abbey_road.jpg', 110);
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('Rumours', 'Fleetwood Mac', 'Soft Rock', 'https://example.com/rumours.jpg', 85);
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('Led Zeppelin IV', 'Led Zeppelin', 'Hard Rock', 'https://example.com/led_zeppelin_iv.jpg', 95);
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('Nevermind', 'Nirvana', 'Grunge', 'https://example.com/nevermind.jpg', 75);
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('Hotel California', 'Eagles', 'Rock', 'https://example.com/hotel_california.jpg', 105);
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('The Wall', 'Pink Floyd', 'Progressive Rock', 'https://example.com/the_wall.jpg', 120);
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('Sgt. Pepper''s Lonely Hearts Club Band', 'The Beatles', 'Rock', 'https://example.com/sgt_pepper.jpg', 100);
+
+
+
+-- Table record_store.record_images
+
+CREATE TABLE IF NOT EXISTS `record_images` (
+record_id int NOT NULL,
+genre varchar(45),
+img_file_name varchar(55) NOT NULL
+
+);
+INSERT INTO `record_images` (record_id, genre, img_file_name)
 VALUES
-(1000,"2112","Rush","Rock"),
-(1001,"Evol","Sonic Youth", "Punk-Rock"),
-(1002,"Mothership","Led Zeppelin","Classic Rock"),
-(1003,"Dark Side of the Moon","Pink Floyd","Classic Rock");
+(1000, "Indie Rock", "the_vines_indie_rock.jpg"),
+(1001, "Indie Rock", "arctic_monkeys_indie_rock.jpg"),
+(1002, "Indie Rock", "dinosaur_jr_indie_rock.jpg"),
+(1003, "Indie Punk", "swearin_indie_punk.jpg"),
+(1004, "Indie Punk", "sonic_youth_indie_punk.jpg"),
+(1005, "Indie Punk", "pixies_indie_punk.jpg"),
+(1006, "Classic Rock", "led_zeppelin_classic_rock.jpg"),
+(1007, "Classic Rock", "pink_floyd_classic_rock.jpg"),
+(1008, "Classic Rock", "rush_classic_rock.jpg");
 
 -- Table record_store.address
 
@@ -96,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `address` (
   `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`customer_id`)
 ) ENGINE=InnoDB;
-select * from address;
+
 -- Table record_store.staff
 
 CREATE TABLE IF NOT EXISTS `staff_list` (
@@ -127,13 +153,17 @@ CREATE TABLE IF NOT EXISTS `orders` (
 `last_name` varchar(35) NOT NULL,
 `placement_date` DATE NOT NULL
 )  ENGINE=InnoDB;
-
+USE record_store;
+SELECT * FROM orders;
 INSERT INTO orders (order_id,customer_id,last_name,placement_date)
 VALUES 
 (10,1,'Doe', '2022-01-22'),
 (11,2,'Smith', '2023-02-25'),
 (12,3,'Johnson', '2022-05-23'),
-(13,4,'Brown', '2021-07-22');
+(13,4,'Brown', '2021-07-22'),
+(14, 5, 'Jacobson', '2020-07-22');
+
+select * from address;
 
 
 

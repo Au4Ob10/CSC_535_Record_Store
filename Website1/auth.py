@@ -43,9 +43,9 @@ def login():
 def portal():
     if 'email' not in session:
         flash('You need to login first.', 'error')
-        return redirect(url_for('auth1.login'))
-    
+        return redirect(url_for('auth1.login'))    
     return redirect(url_for("user.home"))
+
 
 @auth1.route('/', methods=['GET', 'POST'])
 def index():
