@@ -89,3 +89,10 @@ def History():
     
     return render_template('order_history.html',order_data=order_data)
 
+@admin.route('/addrecord', methods=['GET','POST'])
+def Addrecord():
+    return render_template('stock.html')
+
+@admin.route('/stock', methods=['GET','POST'])
+def Showstock():
+    return render_template('stock.html')
