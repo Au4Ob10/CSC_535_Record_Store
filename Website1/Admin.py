@@ -91,7 +91,7 @@ def History():
 
 @admin.route('/addrecord', methods=['GET','POST'])
 def Addrecord():
-    return render_template('stock.html')
+    return render_template('addrecord.html')
 
 @admin.route('/stock', methods=['GET','POST'])
 def Showstock():
