@@ -18,9 +18,9 @@ app = Flask(__name__, template_folder='Website1/templates',static_folder='Websit
 app.secret_key = "csc-535-record-store-app"
 
 store_db = mysql.connector.connect(
-host= environ.get('MYSQL_HOST'),
+host= environ.get('MYSQL_HOST', 'localhost'),
 user= environ.get('MYSQL_USER'),
-passwd= environ.get('MYSQL_PASSWORD'),
+passwd= environ.get('MYSQL_PASSWORD', 'root'),
 database= environ.get('MYSQL_DB'),
 port= int(environ.get('MYSQL_PORT')),
 auth_plugin="mysql_native_password"
