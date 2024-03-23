@@ -13,7 +13,7 @@ print("MySQL Password:", environ.get('MYSQL_PASSWORD'))
 print("MySQL Database:", environ.get('MYSQL_DB'))
 print("MySQL Port:", int(environ.get('MYSQL_PORT')))
 
-app = Flask(__name__, template_folder='Website1/templates')
+app = Flask(__name__, template_folder='Website1/templates',static_folder='Website1/templates/static')
 
 app.secret_key = "csc-535-record-store-app"
 
@@ -26,6 +26,12 @@ port= int(environ.get('MYSQL_PORT')),
 auth_plugin="mysql_native_password"
 )
 cur = store_db.cursor(buffered=True)
+
+
+
+
+
+
 
 
 # def test_mysql_connection():
@@ -58,16 +64,31 @@ cur = store_db.cursor(buffered=True)
 from Website1.auth import auth1
 app.register_blueprint(auth1, url_prefix="")
 
+from Website1.user import user
+app.register_blueprint(user, url_prefix="/user")
+
 from Website1.staff import staff
 app.register_blueprint(staff, url_prefix="/staff")
 
 from Website1.Admin import admin
 app.register_blueprint(admin, url_prefix="/admin")
 
+from Website1.img_display import img_display
+app.register_blueprint(img_display, url_prefix="/img_display")
+
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html')
+
+@app.route('/vines_record', methods=['GET'])
+def vines_record_page():
+    return render_template('record_page.html')
+
+@app.route('/user_cart', methods=['GET','POST'])
+def user_cart_page():
+    return render_template('customer_cart.html')
 
 
 

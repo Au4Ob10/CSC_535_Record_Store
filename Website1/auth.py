@@ -1,4 +1,4 @@
-from flask import Blueprint, request, session, redirect, render_template, url_for, flash
+from flask import Blueprint, request, session, redirect, render_template, url_for, flash, jsonify
 from app import store_db, cur
 auth1 = Blueprint('auth1',__name__,static_folder="Website1/static", template_folder='Website1/templates')
 
@@ -43,9 +43,9 @@ def login():
 def portal():
     if 'email' not in session:
         flash('You need to login first.', 'error')
-        return redirect(url_for('auth1.login'))
-    
-    return render_template("index.html")
+        return redirect(url_for('auth1.login'))    
+    return redirect(url_for("user.home"))
+
 
 @auth1.route('/', methods=['GET', 'POST'])
 def index():
@@ -87,18 +87,54 @@ def create_account():
                             (customer_id, address, address2, city, state, postal_code))
                 store_db.commit()
 
+                cur.execute(f"""
+                        CREATE TABLE IF NOT EXISTS `{email}_cart` (
+                            `itemID` INT NOT NULL AUTO_INCREMENT,
+                            `record_id` INT,
+                            `customer_id` INT,
+                            PRIMARY KEY (`itemID`),
+                            FOREIGN KEY (`record_id`) REFERENCES `records_detail`(`record_id`),
+                            FOREIGN KEY (`customer_id`) REFERENCES `customer`(`customer_id`)
+                        )
+                    """)
+                store_db.commit()
+
+
+
                 flash('Account created successfully!', 'success')
                 return redirect(url_for('index'))
             else:
                 flash('Passwords do not match. Please try again.', 'error')
-                return redirect(url_for('create_account_form'))
+                return redirect(url_for('auth1.create_account_form'))
+
 
         except Exception as e:
             # Handle database errors
             print(e)
             store_db.rollback()
             flash('An error occurred while creating the account. Please try again.', 'error')
-            return redirect(url_for('create_account_form'))
+            return redirect(url_for('auth1.create_account_form'))
+
 
         finally:
             cur.close()
+
+@auth1.route("/logout", methods=['GET','POST'])
+def logout():
+    session['username'] = ''
+    session['email'] = ''
+    flash('Logged Out!', 'success')
+    return render_template('index.html')
+
+def orderList():
+   my_cur = store_db.cursor()
+   my_cur.execute("SELECT * FROM orders", multi=True)
+   order_data = my_cur.fetchall()
+   
+   my_cur.close()
+   return order_data
+    
+@auth1.route('/orderdata')
+def fetch_data():
+    order_data = orderList()
+    return jsonify(order_data)

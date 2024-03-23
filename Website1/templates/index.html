@@ -25,7 +25,7 @@
 
 <body>
   <div class="d-flex  justify-content-around bg-primary">
-    <button type="button" class="btn btn-primary">New Releases1</button>
+    <button type="button" class="btn btn-primary">New Releases</button>
     <button type="button" class="btn btn-primary">Customer Picks</button>
     <button type="button" class="btn btn-primary">About Us</button>
     <button type="button" class="btn btn-primary">Our Locations</button>
@@ -36,8 +36,8 @@
   <div class="container mt-5 mb-4">
     <div class="row align-items-center">
       <div class="col-4">
-      <p class="h1 text-center mt-3 mr-5">(Name) Records</p>
-    </div>
+        <p class="h1 text-center mt-3 mr-5">{{ current_user }}</p>
+      </div>
       <div class="col-10 col-md-6 ml-auto">
         <form class="d-flex">
           <div class="input-group">
@@ -46,9 +46,13 @@
           </div>
         </form>
       </div>
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Account
-      </button>
+      {% if current_user %}
+        <a href="{{ url_for('logout') }}" class="btn btn-primary">Logout</a>
+      {% else %}
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+          Account
+        </button>
+      {% endif %}
     </div>
   </div>
      
@@ -63,9 +67,6 @@
               </button>
             </div>
             <div class="modal-body">
-              <div class="container">
-                <div class="col">
-                  <div class="row">
                     <form method="POST" action="/login">
                       <div class="form-group">
                           <label for="email_or_username">Email</label>
@@ -77,6 +78,7 @@
                       </div>
                       <button type="submit" class="btn btn-primary">Login</button>
                   </form>
+                </div>
             <div class="modal-footer">
               <div class="container">
                 <div class="col md-1">
@@ -93,122 +95,101 @@
     </div>
     </div>
   </div>
+</div>
 
 
-
-  <p class="h2 text-center">Indie Rock</p>
-  <div class="container">
-    <div class="row mt-4 mb-4">
-      <div class="col gap-0">
-        <div class="card" style="width: 18rem;">
-          
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card" style="width: 18rem;">
-          
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card" style="width: 18rem;">
-          
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <p class="h3 text-center mb-4">Indie Punk</p>
-    <div class="row">
-      <div class="col">
-        <div class="card" style="width: 18rem;">
-          
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card" style="width: 18rem;">
-          
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card" style="width: 18rem;">
-          
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <p class="h3 text-center mb-4">Classic Rock</p>
-    <div class="row">
-      <div class="col">
-        <div class="card" style="width: 18rem;">
-          
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card" style="width: 18rem;">
-          
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card" style="width: 18rem;">
-          
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-4">
+      <div style="width: 16rem;">
+        <p class="h2 text-center">Indie Rock</p>
       </div>
     </div>
   </div>
 </div>
 
-  <script src="script.js"></script>
+  <div class="row mt-4 mb-4 ">
+    <div class="col-4">
+      <div class="card" style="width: 16rem;">
+        <img src="./static/homepage_images/the_vines_indie_rock.jpg" class="rounded" id="_1000">
+
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card" style="width: 16rem;">
+        <img src="./static/homepage_images/arctic_monkeys_indie_rock.jpg" onclick="location.href='shopping_page'" class="rounded" id="_1001">
+      </div>
+    </div>
+
+    <div class="col-4">
+      <div class="card" style="width: 16rem;">
+        <img src="./static/homepage_images/dinosaur_jr_indie_rock.jpg" onclick="location.href='shopping_page'" class="rounded" id="_1002">
+
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-4">
+      <div style="width: 16rem;">
+        <p class="h2 text-center">Indie Punk</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4 mb-4 d-flex justify-content-center">
+    <div class="col">
+      <div class="card" style="width: 16rem;">
+        <img src="./static/homepage_images/swearin_indie_punk.jpg" onclick="location.href='shopping_page'" class="rounded" id="_1003">
+
+      </div>
+    </div>
+    <div class="col">
+      <div class="card" style="width: 16rem;">
+        <img src="./static/homepage_images/sonic_youth_indie_punk.jpg" onclick="location.href='shopping_page'" class="rounded" id="_1004">
+      </div>
+    </div>
+    <div class="col">
+      <div class="card" style="width: 16rem;">
+        <img src="./static/homepage_images/pixies_indie_punk.jpg" onclick="location.href='shopping_page'" class="rounded" id="_1005">
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-4">
+      <div style="width: 16rem;">
+        <p class="h2 text-center">Classic Rock</p>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-4 mb-4 d-flex justify-content-center">
+    <div class="col">
+      <div class="card" style="width: 16rem;">
+        <img src="./static/homepage_images/led_zeppelin_classic_rock.jpg" onclick="location.href='shopping_page'" class="rounded" id="_1006"
+          style="height: 254.4; width: 254.4;">
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card" style="width: 16rem;">
+
+        <img src="./static/homepage_images/pink_floyd_classic_rock.jpg" onclick="location.href='shopping_page'" class="rounded" id="_1007"
+          style="height: 254.4; width: 254.4;">
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card" style="height: 16rem; width: 16rem;">
+
+        <img src="./static/homepage_images/rush_classic_rock.jpg" onclick="location.href='shopping_page'" class="rounded" id="_1008"
+          style="height: 254.4; width: 254.4;">
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script src="static/script.js"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
   </script>
