@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `record_store`.`records_detail` (
 
 
 INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) 
-VALUES ('Thriller', 'Michael Jackson', 'Pop', 'https://cdn.smehost.net/michaeljacksoncom-uslegacyprod/wp-content/uploads/2009/03/thriller-album-michaeljackson-og.jpg', 100);
+VALUES ('Thriller', 'Michael Jackson', 'Pop', 'https://i.redd.it/ehrrwwfwvz411.png', 100);
 INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) 
 VALUES ('Back in Black', 'AC/DC', 'Rock', 'https://th.bing.com/th/id/OIP.rWVw2ui1moDt_hYlbdxidwAAAA?rs=1&pid=ImgDetMain', 80);
 INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) 

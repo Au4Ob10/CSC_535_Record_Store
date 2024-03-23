@@ -1,7 +1,48 @@
+
+{% comment %} record_cart_page.html {% endcomment %}
+
+
+
+
+#rec-info-card, #rec-img-card, #rec-img-card-body {
+border-color: #EEEEEE;
+}
+
+#rec-info-card, #rec-img-card {
+    background-color: #EEEEEE;
+}
+
+#rec_img_card_body {
+
+    
+} 
+
+#record_cart_page_img {
+
+    width: 180px;
+    height: 180px;
+}
+
+#rec-img-card {
+   
+    border-right: none; 
+    
+}
+
+
+
+
+
+
+
+
 .row label {
     width: 13rem;
     display: inline-block;
 }
+
+
+
 
 
 #email_or_username, #password{
