@@ -12,10 +12,16 @@ border-color: #EEEEEE;
     background-color: #EEEEEE;
 }
 
-#rec_img_card_body {
+#companyNameHeading {
+    color: white;
+}
 
+#viewCart{
+    color: white;
+    width: 5rem;
     
-} 
+}
+
 
 #record_cart_page_img {
 
@@ -31,18 +37,12 @@ border-color: #EEEEEE;
 
 
 
-
-
-
-
-
 .row label {
     width: 13rem;
     display: inline-block;
 }
 
-
-
+{% comment %} Admin Pages {% endcomment %}
 
 
 #email_or_username, #password{
@@ -80,7 +80,7 @@ staff
     color: white;
 }
 
-.fa-id-badge, .fa-user, .fa-shopping-cart, .fa-sign-out{
+.fa-id-badge, .fa-user, .fa-sign-out{
     color: white;
     font-size: 16px; 
 }
