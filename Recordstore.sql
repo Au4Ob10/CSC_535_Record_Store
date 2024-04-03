@@ -5,10 +5,6 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
-
-
-
-
 -- Schema record_store
 CREATE SCHEMA IF NOT EXISTS `record_store`;
 USE `record_store`;
@@ -167,9 +163,39 @@ VALUES
 (13,4,'Brown', '2021-07-22'),
 (14, 5, 'Jacobson', '2020-07-22');
 
-select * from address;
+
+#Sample data, delete later
 
 
+
+CREATE TABLE IF NOT EXISTS `john.doe@example.com_cart` (
+	`record_id` int NOT NULL,
+    `customer_id` int NOT NULL,
+    `order_id` int NOT NULL,
+    `price` numeric (6,2),
+    `quantity` int NOT NULL
+    );
+
+
+INSERT INTO `john.doe@example.com_cart` (`record_id`,`customer_id`,`order_id`,`price`,`quantity`)
+VALUES 
+(1, 1, 200, 19.99,2),
+(4, 1, 200, 21.99,1),
+(6, 1, 200, 15.99,1),
+(8, 1, 200, 18.99,1),
+(7, 1, 200, 17.99,1),
+(9, 1, 200, 17.99,3);
+
+SELECT img_link from records_detail
+INNER JOIN `john.doe@example.com_cart` 
+ON records_detail.record_id = `john.doe@example.com_cart`.record_id;
+
+	
+
+
+
+
+SELECT * FROM records_detail;
 
 
 

@@ -1,5 +1,30 @@
 
-{% comment %} record_cart_page.html {% endcomment %}
+
+{% comment %} cart.html  {% endcomment %}
+
+.attribute_heading, .cart_album_name {
+    font-weight: bold;
+}
+
+.cart_update_btn, .cart_delete_btn {
+    width: 6.25rem;
+}
+
+
+.cart-card-body {
+    line-height: 0.4;
+}
+
+.cart_img {
+    height: 140px;
+    width: 140px;
+}
+
+
+
+
+
+{% comment %} record_store_homepage.html {% endcomment %}
 
 
 
@@ -21,6 +46,7 @@ border-color: #EEEEEE;
     width: 5rem;
     
 }
+
 
 
 #record_cart_page_img {

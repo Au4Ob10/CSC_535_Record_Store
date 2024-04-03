@@ -1,6 +1,7 @@
 from flask import Blueprint, request, session, redirect, render_template, url_for, flash, jsonify
 from app import store_db, cur
 
+
 user = Blueprint('user',__name__,static_folder="Website1/static", template_folder='Website1/templates')
 
 #All user related routes so adding to cart removing from cart checking out and inserting payment info.
@@ -21,7 +22,7 @@ def add_to_cart():
         table_name = f"{current_user}_cart"
         
         # Constructing and executing the SQL query
-        sql = f"INSERT INTO `{table_name}` (record_id, customer_id) VALUES (%s, %s)"
+        sql = f"INSERT INTO `{table_name}` (record_id, customer_id, order_id, price, quantity) VALUES (%s, %s, %s, %s, %s)"
         cur2.execute(sql, (record_id, customer_id))
         
         store_db.commit()  
@@ -36,10 +37,36 @@ def add_to_cart():
 @user.route('/home')
 def home():
     current_user = session.get('email')
+    cur.execute("SELECT record_name, artist, img_link FROM records_detail")
+    records = cur.fetchall()
     #cart_item_count is a test variable 
     cart_item_count=5
-    return render_template('userhome.html', current_user=current_user, cart_item_count=cart_item_count)
+    return render_template('userhome.html', current_user=current_user, cart_item_count=cart_item_count, records=records)
 
 @user.route('/cart')
 def cart():
-    return render_template('cart.html')
+    cur.execute("""SELECT 
+
+                           records_detail.record_name, 
+                           records_detail.artist, 
+                           records_detail.genre, 
+                           records_detail.img_link,
+                          `john.doe@example.com_cart`.price, 
+                          `john.doe@example.com_cart`.quantity
+                    FROM `john.doe@example.com_cart`
+                    INNER JOIN records_detail 
+                    ON `john.doe@example.com_cart`.record_id = records_detail.record_id;""")
+    
+    cart_details = cur.fetchall()
+    
+    details_arr = []
+    
+    for item in cart_details:
+       details_arr.append(item)
+    
+    
+    cur.execute("""SELECT img_link from records_detail
+                   INNER JOIN `john.doe@example.com_cart` 
+                   ON records_detail.record_id = `john.doe@example.com_cart`.record_id;""")
+    img_links = cur.fetchall()
+    return render_template('cart.html',cart_details=cart_details)
