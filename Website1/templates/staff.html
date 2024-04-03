@@ -70,9 +70,9 @@
                 
             <h2>Staff List</h2>
             <ul>
-                {% for staff in staff_list %}
+                {% for cart in cart_items %}
                 <li>
-                    ID - {{ staff[0] }} | Username - {{ staff[1] }} | Password - {{ staff[2] }} | Email: {{ staff[3] }}
+                    ID - {{ cart[0] }} | name - {{ cart[1] }} | cost - {{ cart[2] }} | quantity: {{ cart[3] }}
                     <form method="post" action="/admin/remove_staff">
                         <input type="hidden" name="remove_staff_id" value="{{ staff[0] }}">
                         <button type="submit" class="btn btn-danger">Remove</button>

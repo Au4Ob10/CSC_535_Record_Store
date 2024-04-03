@@ -43,3 +43,21 @@ def home():
 @user.route('/cart')
 def cart():
     return render_template('cart.html')
+
+
+@user.route('/checkout')
+def checkout():
+    try:
+        current_user = session.get('email')
+        cur3 = store_db.cursor()
+        table_name = f"{current_user}_cart"
+        cur3.execute(f"SELECT * FROM {table_name}")
+        cart_items = cur3.fetchall()
+        print(cart_items)
+        return render_template('checkout.html', cart_items=cart_items)
+    except Exception as e:
+        store_db.rollback()
+        return jsonify({'error': str(e)}), 500
+    finally:
+        cur3.close()
+        return render_template('checkout.html')
