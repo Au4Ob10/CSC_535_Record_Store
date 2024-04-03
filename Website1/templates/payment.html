@@ -22,14 +22,26 @@
         </div>
 </body>
 
-<h2>Staff List</h2>
-            <ul>
-                {% for staff in staff_list %}
-                <li>
-                    ID - {{ staff[0] }} | Username - {{ staff[1] }} | Password - {{ staff[2] }} | Email: {{ staff[3] }}
-                    <form method="post" action="/admin/remove_staff">
-                        <input type="hidden" name="remove_staff_id" value="{{ staff[0] }}">
-                        <button type="submit" class="btn btn-danger">Remove</button>
-                    </form>
-                </li>
-                {% endfor %}
+<h2>Payment Info</h2>
+
+</form>
+</div>
+</div>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.cardholder_name.label }} {{ form.cardholder_name() }}
+    </div>
+    <div>
+        {{ form.card_number.label }} {{ form.card_number() }}
+    </div>
+    <div>
+        {{ form.expiry_date.label }} {{ form.expiry_date() }}
+    </div>
+    <div>
+        {{ form.cvv.label }} {{ form.cvv() }}
+    </div>
+    <div>
+        {{ form.submit() }}
+    </div>
+</html>
