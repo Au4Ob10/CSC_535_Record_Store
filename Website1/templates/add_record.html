@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Record</title>
+</head>
+<body>
+    <h2>Add Record</h2>
+    <form method="post" action="{{url_for('admin.addRecord')}}">
+        <label for="record_name">Record Name:</label><br>
+        <input type="text" id="record_name" name="record_name"><br>
+        <label for="artist">Artist:</label><br>
+        <input type="text" id="artist" name="artist"><br>
+        <label for="genre">Genre:</label><br>
+        <input type="text" id="genre" name="genre"><br>
+        <label for="img_link">Image Link:</label><br>
+        <input type="text" id="img_link" name="img_link"><br>
+        <label for="quantity">Quantity:</label><br>
+        <input type="number" id="quantity" name="quantity" value="0"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
