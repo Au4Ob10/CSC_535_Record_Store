@@ -1,4 +1,9 @@
 from flask import Blueprint, request, session, redirect, render_template, url_for, flash, jsonify
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, IntegerField
+from wtforms.validators import DataRequired, Length, Email
+
+
 from app import store_db, cur
 
 
@@ -7,6 +12,13 @@ user = Blueprint('user',__name__,static_folder="Website1/static", template_folde
 #All user related routes so adding to cart removing from cart checking out and inserting payment info.
 #Index functionality related to records should be kept here 
 
+
+class PaymentForm(FlaskForm):
+    cardholder_name = StringField('Cardholder Name', validators=[DataRequired(), Length(min=2, max=100)])
+    card_number = StringField('Card Number', validators=[DataRequired(), Length(min=16, max=16)])
+    expiry_date = StringField('Expiry Date (MM/YY)', validators=[DataRequired(), Length(min=5, max=5)])
+    cvv = IntegerField('CVV', validators=[DataRequired()])
+    submit = SubmitField('Submit Payment')
 @user.route("/add_to_cart", methods=['POST'])
 def add_to_cart():
     try:
@@ -70,3 +82,12 @@ def cart():
                    ON records_detail.record_id = `john.doe@example.com_cart`.record_id;""")
     img_links = cur.fetchall()
     return render_template('cart.html',cart_details=cart_details)
+
+
+@user.route('/payment', methods=['GET', 'POST'])
+def payment():
+    form = PaymentForm()
+    if form.validate_on_submit():
+        # process the form data
+        pass
+    return render_template('payment.html', title='Payment', form=form)
