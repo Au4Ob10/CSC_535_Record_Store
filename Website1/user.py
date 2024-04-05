@@ -14,11 +14,12 @@ user = Blueprint('user',__name__,static_folder="Website1/static", template_folde
 
 
 class PaymentForm(FlaskForm):
-    cardholder_name = StringField('Cardholder Name', validators=[DataRequired(), Length(min=2, max=100)])
+    cardholder_name = StringField('Name on Card', validators=[DataRequired(), Length(min=2, max=100)])
     card_number = StringField('Card Number', validators=[DataRequired(), Length(min=16, max=16)])
-    expiry_date = StringField('Expiry Date (MM/YY)', validators=[DataRequired(), Length(min=5, max=5)])
-    cvv = IntegerField('CVV', validators=[DataRequired()])
-    submit = SubmitField('Submit Payment')
+    expiry_date = StringField('Expiration Date (MM/YY)', validators=[DataRequired(), Length(min=5, max=5)])
+    cvv = IntegerField('CVV', validators=[DataRequired(), Length(min=3, max=3)], render_kw={'readonly': True})
+    submit = SubmitField()
+    
 @user.route("/add_to_cart", methods=['POST'])
 def add_to_cart():
     try:
@@ -63,7 +64,7 @@ def cart():
                            records_detail.artist, 
                            records_detail.genre, 
                            records_detail.img_link,
-                          `john.doe@example.com_cart`.price, 
+                          `john.doe@example.com_cart`.price * `john.doe@example.com_cart`.quantity,
                           `john.doe@example.com_cart`.quantity
                     FROM `john.doe@example.com_cart`
                     INNER JOIN records_detail 
@@ -71,23 +72,19 @@ def cart():
     
     cart_details = cur.fetchall()
     
-    details_arr = []
+    cur.execute("""SELECT SUM(`john.doe@example.com_cart`.price * 
+                              `john.doe@example.com_cart`.quantity)
+                              FROM `john.doe@example.com_cart`""")
     
-    for item in cart_details:
-       details_arr.append(item)
-    
-    
-    cur.execute("""SELECT img_link from records_detail
-                   INNER JOIN `john.doe@example.com_cart` 
-                   ON records_detail.record_id = `john.doe@example.com_cart`.record_id;""")
-    img_links = cur.fetchall()
-    return render_template('cart.html',cart_details=cart_details)
+    item_total = cur.fetchone()
+    return render_template('cart.html',cart_details=cart_details, item_total=item_total)
 
 
 @user.route('/payment', methods=['GET', 'POST'])
 def payment():
     form = PaymentForm()
+    labels_and_inputs = [(item.label, item) for item in form]
     if form.validate_on_submit():
         # process the form data
         pass
-    return render_template('payment.html', title='Payment', form=form)
+    return render_template('payment.html', title='Payment', labels_and_inputs=labels_and_inputs[0:4], submit_btn=labels_and_inputs[4])

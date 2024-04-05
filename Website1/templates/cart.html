@@ -30,57 +30,78 @@
 <body>
   <p class="align-text text-center">User Cart</p>
 
-  <div class="d-flex justify-content-center">
-  <div class="card mb-2" style="width: 30rem;">
-    <div class="card-body">
-    Total:
-  </div>
-</div>
-</div>
-
-  {% for item in cart_details %}
-  <div class="d-flex justify-content-center">
-  <div class="card mb-2" style="width: 30rem;">
-    <div class="container">
-    <div class="card-body cart-card-body">
-        <div class="row">
-          <div class="col-auto">
-            <img class="cart_img" src={{item[3]}}></img>
-          </div>
-          <div class="col">
-            <div class="row mb-3">
-            <p class="cart_album_name">{{item[0]}}</p>
+   
+        {% block cart_header%}
+        <div class="d-flex justify-content-center">
+        <div class="card">
+          <div class="card-body mb-0 mt-0" style="width: 30rem;">
+            <div class="container">
+              <div class="row">
+                <div class="col d-flex nowrap flex-row mb-0">
+                <p class="h7 mr-1">Total:</p> 
+              <p class="h7">${{item_total[0]}}</p>
             </div>
-           
-            <div class="row">
-            <p class="mr-1 attribute_heading">Artist: </p>
-            <p class="mb-1">{{item[1]}}</p>
-          </div>
-          <div class="row">
-            <p class="mr-1 attribute_heading">Genre:</p>         
-            <p class="">{{item[2]}}</p>
-          </div>
-          <div class="row mb-3">
-            <p class="mr-1 attribute_heading">Qty:</p>        
-            <p>{{item[5]}}</p>
-          </div>
-          <div class="row">
-            <button class="btn btn-secondary btn-sm mr-3 cart_update_btn">Update</button>
-            <button class="btn btn-secondary btn-sm cart_delete_btn">Delete</button>
+            <div class="col-auto d-flex flex-row-reverse">
+              <button class="h7 btn btn-primary" onclick="window.location.href='/user/payment'">
+                Checkout
+              </button>
+            </div>
           </div>
         </div>
-          
-            <p>${{item[4]}}</p>
-          </div>
+      </div>
+    </div>
+  </div>
+            
+           
+          {% endblock %}
+
+        </div>
+      </div>
+    </div>
+
+    {% for item in cart_details %}
+    <div class="d-flex justify-content-center">
+      <div class="card mb-2" style="width: 30rem;">
+        <div class="container">
+          <div class="card-body cart-card-body">
+            <div class="row">
+              <div class="col-auto">
+                <img class="cart_img" src={{item[3]}}></img>
+              </div>
+              <div class="col">
+                <div class="row mb-3">
+                  <p class="cart_album_name">{{item[0]}}</p>
+                </div>
+
+                <div class="row">
+                  <p class="mr-1 attribute_heading">Artist: </p>
+                  <p class="mb-1">{{item[1]}}</p>
+                </div>
+                <div class="row">
+                  <p class="mr-1 attribute_heading">Genre:</p>
+                  <p class="">{{item[2]}}</p>
+                </div>
+                <div class="row mb-3">
+                  <p class="mr-1 attribute_heading">Qty:</p>
+                  <p>{{item[5]}}</p>
+                </div>
+                <div class="row">
+                  <button class="btn btn-secondary btn-sm mr-3 cart_update_btn">Update</button>
+                  <button class="btn btn-secondary btn-sm cart_delete_btn">Delete</button>
+                </div>
+              </div>
+
+              <p>${{item[4]}}</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-    {% endfor %}
+  {% endfor %}
 
- 
+
 
 
 
