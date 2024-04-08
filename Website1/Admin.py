@@ -89,9 +89,28 @@ def History():
     
     return render_template('order_history.html',order_data=order_data)
 
-@admin.route('/addrecord', methods=['GET','POST'])
-def Addrecord():
-    return render_template('addrecord.html')
+# @admin.route('/addstaff', methods=['GET','POST'])
+# def Add():
+
+@admin.route('/addRecord', methods=['GET', 'POST'])
+def addRecord():
+    if request.method == 'POST':
+        record_name = request.form['record_name']
+        artist = request.form['artist']
+        genre = request.form['genre']
+        img_link = request.form['img_link']
+        quantity = request.form['quantity']
+
+        # Insert record into the database
+        insert_query = "INSERT INTO records_detail (record_name, artist, genre, img_link, quantity) VALUES (%s, %s, %s, %s, %s)"
+        record_data = (record_name, artist, genre, img_link, quantity)
+        cur.execute(insert_query, record_data)
+        store_db.commit()
+
+        return redirect(url_for('index'))
+    return render_template('add_record.html')
+    
+    
 
 @admin.route('/stock', methods=['GET','POST'])
 def Showstock():
