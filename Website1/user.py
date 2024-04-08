@@ -61,6 +61,12 @@ def cart():
 def payment():
     form = PaymentForm()
     if form.validate_on_submit():
+        print("Form data:")
+        print("Cardholder Name:", form.cardholder_name.data)
+        print("Card Number:", form.card_number.data)
+        print("Expiry Date:", form.expiry_date.data)
+        print("CVV:", form.cvv.data)
         # process the form data
-        pass
-    return render_template('payment.html', title='Payment', form=form)
+        # process the form data
+        return render_template('orderprocessed.html', title='Payment', form=form)
+    else: return render_template('payment.html', title='Payment', form=form)
