@@ -45,7 +45,7 @@
           <div class="container-fluid">
             <div class="row mt-3 mb-4 d-flex justify-content-between align-items-center">
               <div class="col-4 align-items-center">
-                <p class="h4">Welcome! {{ current_user }}</p>
+                <p class="h4">Welcome, please sign in</p>
             </div>
               <div class="col">
                 <form class="d-flex">
@@ -56,11 +56,11 @@
                   </div>
                 </form>
               </div>
-              <button type="button" class="btn btn-primary" onclick="window.location.href='{{ url_for('auth1.logout') }}';">
-                Log Out
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                Account
               </button>
               <button type="button" class="btn bg-primary ml-5 mr-3" id="viewCart" onclick="window.location.href='{{ url_for( 'user.cart') }}';"  >
-                <i class="fa fa-shopping-cart mr-2" aria-hidden="true"></i><span class="badge badge-primary" id="quantityBadge">{{ cart_item_count }}</span>
+                <i class="fa fa-shopping-cart mr-2" aria-hidden="true"></i><span class="badge badge-primary" id="quantityBadge">0</span>
                 
               </button>
             
@@ -124,7 +124,7 @@
                             <p class="card-text mb-1">{{ record[0] }}</p>
                             
                             <p class="card-text mb-3">{{ record[1] }}</p>
-                            <button class="btn btn-success btn-sm" id="addToCartBtn" type="submit">Add To Cart</button>
+                           
                         </div>
                     </div>
                 </div>
@@ -136,12 +136,17 @@
 
 
 
+    </body>
+
+    </html>
+
+
   
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='script.js') }}">
 
 </body>
 

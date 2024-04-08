@@ -119,12 +119,15 @@ def create_account():
         finally:
             cur.close()
 
+
 @auth1.route("/logout", methods=['GET','POST'])
 def logout():
+    cur.execute("SELECT record_name, artist, img_link FROM records_detail")
+    records = cur.fetchall()
     session['username'] = ''
     session['email'] = ''
     flash('Logged Out!', 'success')
-    return render_template('index.html')
+    return render_template('record_store_homepage.html',records=records)
 
 def orderList():
    my_cur = store_db.cursor()

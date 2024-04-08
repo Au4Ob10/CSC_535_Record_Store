@@ -6,6 +6,7 @@ from wtforms.validators import DataRequired, Length, Email
 
 from app import store_db, cur
 
+
 user = Blueprint('user',__name__,static_folder="Website1/static", template_folder='Website1/templates')
 
 #All user related routes so adding to cart removing from cart checking out and inserting payment info.
@@ -13,11 +14,12 @@ user = Blueprint('user',__name__,static_folder="Website1/static", template_folde
 
 
 class PaymentForm(FlaskForm):
-    cardholder_name = StringField('Cardholder Name', validators=[DataRequired(), Length(min=2, max=100)])
+    cardholder_name = StringField('Name on Card', validators=[DataRequired(), Length(min=2, max=100)])
     card_number = StringField('Card Number', validators=[DataRequired(), Length(min=16, max=16)])
-    expiry_date = StringField('Expiry Date (MM/YY)', validators=[DataRequired(), Length(min=5, max=5)])
-    cvv = IntegerField('CVV', validators=[DataRequired()])
-    submit = SubmitField('Submit Payment')
+    expiry_date = StringField('Expiration Date (MM/YY)', validators=[DataRequired(), Length(min=5, max=5)])
+    cvv = IntegerField('CVV', validators=[DataRequired(), Length(min=3, max=3)], render_kw={'readonly': True})
+    submit = SubmitField()
+    
 @user.route("/add_to_cart", methods=['POST'])
 def add_to_cart():
     try:
@@ -33,7 +35,7 @@ def add_to_cart():
         table_name = f"{current_user}_cart"
         
         # Constructing and executing the SQL query
-        sql = f"INSERT INTO `{table_name}` (record_id, customer_id) VALUES (%s, %s)"
+        sql = f"INSERT INTO `{table_name}` (record_id, customer_id, order_id, price, quantity) VALUES (%s, %s, %s, %s, %s)"
         cur2.execute(sql, (record_id, customer_id))
         
         store_db.commit()  
@@ -48,18 +50,42 @@ def add_to_cart():
 @user.route('/home')
 def home():
     current_user = session.get('email')
+    cur.execute("SELECT record_name, artist, img_link FROM records_detail")
+    records = cur.fetchall()
     #cart_item_count is a test variable 
     cart_item_count=5
-    return render_template('userhome.html', current_user=current_user, cart_item_count=cart_item_count)
+    return render_template('userhome.html', current_user=current_user, cart_item_count=cart_item_count, records=records)
 
 @user.route('/cart')
 def cart():
-    return render_template('cart.html')
+    cur.execute("""SELECT 
+
+                           records_detail.record_name, 
+                           records_detail.artist, 
+                           records_detail.genre, 
+                           records_detail.img_link,
+                          `john.doe@example.com_cart`.price * `john.doe@example.com_cart`.quantity,
+                          `john.doe@example.com_cart`.quantity
+                    FROM `john.doe@example.com_cart`
+                    INNER JOIN records_detail 
+                    ON `john.doe@example.com_cart`.record_id = records_detail.record_id;""")
+    
+    cart_details = cur.fetchall()
+    
+    cur.execute("""SELECT SUM(`john.doe@example.com_cart`.price * 
+                              `john.doe@example.com_cart`.quantity)
+                              FROM `john.doe@example.com_cart`""")
+    
+    item_total = cur.fetchone()
+    return render_template('cart.html',cart_details=cart_details, item_total=item_total)
+
+
 
 
 @user.route('/payment', methods=['GET', 'POST'])
 def payment():
     form = PaymentForm()
+    labels_and_inputs = [(item.label, item) for item in form]
     if form.validate_on_submit():
         print("Form data:")
         print("Cardholder Name:", form.cardholder_name.data)
@@ -69,4 +95,4 @@ def payment():
         # process the form data
         # process the form data
         return render_template('orderprocessed.html', title='Payment', form=form)
-    else: return render_template('payment.html', title='Payment', form=form)
+    else: return render_template('payment.html', title='Payment', labels_and_inputs=labels_and_inputs[0:4], submit_btn=labels_and_inputs[4])
