@@ -95,4 +95,4 @@ def payment():
         # process the form data
         # process the form data
         return render_template('orderprocessed.html', title='Payment', form=form)
-    else: return render_template('payment.html', title='Payment', labels_and_inputs=labels_and_inputs[0:4], submit_btn=labels_and_inputs[4])
+    else: return render_template('payment.html', title='Payment', labels_and_inputs=labels_and_inputs[0:4], submit_btn=labels_and_inputs[4], form=form)
