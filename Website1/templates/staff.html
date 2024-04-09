@@ -51,11 +51,11 @@
         <div class="container-fluid">
             <div class="row bg-secondary d-flex justify-content-center" id="nav-row">
                 <div class="col text-center">
-                    <i class="fa fa-home" aria-hidden="true"></i>
-                    <button class="btn btn-secondary" onclick="location.href='/admin/portal'">Admin Home</button>
+                  <i class="fa fa-id-badge" aria-hidden="true"></i>
+                    <button class="btn btn-secondary" onclick="location.href='/admin/staff'">Staff List</button>
                 </div>
                 <div class="col text-center">
-                    <i class="fa fa-user" aria-hidden="true"></i>
+                  <i class="fa fa-id-badge" aria-hidden="true"></i>
                     <button class="btn btn-secondary" onclick="location.href='/admin/addstaff'">Add Staff</button>
                 </div>
                 <div class="col text-center">
@@ -63,10 +63,20 @@
                     <button class="btn btn-secondary" onclick="location.href='/admin/orderhistory'">Order History</button>
                 </div>
                 <div class="col text-center">
+                  <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                  <button class="btn btn-secondary" onclick="location.href='/admin/addRecord'">Add Record</button>
+              </div>
+                <div class="col text center">
+                  <i class="fa fa-add-record" aria-hidden="true"></i>
+                  <button class "btn btn-secondary" onclick="location.href='/admin/stock'">Stock</button>
+                </div>
+                <div class="col text center">
                     <i class="fa fa-sign-out" aria-hidden="true"></i>
                     <button class="btn btn-secondary" onclick="location.href='/logout'">Logout</button>
                 </div>
+                
             </div>
+          </div>
                 
             <h2>Staff List</h2>
             <ul>
@@ -80,6 +90,7 @@
                 </li>
                 {% endfor %}
             </ul>
+            {% endblock %}
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">

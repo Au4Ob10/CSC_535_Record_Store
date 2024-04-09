@@ -114,4 +114,29 @@ def addRecord():
 
 @admin.route('/stock', methods=['GET','POST'])
 def Showstock():
+    if request.method == 'GET':
+        cur.execute("SELECT * FROM records_detail")
+        stock_data = cur.fetchall()
+        return render_template('stock.html', stock_data=stock_data)
+    
+
+@admin.route('/addstock', methods=['POST'])
+def addstock():
+    if request.method == 'POST':
+        record_id = request.form['record_id']
+        quantity = request.form['quantity']
+        cur.execute("UPDATE records_detail SET quantity = quantity + %s WHERE record_id = %s", (quantity, record_id))
+        store_db.commit()
+        flash('Stock updated successfully!', 'success')
+        return redirect(url_for('admin.Showstock'))
+    
+@admin.route('/removestock', methods=['POST'])
+def removestock():
+    if request.method == 'POST':
+        record_id = request.form['record_id']
+        quantity = request.form['quantity']
+        cur.execute("UPDATE records_detail SET quantity = quantity - %s WHERE record_id = %s", (quantity, record_id))
+        store_db.commit()
+        flash('Stock updated successfully!', 'success')
+        return redirect(url_for('admin.Showstock'))
     return render_template('stock.html')
