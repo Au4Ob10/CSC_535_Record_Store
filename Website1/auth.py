@@ -37,7 +37,7 @@ def login():
         except Exception as e:
             flash(f'Error occurred: {e}', 'error')
 
-    return render_template("index.html")
+    return render_template("record_store_homepage.html")
 
 @auth1.route('/portal', methods=['GET', 'POST'])
 def portal():
@@ -49,7 +49,9 @@ def portal():
 
 @auth1.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    cur.execute("SELECT record_name, artist, img_link FROM records_detail")
+    records = cur.fetchall()
+    return render_template('record_store_homepage.html',records=records)
 
 @auth1.route('/create_account_form', methods=['GET'])
 def create_account_form():

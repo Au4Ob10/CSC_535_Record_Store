@@ -79,7 +79,9 @@ app.register_blueprint(img_display, url_prefix="/img_display")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    cur.execute("SELECT record_name, artist, img_link FROM records_detail")
+    records = cur.fetchall()
+    return render_template('record_store_homepage.html',records=records)
 
 @app.route('/vines_record', methods=['GET'])
 def vines_record_page():
