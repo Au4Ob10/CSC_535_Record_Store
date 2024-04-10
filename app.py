@@ -77,19 +77,17 @@ from Website1.img_display import img_display
 app.register_blueprint(img_display, url_prefix="/img_display")
 
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    cur.execute("SELECT record_name, artist, img_link FROM records_detail")
-    records = cur.fetchall()
-    return render_template('record_store_homepage.html',records=records)
+# @app.route('/', methods=['GET', 'POST'])
+# def index():
+#     return render_template('index.html')
 
-@app.route('/vines_record', methods=['GET'])
-def vines_record_page():
-    return render_template('record_page.html')
+# @app.route('/vines_record', methods=['GET'])
+# def vines_record_page():
+#     return render_template('record_page.html')
 
-@app.route('/user_cart', methods=['GET','POST'])
-def user_cart_page():
-    return render_template('customer_cart.html')
+# @app.route('/user_cart', methods=['GET','POST'])
+# def user_cart_page():
+#     return render_template('customer_cart.html')
 
 
 

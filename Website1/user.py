@@ -58,24 +58,28 @@ def home():
 
 @user.route('/cart')
 def cart():
-    cur.execute("""SELECT 
+    current_user = session.get('email')
+    name = session.get('name')
+    id = session.get('customer_id')
+    current_user_cart = f"`{name}{id}_cart`"
 
+    cur.execute(f"""SELECT 
                            records_detail.record_name, 
                            records_detail.artist, 
                            records_detail.genre, 
                            records_detail.img_link,
-                          `john.doe@example.com_cart`.price * `john.doe@example.com_cart`.quantity,
-                          `john.doe@example.com_cart`.quantity
-                    FROM `john.doe@example.com_cart`
+                           {current_user_cart}.price * {current_user_cart}.quantity,
+                           {current_user_cart}.quantity
+                    FROM {current_user_cart}
                     INNER JOIN records_detail 
-                    ON `john.doe@example.com_cart`.record_id = records_detail.record_id;""")
-    
+                    ON {current_user_cart}.record_id = records_detail.record_id;""")
+
     cart_details = cur.fetchall()
-    
-    cur.execute("""SELECT SUM(`john.doe@example.com_cart`.price * 
-                              `john.doe@example.com_cart`.quantity)
-                              FROM `john.doe@example.com_cart`""")
-    
+
+    cur.execute(f"""SELECT SUM({current_user_cart}.price * 
+                              {current_user_cart}.quantity)
+                              FROM {current_user_cart}""")
+
     item_total = cur.fetchone()
     return render_template('cart.html',cart_details=cart_details, item_total=item_total)
 

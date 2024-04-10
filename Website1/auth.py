@@ -11,10 +11,13 @@ def login():
 
         try:
             # Check if the login credentials match an email in the customer table
-            cur.execute("SELECT email FROM customer WHERE email = %s AND passw = %s", (email_or_username, password))
-            user_email = cur.fetchone()
-            if user_email:
+            cur.execute("SELECT customer_id, first_name, email  FROM customer WHERE email = %s AND passw = %s", (email_or_username, password))
+            result = cur.fetchone()
+            if result:
+                customer_id, first_name, user_email = result
                 session['email'] = user_email[0]  # Store the user's email in the session
+                session['name'] = first_name  # Store the user's name in the session
+                session['customer_id'] = customer_id  # Store the user's ID in the session
                 flash('Login successful!', 'success')
                 return redirect(url_for('auth1.portal'))
 
@@ -79,6 +82,8 @@ def create_account():
                 # Insert data into the database
                 cur.execute("INSERT INTO customer (first_name, last_name, email, passw, phone_num, if_register) VALUES (%s, %s, %s, %s, %s, 1)",
                             (first_name, last_name, email, passw, phone_num))
+                # logging.debug('Created customer entry')
+                print('Created customer entry')
                 store_db.commit()
 
                 # Get the customer ID of the newly inserted record
@@ -87,24 +92,31 @@ def create_account():
                 # Insert address into the database
                 cur.execute("INSERT INTO address (customer_id, address, address2, city, state, postal_code) VALUES (%s, %s, %s, %s, %s, %s)",
                             (customer_id, address, address2, city, state, postal_code))
+                # logging.debug('Created address entry')
+                print('Created address entry')
                 store_db.commit()
 
                 cur.execute(f"""
-                        CREATE TABLE IF NOT EXISTS `{email}_cart` (
-                            `itemID` INT NOT NULL AUTO_INCREMENT,
-                            `record_id` INT,
-                            `customer_id` INT,
-                            PRIMARY KEY (`itemID`),
-                            FOREIGN KEY (`record_id`) REFERENCES `records_detail`(`record_id`),
-                            FOREIGN KEY (`customer_id`) REFERENCES `customer`(`customer_id`)
-                        )
-                    """)
+                CREATE TABLE IF NOT EXISTS `{first_name}{customer_id}_cart` (
+                    `itemID` INT NOT NULL AUTO_INCREMENT,
+                    `record_id` INT,
+                    `customer_id` INT,
+                    `price` DECIMAL(10, 2),
+                    `quantity` INT,
+                    PRIMARY KEY (`itemID`)
+                )
+                """)
+                # logging.debug('Created cart table')
+                print('Created cart table')
                 store_db.commit()
 
 
 
                 flash('Account created successfully!', 'success')
-                return redirect(url_for('index'))
+                session['email'] = email
+                session['name'] = first_name
+                session['customer_id'] = customer_id
+                return redirect(url_for('auth1.index'))
             else:
                 flash('Passwords do not match. Please try again.', 'error')
                 return redirect(url_for('auth1.create_account_form'))
@@ -119,7 +131,8 @@ def create_account():
 
 
         finally:
-            cur.close()
+            # cur.close()
+            pass
 
 
 @auth1.route("/logout", methods=['GET','POST'])
