@@ -60,7 +60,7 @@ def home():
     print(cart_item_count)
     return render_template('userhome.html', current_user=current_user, cart_item_count=cart_item_count, records=records)
 
-@user.route('/cart')
+@user.route('/cart', methods=['GET', 'POST'])
 def cart():
     current_user = session.get('email')
     name = session.get('name')
@@ -73,7 +73,8 @@ def cart():
                            records_detail.genre, 
                            records_detail.img_link,
                            {current_user_cart}.price * {current_user_cart}.quantity,
-                           {current_user_cart}.quantity
+                           {current_user_cart}.quantity,
+                           {current_user_cart}.itemID
                     FROM {current_user_cart}
                     INNER JOIN records_detail 
                     ON {current_user_cart}.record_id = records_detail.record_id;""")
@@ -104,3 +105,29 @@ def payment():
         # process the form data
         return render_template('orderprocessed.html', title='Payment', form=form)
     else: return render_template('payment.html', title='Payment', labels_and_inputs=labels_and_inputs[0:4], submit_btn=labels_and_inputs[4], form=form)
+    
+    
+user.route('/remove_from_cart', methods=['GET', 'POST'])
+def remove_from_cart():
+    try:
+        cur2 = store_db.cursor()
+        name = session.get('name')
+        id = session.get('customer_id')
+        item_id = request.form.get('item_id')
+        
+        # Constructing the table name using current_user's email
+        table_name = f"{name}{id}_cart"
+        
+        # Constructing and executing the SQL query
+        sql = f"DELETE FROM `{table_name}` WHERE itemID = %s"
+        cur2.execute(sql, (item_id,))
+        
+        cur2.execute(f"Update customer set cart = cart - 1 where customer_id = {id}")
+        
+        store_db.commit()  
+
+        print('Item removed from cart successfully')
+        return redirect(url_for('user.cart'))
+    except Exception as e:
+        store_db.rollback()
+        return redirect(url_for('user.cart'))
