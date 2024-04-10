@@ -15,7 +15,7 @@ def login():
             result = cur.fetchone()
             if result:
                 customer_id, first_name, user_email = result
-                session['email'] = user_email[0]  # Store the user's email in the session
+                session['email'] = user_email  # Store the user's email in the session
                 session['name'] = first_name  # Store the user's name in the session
                 session['customer_id'] = customer_id  # Store the user's ID in the session
                 flash('Login successful!', 'success')
@@ -40,7 +40,7 @@ def login():
         except Exception as e:
             flash(f'Error occurred: {e}', 'error')
 
-    return render_template("record_store_homepage.html")
+    return redirect(url_for("auth1.index"))
 
 @auth1.route('/portal', methods=['GET', 'POST'])
 def portal():

@@ -24,38 +24,40 @@ class PaymentForm(FlaskForm):
 def add_to_cart():
     try:
         cur2 = store_db.cursor()
-        current_user = session.get('email')
         name = session.get('name')
         id = session.get('customer_id')
         record_id = request.form.get('record_id')
+        price = request.form.get('price')
+        quantity = 1
         
-        # Fetching customer_id based on email
-        cur2.execute("SELECT customer_id FROM customer WHERE email = %s", (current_user,))
-        customer_id = cur2.fetchone()[0]
         
         # Constructing the table name using current_user's email
         table_name = f"{name}{id}_cart"
         
         # Constructing and executing the SQL query
-        sql = f"INSERT INTO `{table_name}` (record_id, customer_id, order_id, price, quantity) VALUES (%s, %s, %s, %s, %s)"
-        cur2.execute(sql, (record_id, customer_id))
+        sql = f"INSERT INTO `{table_name}` (record_id, customer_id, price, quantity) VALUES (%s, %s, %s, %s)"
+        cur2.execute(sql, (record_id, id, price, quantity))
+        
+        cur2.execute(f"Update customer set cart = cart + 1 where customer_id = {id}")
         
         store_db.commit()  
 
         print('Item added to cart successfully')
-        return jsonify({'message': 'Item added to cart successfully'}), 200
+        return redirect(url_for('user.home'))
 
     except Exception as e:
         store_db.rollback()
-        return jsonify({'error': str(e)}), 500
+        return redirect(url_for('user.home'))
 
 @user.route('/home')
 def home():
     current_user = session.get('email')
-    cur.execute("SELECT record_name, artist, img_link FROM records_detail")
+    print(current_user)
+    cur.execute("SELECT record_id, record_name, artist, img_link, price FROM records_detail")
     records = cur.fetchall()
-    #cart_item_count is a test variable 
-    cart_item_count=5
+    cur.execute("Select cart from customer where email = %s", (current_user,)) 
+    cart_item_count = cur.fetchone()[0]
+    print(cart_item_count)
     return render_template('userhome.html', current_user=current_user, cart_item_count=cart_item_count, records=records)
 
 @user.route('/cart')
