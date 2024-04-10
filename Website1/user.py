@@ -25,6 +25,8 @@ def add_to_cart():
     try:
         cur2 = store_db.cursor()
         current_user = session.get('email')
+        name = session.get('name')
+        id = session.get('customer_id')
         record_id = request.form.get('record_id')
         
         # Fetching customer_id based on email
@@ -32,7 +34,7 @@ def add_to_cart():
         customer_id = cur2.fetchone()[0]
         
         # Constructing the table name using current_user's email
-        table_name = f"{current_user}_cart"
+        table_name = f"{name}{id}_cart"
         
         # Constructing and executing the SQL query
         sql = f"INSERT INTO `{table_name}` (record_id, customer_id, order_id, price, quantity) VALUES (%s, %s, %s, %s, %s)"
