@@ -107,7 +107,7 @@ def payment():
     else: return render_template('payment.html', title='Payment', labels_and_inputs=labels_and_inputs[0:4], submit_btn=labels_and_inputs[4], form=form)
     
     
-user.route('/remove_from_cart', methods=['GET', 'POST'])
+@user.route('/remove_from_cart', methods=['GET', 'POST'])
 def remove_from_cart():
     try:
         cur2 = store_db.cursor()
