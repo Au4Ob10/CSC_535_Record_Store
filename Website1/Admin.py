@@ -140,3 +140,49 @@ def removestock():
         flash('Stock updated successfully!', 'success')
         return redirect(url_for('admin.Showstock'))
     return render_template('stock.html')
+
+@admin.route('/displaycart', methods=['GET','POST'])
+def displaycart():
+    try:
+        cur.execute("Select * from customer")
+        customer_data = cur.fetchall()
+        return render_template('admin_cart.html', customer_data=customer_data)
+    except Exception as e:
+        print(e)
+        flash('an error occurred while retrieving customer data please try again.', 'error')
+        return render_template('admin_cart.html', customer_data=None)
+    
+@admin.route('/editcart', methods=['GET','POST'])
+def editcart():
+    try:
+            customerid = request.form['userid']
+            username = request.form['username']
+            print(username)
+            print(customerid)
+            current_user_cart = f"`{username}{customerid}_cart`"
+
+            cur.execute(f"""SELECT 
+                                records_detail.record_name, 
+                                records_detail.artist, 
+                                records_detail.genre, 
+                                records_detail.img_link,
+                                {current_user_cart}.price * {current_user_cart}.quantity,
+                                {current_user_cart}.quantity,
+                                {current_user_cart}.itemID
+                            FROM {current_user_cart}
+                            INNER JOIN records_detail 
+                            ON {current_user_cart}.record_id = records_detail.record_id;""")
+
+            cart_details = cur.fetchall()
+
+            cur.execute(f"""SELECT SUM({current_user_cart}.price * 
+                                    {current_user_cart}.quantity)
+                                    FROM {current_user_cart}""")
+
+            item_total = cur.fetchone()
+            return render_template('admin_edit.html',cart_details=cart_details, item_total=item_total)
+        
+    except Exception as e:
+        print(e)
+        flash('An error occurred while retrieving cart data. Please try again.', 'error')
+        return redirect(url_for('admin.displaycart'))

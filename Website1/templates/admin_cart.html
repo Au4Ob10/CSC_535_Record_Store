@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="../static/style.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin</title>
+  <title>CustomerCartIndex</title>
 
 </head>
 
@@ -28,14 +28,13 @@
   {% endif %}
   {% endwith %}
 
- 
   <div class="container-fluid">
     
     <div class="row bg-primary bg-gradient pt-2">
         
         <div class="col-auto">
             <p class="h5 pg-title">
-                Admin Home
+                Admin cart index
             </p>
         </div>
         <div class="col d-flex justify-content-end">
@@ -81,30 +80,26 @@
           </div>
         </div>
 
-          <div class="container">
-          <div class="row mt-5">  
-            <div class="col d-flex justify-content-center">
-              
-          <p class="h1 text-center mb-3">Welcome, Admin</p>
-        </div>
-      </div>
-      <div class="row">  
-        <div class="col d-flex justify-content-center">
-          <p class="h1 text-center">Click on a link to get started...</p>
-        </div>
-        </div>
-      </div>
-
-
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
-  </script>
-</body>
-
-{% endblock %}
+        <h2>Customer List</h2>
+    <ul>
+        {% for info in customer_data %}
+        <li>
+            ID - {{ info[0] }} | First name - {{ info[1] }} | Last name - {{ info[2] }} | Email: {{ info[3] }} | Phone number: {{ info[5] }} | Cartitems: {{ info[6] }}
+            <form method="post" action="/admin/editcart">
+                <input type="hidden" name="userid" value="{{ info[0] }}">
+                <input type="hidden" name="username" value="{{ info[1] }}">
+                <button type="submit" class="btn btn-danger">EDIT</button>
+            </form>
+        </li>
+        {% endfor %}
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+      </script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+      </script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+      </script>
+    </body>
+    {% endblock %}
