@@ -89,10 +89,100 @@ def History():
     
     return render_template('order_history.html',order_data=order_data)
 
-@admin.route('/addrecord', methods=['GET','POST'])
-def Addrecord():
-    return render_template('addrecord.html')
+# @admin.route('/addstaff', methods=['GET','POST'])
+# def Add():
+
+@admin.route('/addRecord', methods=['GET', 'POST'])
+def addRecord():
+    if request.method == 'POST':
+        record_name = request.form['record_name']
+        artist = request.form['artist']
+        genre = request.form['genre']
+        img_link = request.form['img_link']
+        quantity = request.form['quantity']
+
+        # Insert record into the database
+        insert_query = "INSERT INTO records_detail (record_name, artist, genre, img_link, quantity) VALUES (%s, %s, %s, %s, %s)"
+        record_data = (record_name, artist, genre, img_link, quantity)
+        cur.execute(insert_query, record_data)
+        store_db.commit()
+
+        return redirect(url_for('index'))
+    return render_template('add_record.html')
+    
+    
 
 @admin.route('/stock', methods=['GET','POST'])
 def Showstock():
+    if request.method == 'GET':
+        cur.execute("SELECT * FROM records_detail")
+        stock_data = cur.fetchall()
+        return render_template('stock.html', stock_data=stock_data)
+    
+
+@admin.route('/addstock', methods=['POST'])
+def addstock():
+    if request.method == 'POST':
+        record_id = request.form['record_id']
+        quantity = request.form['quantity']
+        cur.execute("UPDATE records_detail SET quantity = quantity + %s WHERE record_id = %s", (quantity, record_id))
+        store_db.commit()
+        flash('Stock updated successfully!', 'success')
+        return redirect(url_for('admin.Showstock'))
+    
+@admin.route('/removestock', methods=['POST'])
+def removestock():
+    if request.method == 'POST':
+        record_id = request.form['record_id']
+        quantity = request.form['quantity']
+        cur.execute("UPDATE records_detail SET quantity = quantity - %s WHERE record_id = %s", (quantity, record_id))
+        store_db.commit()
+        flash('Stock updated successfully!', 'success')
+        return redirect(url_for('admin.Showstock'))
     return render_template('stock.html')
+
+@admin.route('/displaycart', methods=['GET','POST'])
+def displaycart():
+    try:
+        cur.execute("Select * from customer")
+        customer_data = cur.fetchall()
+        return render_template('admin_cart.html', customer_data=customer_data)
+    except Exception as e:
+        print(e)
+        flash('an error occurred while retrieving customer data please try again.', 'error')
+        return render_template('admin_cart.html', customer_data=None)
+    
+@admin.route('/editcart', methods=['GET','POST'])
+def editcart():
+    try:
+            customerid = request.form['userid']
+            username = request.form['username']
+            print(username)
+            print(customerid)
+            current_user_cart = f"`{username}{customerid}_cart`"
+
+            cur.execute(f"""SELECT 
+                                records_detail.record_name, 
+                                records_detail.artist, 
+                                records_detail.genre, 
+                                records_detail.img_link,
+                                {current_user_cart}.price * {current_user_cart}.quantity,
+                                {current_user_cart}.quantity,
+                                {current_user_cart}.itemID
+                            FROM {current_user_cart}
+                            INNER JOIN records_detail 
+                            ON {current_user_cart}.record_id = records_detail.record_id;""")
+
+            cart_details = cur.fetchall()
+
+            cur.execute(f"""SELECT SUM({current_user_cart}.price * 
+                                    {current_user_cart}.quantity)
+                                    FROM {current_user_cart}""")
+
+            item_total = cur.fetchone()
+            return render_template('admin_edit.html',cart_details=cart_details, item_total=item_total)
+        
+    except Exception as e:
+        print(e)
+        flash('An error occurred while retrieving cart data. Please try again.', 'error')
+        return redirect(url_for('admin.displaycart'))

@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS `record_store`.`customer` (
   `email` VARCHAR(45) NULL,
   `passw` VARCHAR(45) NULL,
   `phone_num` varchar(20) NOT NULL,
+  `cart` INT Default 0,
   `if_register` TINYINT(1) NULL,
   PRIMARY KEY (`customer_id`)
 ) ENGINE = InnoDB;
@@ -63,42 +64,54 @@ select * from customer;
 -- Table record_store.records_detail
 
 
+
 CREATE TABLE IF NOT EXISTS `record_store`.`records_detail` (
   `record_id` INT NOT NULL AUTO_INCREMENT,
   `record_name` VARCHAR(45) NOT NULL,
   `artist` VARCHAR(45) NOT NULL,
   `genre` VARCHAR(45) NOT NULL,
   `img_link` VARCHAR(250),  -- Assuming the link can be up to 255 characters long
+  `price` decimal(10, 2), -- Added price so that we can submit this in the forms
   `quantity` INT DEFAULT 0, -- Default quantity set to 0
   PRIMARY KEY (`record_id`)
 ) ENGINE = InnoDB;
 
 
-INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) 
-VALUES ('Thriller', 'Michael Jackson', 'Pop', 'https://i.redd.it/ehrrwwfwvz411.png', 100);
-INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) 
-VALUES ('Back in Black', 'AC/DC', 'Rock', 'https://th.bing.com/th/id/OIP.rWVw2ui1moDt_hYlbdxidwAAAA?rs=1&pid=ImgDetMain', 80);
-INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) 
-VALUES ('The Dark Side of the Moon', 'Pink Floyd', 'Progressive Rock', 'https://m.media-amazon.com/images/I/31PosC6TTdL._SX300_SY300_QL70_FMwebp_.jpg', 90);
-INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) 
-VALUES ('Abbey Road', 'The Beatles', 'Rock', 'https://m.media-amazon.com/images/I/91VxDWK6XUL._SY355_.jpg', 110);
-INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) 
-VALUES ('Rumours', 'Fleetwood Mac', 'Soft Rock', 'https://faroutmagazine.co.uk/static/uploads/2020/10/The-story-behind-Fleetwood-Macs-Rumours-cover-art.jpg', 85);
-INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) 
-VALUES ('Led Zeppelin IV', 'Led Zeppelin', 'Hard Rock', 'https://th.bing.com/th/id/OIP.8BOmatWcTQNvA0xQvpbGxAHaHC?w=194&h=184&c=7&r=0&o=5&dpr=1.3&pid=1.7', 95);
-INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) 
-VALUES ('In Utero', 'Nirvana', 'Grunge', 'https://th.bing.com/th/id/OIP.tgcgZUruhb_FQhAIMT8pjQHaHa?w=171&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7', 75);
-INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) 
-VALUES ('Hotel California', 'Eagles', 'Rock', 'https://pure-music.co.uk/wp-content/uploads/2019/04/Hotel-California-Album-Cover.png', 105);
-INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) 
-VALUES ('The Wall', 'Pink Floyd', 'Progressive Rock', 'https://s-media-cache-ak0.pinimg.com/originals/ee/66/17/ee66179ea3111626559a4326c394bab4.jpg', 100); 
-INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) 
-VALUES ('Sgt. Pepper''s Lonely Hearts Club Band', 'The Beatles', 'Rock', 'https://m.media-amazon.com/images/I/61vwcOLe47L._SX300_SY300_QL70_FMwebp_.jpg', 100);
-INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) 
-VALUES ('Born to Run', 'Bruce Springsteen', 'Rock', 'https://m.media-amazon.com/images/I/51QxoecCysL._SY300_SX300_QL70_FMwebp_.jpg', 70);
-INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) 
-VALUES ('Purple Rain', 'Prince', 'Pop', 'https://th.bing.com/th/id/OIP.3Q35IUHs4EaWQlGJ55bG6wAAAA?rs=1&pid=ImgDetMain', 85);
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('Thriller', 'Michael Jackson', 'Pop', 'https://i.redd.it/ehrrwwfwvz411.png', 20, 100);
 
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('Back in Black', 'AC/DC', 'Rock', 'https://th.bing.com/th/id/OIP.rWVw2ui1moDt_hYlbdxidwAAAA?rs=1&pid=ImgDetMain', 20, 80);
+
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('The Dark Side of the Moon', 'Pink Floyd', 'Progressive Rock', 'https://m.media-amazon.com/images/I/31PosC6TTdL._SX300_SY300_QL70_FMwebp_.jpg', 20, 90);
+
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('Abbey Road', 'The Beatles', 'Rock', 'https://m.media-amazon.com/images/I/91VxDWK6XUL._SY355_.jpg', 20, 110);
+
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('Rumours', 'Fleetwood Mac', 'Soft Rock', 'https://faroutmagazine.co.uk/static/uploads/2020/10/The-story-behind-Fleetwood-Macs-Rumours-cover-art.jpg', 20, 85);
+
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('Led Zeppelin IV', 'Led Zeppelin', 'Hard Rock', 'https://th.bing.com/th/id/OIP.8BOmatWcTQNvA0xQvpbGxAHaHC?w=194&h=184&c=7&r=0&o=5&dpr=1.3&pid=1.7', 20, 95);
+
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('In Utero', 'Nirvana', 'Grunge', 'https://th.bing.com/th/id/OIP.tgcgZUruhb_FQhAIMT8pjQHaHa?w=171&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7', 20, 75);
+
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('Hotel California', 'Eagles', 'Rock', 'https://pure-music.co.uk/wp-content/uploads/2019/04/Hotel-California-Album-Cover.png', 20, 105);
+
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('The Wall', 'Pink Floyd', 'Progressive Rock', 'https://s-media-cache-ak0.pinimg.com/originals/ee/66/17/ee66179ea3111626559a4326c394bab4.jpg', 20, 100);
+
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('Sgt. Pepper''s Lonely Hearts Club Band', 'The Beatles', 'Rock', 'https://m.media-amazon.com/images/I/61vwcOLe47L._SX300_SY300_QL70_FMwebp_.jpg', 20, 100);
+
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('Born to Run', 'Bruce Springsteen', 'Rock', 'https://m.media-amazon.com/images/I/51QxoecCysL._SY300_SX300_QL70_FMwebp_.jpg', 20, 70);
+
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('Purple Rain', 'Prince', 'Pop', 'https://th.bing.com/th/id/OIP.3Q35IUHs4EaWQlGJ55bG6wAAAA?rs=1&pid=ImgDetMain', 20, 85);
 
 
 -- Table record_store.record_images

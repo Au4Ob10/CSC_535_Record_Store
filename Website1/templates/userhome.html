@@ -115,16 +115,22 @@
                 <div class="card-deck mb-2" >
                     <div class="card border" id="rec-info-card">
                         <div class="card-body d-flex justify-content-center" id="rec_img_card_body" >
-                            <img id="record_cart_page_img" src="{{ record[2] }}">
+                            <img id="record_cart_page_img" src="{{ record[3] }}">
                         </div>
                     </div>
                     <div class="card border border-left-0" id="rec-img-card" style=" margin-left:-2rem; ">
                         <div class="card-body" id="rec_text_card_body" >
 
-                            <p class="card-text mb-1">{{ record[0] }}</p>
+                            <p class="card-text mb-1">{{ record[1] }}</p>
                             
-                            <p class="card-text mb-3">{{ record[1] }}</p>
-                            <button class="btn btn-success btn-sm" id="addToCartBtn" type="submit">Add To Cart</button>
+                            <p class="card-text mb-3">{{ record[2] }}</p>
+
+                            <form method="post" action="/user/add_to_cart">
+                                <input type="hidden" name = "record_id" value = "{{ record[0]}}">
+                                <input type="hidden" name = "price" value = "{{ record[4]}}">
+                                <button type="submit" class="btn btn-danger">Add to Cart</button>
+                            </form>
+                            
                         </div>
                     </div>
                 </div>
@@ -136,17 +142,12 @@
 
 
 
-    </body>
-
-    </html>
-
-
   
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <script src="{{ url_for('static', filename='script.js') }}">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 
 </body>
 
