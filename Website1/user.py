@@ -46,6 +46,8 @@ def add_to_cart():
     except Exception as e:
         store_db.rollback()
         return jsonify({'error': str(e)}), 500
+    
+@user.route('/delete_item')
 
 @user.route('/home')
 def home():

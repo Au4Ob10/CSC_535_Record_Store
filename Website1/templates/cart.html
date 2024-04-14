@@ -86,8 +86,12 @@
                   <p>{{item[5]}}</p>
                 </div>
                 <div class="row">
-                  <button class="btn btn-secondary btn-sm mr-3 cart_update_btn">Update</button>
-                  <button class="btn btn-secondary btn-sm cart_delete_btn">Delete</button>
+                
+                  <input type="submit" class="btn btn-secondary btn-sm mr-3 cart_update_btn" value="Update">
+                  <form action="/delete_item" method="post">
+                  <input type="submit" class="btn btn-secondary btn-sm cart_delete_btn" value="Delete">
+                  </form>
+               
                 </div>
               </div>
 

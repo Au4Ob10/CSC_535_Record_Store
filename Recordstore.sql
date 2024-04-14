@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS `record_store`.`account` (
   `if_auto_log` TINYINT(1) NULL,
   PRIMARY KEY (`account_id`)
 ) ENGINE = InnoDB;
+
 select * from account;
 -- Table record_store.customer
 CREATE TABLE IF NOT EXISTS `record_store`.`customer` (
@@ -142,6 +143,7 @@ CREATE TABLE IF NOT EXISTS `staff_credentials` (
   `isadmin` tinyint NOT NULL,
   PRIMARY KEY (`staff_id`)
 ) ENGINE=InnoDB;
+
 insert into staff_credentials(username,password,email,isadmin)
 Values ('admin','admin','recordstore@gmail.com', 1);
 select * from staff_credentials;
@@ -192,11 +194,20 @@ ON records_detail.record_id = `john.doe@example.com_cart`.record_id;
 
 	
 
+-- DROP TABLE IF EXISTS `credit_card_info`;
+-- CREATE TABLE IF NOT EXISTS `credit_card_info` (
+-- card_id int NOT NULL auto_increment PRIMARY KEY,
+-- email varchar(45) NOT NULL,
+-- card_number varchar(14) NOT NULL,
+-- exp_date varchar(5) NOT NULL,
+-- CVV int NOT NULL
+-- );
 
-
-
-SELECT * FROM records_detail;
-
+-- INSERT INTO `credit_card_info` (email, card_number, exp_date, CVV) 
+-- VALUES 
+-- ( `john.doe@example.com`, `0987-6543-2101`, `1/25`, 123 ),
+-- (`john.doe@example.com`, `1234-4321-1234`, `2/26`, 456),
+-- (`john.doe@example.com`, `5678-9012-1284`, `3/26`, 598);
 
 
 
