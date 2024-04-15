@@ -116,7 +116,7 @@ def create_account():
                 session['email'] = email
                 session['name'] = first_name
                 session['customer_id'] = customer_id
-                return redirect(url_for('auth1.index'))
+                return redirect(url_for('user.home'))
             else:
                 flash('Passwords do not match. Please try again.', 'error')
                 return redirect(url_for('auth1.create_account_form'))
