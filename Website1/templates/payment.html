@@ -13,62 +13,55 @@
 </head>
 <body>
 
-    {% block card_info_entry %}
-    <p class="h5 text-align text-center">Item Checkout</p>
-    <div class="container d-flex justify-content-center">
-        
-        <div class="row">
-        <div class="col d-flex justify-content-start">
-            
-    <form method="POST">
-
-    {% for label, item in labels_and_inputs %}
-    <div class="row">
-    <label class="mb-0 mt-3" for="{{ item.id }}">{{ label }}</label>
-    </div>
-    <div class="row">
-    {{ item }}
-</div>
-    {% endfor %}
-    <div class="row mt-3">
-    <button class="btn btn-primary pt-1 pb-0">{{submit_btn[0]}}</button>
-</div>
-    {% endblock %}
+    
    
     </form>
-</div>
-<div class="container-fluid">
-    <div class="row bg-primary bg-gradient pt-2">
-    <div class="col-auto">
-        <p class="h5 pg-title">
-        Checkout
-        </p>
-    </div>
 
 
-<h2>Payment Info</h2>
+
+<h2 class="text text-center mb-4">Payment Info</h2>
 
 
 </div>
 </div>
+
+   
+   
 <form method="POST">
 {{ form.hidden_tag() }}
-<div>
-    {{ form.cardholder_name.label }} {{ form.cardholder_name() }}
+<div class="container">
+<div class="row d-flex justify-content-center">
+<div class="col-auto">
+    <div class="row">
+    {{ form.cardholder_name.label }}  
+    </div>
+    <div class="row mb-3">
+    {{ form.cardholder_name() }}
 </div>
-<div>
-    {{ form.card_number.label }} {{ form.card_number() }}
+<div class="row">
+    {{ form.card_number.label }} 
 </div>
-<div>
-    {{ form.expiry_date.label }} {{ form.expiry_date() }}
+<div class="row mb-3">
+    {{ form.card_number() }}
 </div>
-<div>
-    {{ form.cvv.label }} {{ form.cvv() }}
+<div class="row">
+    {{ form.expiry_date.label }}
 </div>
-<div>
+<div class="row mb-3">
+     {{ form.expiry_date() }}
+</div>
+<div class="row">
+    {{ form.cvv.label }} 
+</div>
+<div class="row">
+    {{ form.cvv() }}
+</div>
+<div class="row mt-3">
     {{ form.submit() }}
 </div>
-
+</div>
+</div>
+</div>
 </form>
 
  

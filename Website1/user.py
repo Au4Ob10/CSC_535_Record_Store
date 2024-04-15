@@ -48,8 +48,6 @@ def add_to_cart():
     except Exception as e:
         store_db.rollback()
         return redirect(url_for('user.home'))
-    
-@user.route('/delete_item')
 
 @user.route('/home')
 def home():
@@ -106,7 +104,7 @@ def payment():
         # process the form data
         # process the form data
         return render_template('orderprocessed.html', title='Payment', form=form)
-    else: return render_template('payment.html', title='Payment', labels_and_inputs=labels_and_inputs[0:4], submit_btn=labels_and_inputs[4], form=form)
+    return render_template('payment.html', title='Payment', labels_and_inputs=labels_and_inputs[0:4], submit_btn=labels_and_inputs[4], form=form)
     
     
 @user.route('/remove_from_cart', methods=['GET', 'POST'])

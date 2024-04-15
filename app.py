@@ -18,9 +18,9 @@ app = Flask(__name__, template_folder='Website1/templates',static_folder='Websit
 app.secret_key = "csc-535-record-store-app"
 
 store_db = mysql.connector.connect(
-host= environ.get('MYSQL_HOST'),
+host= environ.get('MYSQL_HOST', 'localhost'),
 user= environ.get('MYSQL_USER'),
-passwd= environ.get('MYSQL_PASSWORD'),
+passwd= environ.get('MYSQL_PASSWORD', 'root'),
 database= environ.get('MYSQL_DB'),
 port= int(environ.get('MYSQL_PORT')),
 auth_plugin="mysql_native_password"
@@ -77,21 +77,20 @@ from Website1.img_display import img_display
 app.register_blueprint(img_display, url_prefix="/img_display")
 
 
-# @app.route('/', methods=['GET', 'POST'])
-# def index():
-#     return render_template('index.html')
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    return render_template('index.html')
 
-# @app.route('/vines_record', methods=['GET'])
-# def vines_record_page():
-#     return render_template('record_page.html')
+@app.route('/vines_record', methods=['GET'])
+def vines_record_page():
+    return render_template('record_page.html')
 
-# @app.route('/user_cart', methods=['GET','POST'])
-# def user_cart_page():
-#     return render_template('customer_cart.html')
+@app.route('/user_cart', methods=['GET','POST'])
+def user_cart_page():
+    return render_template('customer_cart.html')
 
 
 
 if __name__=='__main__':
     app.run(debug=True)
     
-
