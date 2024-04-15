@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `record_store`.`customer` (
   `email` VARCHAR(45) NULL,
   `passw` VARCHAR(45) NULL,
   `phone_num` varchar(20) NOT NULL,
-  `cart#` INT Default 0,
+  `cart` INT Default 0,
   `if_register` TINYINT(1) NULL,
   PRIMARY KEY (`customer_id`)
 ) ENGINE = InnoDB;
@@ -61,6 +61,7 @@ VALUES
 
 select * from customer;
 -- Table record_store.records_detail
+select * from Joe4_cart;
 
 
 
