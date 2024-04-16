@@ -78,48 +78,55 @@ def create_account():
             postal_code = request.form['postal_code']
             # Check password 1 and 2 see if they match
             if passw == passw2:
+                # Check if Email is in Database
+                cur.execute("Select email from customer where email =%s",(email,))
+                result=cur.fetchone()
+                print(result)
+                if result:
+                    flash('User already exists in the database try again', 'error')
+                    return redirect(url_for('auth1.create_account_form'))
+                else:
+                    cur.execute("INSERT INTO customer (first_name, last_name, email, passw, phone_num, if_register) VALUES (%s, %s, %s, %s, %s, 1)",
+                                (first_name, last_name, email, passw, phone_num))
+                    # logging.debug('Created customer entry')
+                    print('Created customer entry')
+                    store_db.commit()
 
-                # Insert data into the database
-                cur.execute("INSERT INTO customer (first_name, last_name, email, passw, phone_num, if_register) VALUES (%s, %s, %s, %s, %s, 1)",
-                            (first_name, last_name, email, passw, phone_num))
-                # logging.debug('Created customer entry')
-                print('Created customer entry')
-                store_db.commit()
+                    # Get the customer ID of the newly inserted record
+                    customer_id = cur.lastrowid
 
-                # Get the customer ID of the newly inserted record
-                customer_id = cur.lastrowid
+                    # Insert address into the database
+                    cur.execute("INSERT INTO address (customer_id, address, address2, city, state, postal_code) VALUES (%s, %s, %s, %s, %s, %s)",
+                                (customer_id, address, address2, city, state, postal_code))
+                    # logging.debug('Created address entry')
+                    print('Created address entry')
+                    store_db.commit()
 
-                # Insert address into the database
-                cur.execute("INSERT INTO address (customer_id, address, address2, city, state, postal_code) VALUES (%s, %s, %s, %s, %s, %s)",
-                            (customer_id, address, address2, city, state, postal_code))
-                # logging.debug('Created address entry')
-                print('Created address entry')
-                store_db.commit()
-
-                cur.execute(f"""
-                CREATE TABLE IF NOT EXISTS `{first_name}{customer_id}_cart` (
-                    `itemID` INT NOT NULL AUTO_INCREMENT,
-                    `record_id` INT,
-                    `customer_id` INT,
-                    `price` DECIMAL(10, 2),
-                    `quantity` INT,
-                    PRIMARY KEY (`itemID`)
-                )
-                """)
-                # logging.debug('Created cart table')
-                print('Created cart table')
-                store_db.commit()
+                    cur.execute(f"""
+                    CREATE TABLE IF NOT EXISTS `{first_name}{customer_id}_cart` (
+                        `itemID` INT NOT NULL AUTO_INCREMENT,
+                        `record_id` INT,
+                        `customer_id` INT,
+                        `price` DECIMAL(10, 2),
+                        `quantity` INT,
+                        PRIMARY KEY (`itemID`)
+                    )
+                    """)
+                    # logging.debug('Created cart table')
+                    print('Created cart table')
+                    store_db.commit()
 
 
 
-                flash('Account created successfully!', 'success')
-                session['email'] = email
-                session['name'] = first_name
-                session['customer_id'] = customer_id
-                return redirect(url_for('user.home'))
+                    flash('Account created successfully!', 'success')
+                    session['email'] = email
+                    session['name'] = first_name
+                    session['customer_id'] = customer_id
+                    return redirect(url_for('user.home'))
             else:
                 flash('Passwords do not match. Please try again.', 'error')
                 return redirect(url_for('auth1.create_account_form'))
+                
 
 
         except Exception as e:

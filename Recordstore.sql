@@ -1,6 +1,6 @@
 -- Active: 1708706294364@@127.0.0.1@3306
 
-DROP DATABASE IF EXISTS record_store;
+-- DROP DATABASE IF EXISTS record_store;
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
@@ -61,7 +61,7 @@ VALUES
 
 select * from customer;
 -- Table record_store.records_detail
-select * from Joe4_cart;
+-- select * from Joe4_cart;
 
 
 
