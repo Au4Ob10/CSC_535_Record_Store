@@ -56,6 +56,18 @@ def index():
     records = cur.fetchall()
     return render_template('record_store_homepage.html',records=records)
 
+
+@auth1.route('/search', methods=['GET'])
+def search_records():
+    search_query = request.args.get('query')
+    cursor = store_db.cursor(dictionary=True)
+    sql = "SELECT * FROM records_detail WHERE record_name LIKE %s OR artist LIKE %s OR genre LIKE %s"
+    cursor.execute(sql, ('%' + search_query + '%', '%' + search_query + '%', '%' + search_query + '%'))
+    records = cursor.fetchall()
+    cursor.close()
+    return render_template('search_results.html', records=records)
+
+
 @auth1.route('/create_account_form', methods=['GET'])
 def create_account_form():
     return render_template('create_account.html')
