@@ -121,8 +121,10 @@ def remove_from_cart():
         # Constructing and executing the SQL query
         sql = f"DELETE FROM `{table_name}` WHERE itemID = %s"
         cur2.execute(sql, (item_id,))
-        
-        cur2.execute(f"Update customer set cart = cart - 1 where customer_id = {id}")
+        cur2.execute("Select cart from customer where customer_id = %s", (id,))
+        cart_item_count = cur2.fetchone()[0]
+        if cart_item_count > 0:
+            cur2.execute(f"Update customer set cart = cart - 1 where customer_id = {id}")
         
         store_db.commit()  
 

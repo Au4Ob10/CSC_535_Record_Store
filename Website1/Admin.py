@@ -146,11 +146,11 @@ def displaycart():
     try:
         cur.execute("Select * from customer")
         customer_data = cur.fetchall()
-        return render_template('admin_cart.html', customer_data=customer_data)
+        return render_template('admin_cart_index.html', customer_data=customer_data)
     except Exception as e:
         print(e)
         flash('an error occurred while retrieving customer data please try again.', 'error')
-        return render_template('admin_cart.html', customer_data=None)
+        return render_template('admin_cart_index.html', customer_data=None)
     
 @admin.route('/editcart', methods=['GET','POST'])
 def editcart():
@@ -186,3 +186,22 @@ def editcart():
         print(e)
         flash('An error occurred while retrieving cart data. Please try again.', 'error')
         return redirect(url_for('admin.displaycart'))
+    
+
+@admin.route('/updatecart', methods=['POST'])
+def discount():
+    customerid = request.form['userid']
+    item_id = request.form['item_id']
+    new_price = request.form['new_price']
+    cur.execute("SELECT first_name FROM customer WHERE customer_id = %s", (customerid,))
+    username = cur.fetchone()[0]
+    current_user_cart = f"`{username}{customerid}_cart`"
+    try:
+        cur.execute(f"UPDATE {current_user_cart} SET price = %s WHERE itemID = %s", (new_price, item_id))
+        store_db.commit()
+        flash('Cart updated successfully!', 'success')
+        return redirect(url_for('admin.editcart'))
+    except Exception as e:
+        print(e)
+        flash('An error occurred while updating cart. Please try again.', 'error')
+        return redirect(url_for('admin.editcart'))

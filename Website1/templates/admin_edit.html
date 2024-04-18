@@ -95,6 +95,11 @@
               </div>
 
               <p>${{item[4]}}</p>
+              <form method="post" action="/admin/update_cart">
+                <input type="hidden" name="item_id" value="{{item[6]}}">
+                <input type="number" name="new_price" step="0.01" min="0">
+                <button type="submit">Update Price</button>
+              </form>
             </div>
           </div>
         </div>
