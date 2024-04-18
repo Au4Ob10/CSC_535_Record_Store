@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Record Store</title>
+    <style>
+        .flash-message.error {
+                color: white; /* White text for better contrast */
+                background-color: #FF6347; /* Tomato red background */
+                padding: 10px; /* Add some padding for better spacing */
+                border-radius: 5px; /* Add rounded corners for style */
+            }
+            
+            .flash-message.info {
+                color: white; /* White text for better contrast */
+                background-color: #32CD32; /* Lime green background */
+                padding: 10px; /* Add some padding for better spacing */
+                border-radius: 5px; /* Add rounded corners for style */
+            }
+    </style>
+    
+    
+      <!-- Flash messages section -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flash-messages">
+                    {% for category, message in messages %}
+                        <li class="flash-message {{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+</head>
+<body>
+    <h1>Record Store</h1>
+    <table>
+        <thead>
+            <tr>
+        
+                <th>Record Name</th>
+                <th>Artist</th>
+                <th>Image Link</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+            <tr>
+                <td>{{ record[1] }}</td>
+                <td>{{ record[2] }}</td>
+                <td><img src="{{ record[2] }}" alt="Record Image" height="100"></td>
+                <td>
+                    <form method="post" action="/user/add_to_cart">
+                    <input type="hidden" name="record_id" value="{{record[0]}}">
+                    <button type="submit">Add To Cart</button>
+                </form>
+            </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+
