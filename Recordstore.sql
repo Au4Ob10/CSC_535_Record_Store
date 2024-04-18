@@ -1,10 +1,9 @@
 -- Active: 1708706294364@@127.0.0.1@3306
 
-DROP DATABASE IF EXISTS record_store;
+-- DROP DATABASE IF EXISTS record_store;
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
-
 
 -- Schema record_store
 CREATE SCHEMA IF NOT EXISTS `record_store`;
@@ -49,6 +48,7 @@ CREATE TABLE IF NOT EXISTS `record_store`.`customer` (
   `email` VARCHAR(45) NULL,
   `passw` VARCHAR(45) NULL,
   `phone_num` varchar(20) NOT NULL,
+  `cart` INT Default 0,
   `if_register` TINYINT(1) NULL,
   PRIMARY KEY (`customer_id`)
 ) ENGINE = InnoDB;
@@ -61,6 +61,8 @@ VALUES
 
 select * from customer;
 -- Table record_store.records_detail
+-- select * from Joe4_cart;
+
 
 
 CREATE TABLE IF NOT EXISTS `record_store`.`records_detail` (
@@ -68,25 +70,48 @@ CREATE TABLE IF NOT EXISTS `record_store`.`records_detail` (
   `record_name` VARCHAR(45) NOT NULL,
   `artist` VARCHAR(45) NOT NULL,
   `genre` VARCHAR(45) NOT NULL,
-  `img_link` VARCHAR(255),  -- Assuming the link can be up to 255 characters long
+  `img_link` VARCHAR(250),  -- Assuming the link can be up to 255 characters long
+  `price` decimal(10, 2), -- Added price so that we can submit this in the forms
   `quantity` INT DEFAULT 0, -- Default quantity set to 0
   PRIMARY KEY (`record_id`)
 ) ENGINE = InnoDB;
 
 
-INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) 
-VALUES ('Thriller', 'Michael Jackson', 'Pop', 'https://cdn.smehost.net/michaeljacksoncom-uslegacyprod/wp-content/uploads/2009/03/thriller-album-michaeljackson-og.jpg', 100);
-INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) 
-VALUES ('Back in Black', 'AC/DC', 'Rock', 'https://example.com/back_in_black.jpg', 80);
-INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('The Dark Side of the Moon', 'Pink Floyd', 'Progressive Rock', 'https://example.com/dark_side_of_the_moon.jpg', 90);
-INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('Abbey Road', 'The Beatles', 'Rock', 'https://example.com/abbey_road.jpg', 110);
-INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('Rumours', 'Fleetwood Mac', 'Soft Rock', 'https://example.com/rumours.jpg', 85);
-INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('Led Zeppelin IV', 'Led Zeppelin', 'Hard Rock', 'https://example.com/led_zeppelin_iv.jpg', 95);
-INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('Nevermind', 'Nirvana', 'Grunge', 'https://example.com/nevermind.jpg', 75);
-INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('Hotel California', 'Eagles', 'Rock', 'https://example.com/hotel_california.jpg', 105);
-INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('The Wall', 'Pink Floyd', 'Progressive Rock', 'https://example.com/the_wall.jpg', 120);
-INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, quantity) VALUES ('Sgt. Pepper''s Lonely Hearts Club Band', 'The Beatles', 'Rock', 'https://example.com/sgt_pepper.jpg', 100);
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('Thriller', 'Michael Jackson', 'Pop', 'https://i.redd.it/ehrrwwfwvz411.png', 20, 100);
 
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('Back in Black', 'AC/DC', 'Rock', 'https://th.bing.com/th/id/OIP.rWVw2ui1moDt_hYlbdxidwAAAA?rs=1&pid=ImgDetMain', 20, 80);
+
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('The Dark Side of the Moon', 'Pink Floyd', 'Progressive Rock', 'https://m.media-amazon.com/images/I/31PosC6TTdL._SX300_SY300_QL70_FMwebp_.jpg', 20, 90);
+
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('Abbey Road', 'The Beatles', 'Rock', 'https://m.media-amazon.com/images/I/91VxDWK6XUL._SY355_.jpg', 20, 110);
+
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('Rumours', 'Fleetwood Mac', 'Soft Rock', 'https://faroutmagazine.co.uk/static/uploads/2020/10/The-story-behind-Fleetwood-Macs-Rumours-cover-art.jpg', 20, 85);
+
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('Led Zeppelin IV', 'Led Zeppelin', 'Hard Rock', 'https://th.bing.com/th/id/OIP.8BOmatWcTQNvA0xQvpbGxAHaHC?w=194&h=184&c=7&r=0&o=5&dpr=1.3&pid=1.7', 20, 95);
+
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('In Utero', 'Nirvana', 'Grunge', 'https://th.bing.com/th/id/OIP.tgcgZUruhb_FQhAIMT8pjQHaHa?w=171&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7', 20, 75);
+
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('Hotel California', 'Eagles', 'Rock', 'https://pure-music.co.uk/wp-content/uploads/2019/04/Hotel-California-Album-Cover.png', 20, 105);
+
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('The Wall', 'Pink Floyd', 'Progressive Rock', 'https://s-media-cache-ak0.pinimg.com/originals/ee/66/17/ee66179ea3111626559a4326c394bab4.jpg', 20, 100);
+
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('Sgt. Pepper''s Lonely Hearts Club Band', 'The Beatles', 'Rock', 'https://m.media-amazon.com/images/I/61vwcOLe47L._SX300_SY300_QL70_FMwebp_.jpg', 20, 100);
+
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('Born to Run', 'Bruce Springsteen', 'Rock', 'https://m.media-amazon.com/images/I/51QxoecCysL._SY300_SX300_QL70_FMwebp_.jpg', 20, 70);
+
+INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
+VALUES ('Purple Rain', 'Prince', 'Pop', 'https://th.bing.com/th/id/OIP.3Q35IUHs4EaWQlGJ55bG6wAAAA?rs=1&pid=ImgDetMain', 20, 85);
 
 
 -- Table record_store.record_images
@@ -97,17 +122,6 @@ genre varchar(45),
 img_file_name varchar(55) NOT NULL
 
 );
-INSERT INTO `record_images` (record_id, genre, img_file_name)
-VALUES
-(1000, "Indie Rock", "the_vines_indie_rock.jpg"),
-(1001, "Indie Rock", "arctic_monkeys_indie_rock.jpg"),
-(1002, "Indie Rock", "dinosaur_jr_indie_rock.jpg"),
-(1003, "Indie Punk", "swearin_indie_punk.jpg"),
-(1004, "Indie Punk", "sonic_youth_indie_punk.jpg"),
-(1005, "Indie Punk", "pixies_indie_punk.jpg"),
-(1006, "Classic Rock", "led_zeppelin_classic_rock.jpg"),
-(1007, "Classic Rock", "pink_floyd_classic_rock.jpg"),
-(1008, "Classic Rock", "rush_classic_rock.jpg");
 
 -- Table record_store.address
 
@@ -163,8 +177,39 @@ VALUES
 (13,4,'Brown', '2021-07-22'),
 (14, 5, 'Jacobson', '2020-07-22');
 
-select * from address;
 
+#Sample data, delete later
+
+
+
+CREATE TABLE IF NOT EXISTS `john.doe@example.com_cart` (
+	`record_id` int NOT NULL,
+    `customer_id` int NOT NULL,
+    `order_id` int NOT NULL,
+    `price` numeric (6,2),
+    `quantity` int NOT NULL
+    );
+
+
+INSERT INTO `john.doe@example.com_cart` (`record_id`,`customer_id`,`order_id`,`price`,`quantity`)
+VALUES 
+(1, 1, 200, 19.99,2),
+(4, 1, 200, 21.99,1),
+(6, 1, 200, 15.99,1),
+(8, 1, 200, 18.99,1),
+(7, 1, 200, 17.99,1),
+(9, 1, 200, 17.99,3);
+
+SELECT img_link from records_detail
+INNER JOIN `john.doe@example.com_cart` 
+ON records_detail.record_id = `john.doe@example.com_cart`.record_id;
+
+	
+
+
+
+
+SELECT * FROM records_detail;
 
 
 
@@ -175,4 +220,3 @@ select * from address;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-

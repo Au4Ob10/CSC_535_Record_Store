@@ -12,19 +12,30 @@
 
 {% block content %}
 <!-- Flash messages section -->
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-<div class="alert alert-dismissible alert-danger">
-<button type="button" class="close" data-dismiss="alert">&times;</button>
-<ul>
-  {% for message in messages %}
-  <li>{{ message }}</li>
-  {% endfor %}
-</ul>
-</div>
-{% endif %}
+<style>
+  .flash-message.error {
+      color: white; /* White text for better contrast */
+      background-color: #FF6347; /* Tomato red background */
+      padding: 10px; /* Add some padding for better spacing */
+      border-radius: 5px; /* Add rounded corners for style */
+  }
+  
+  .flash-message.info {
+      color: white; /* White text for better contrast */
+      background-color: #32CD32; /* Lime green background */
+      padding: 10px; /* Add some padding for better spacing */
+      border-radius: 5px; /* Add rounded corners for style */
+  }
+</style>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+      <ul class="flash-messages">
+          {% for category, message in messages %}
+              <li class="flash-message {{ category }}">{{ message }}</li>
+          {% endfor %}
+      </ul>
+  {% endif %}
 {% endwith %}
-{% endblock %}
 </head>
 <body class="order_history_body">
   <div class="container-fluid">
@@ -47,25 +58,38 @@
         </div>
 
         <div class="container-fluid">
-            <div class="row bg-secondary" id="nav-row">
-                <div class="col d-flex align-items-center justify-content-center">
-                  <i class="fa fa-home" aria-hidden="true"></i>
-                    <button class="btn btn-secondary" onclick="location.href='/admin/portal'">Admin Home</button>
-                </div>
-                <div class="col d-flex align-items-center justify-content-center">
-                    <i class="fa fa-user" aria-hidden="true"></i>
-                    <button class="btn btn-secondary" onclick="location.href='/admin/addstaff'">Add Staff</button>
-                </div>
-                <div class="col d-flex align-items-center justify-content-center">
-                  <i class="fa fa-id-badge" aria-hidden="true"></i>
-                    <button class="btn btn-secondary" onclick="location.href='/admin/staff'">Staff List</button>
-                </div>
-                <div class="col d-flex align-items-center justify-content-center">
-                    <i class="fa fa-sign-out" aria-hidden="true"></i>
-                    <button class="btn btn-secondary" onclick="location.href='/logout'">Logout</button>
-                </div>
+          <div class="row bg-secondary d-flex justify-content-center" id="nav-row">
+              <div class="col text-center">
+                <i class="fa fa-id-badge" aria-hidden="true"></i>
+                  <button class="btn btn-secondary" onclick="location.href='/admin/staff'">Staff List</button>
+              </div>
+              <div class="col text-center">
+                <i class="fa fa-id-badge" aria-hidden="true"></i>
+                  <button class="btn btn-secondary" onclick="location.href='/admin/addstaff'">Add Staff</button>
+              </div>
+              <div class="col text-center">
+                  <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                  <button class="btn btn-secondary" onclick="location.href='/admin/orderhistory'">Order History</button>
+              </div>
+              <div class = "col text-center">
+                <i class="fa fa-edit-customer-carts" aria-hidden="true"></i>
+                <button class="btn btn-secondary" onclick="location.href='/admin/displaycart'">Edit Customer Carts</button>
+              </div>
+              <div class="col text-center">
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                <button class="btn btn-secondary" onclick="location.href='/admin/addRecord'">Add Record</button>
             </div>
+              <div class="col text-center">
+                <i class="fa fa-add-record" aria-hidden="true"></i>
+                <button class "btn btn-secondary" onclick="location.href='/admin/stock'">Stock</button>
+              </div>
+              <div class="col text-center">
+                  <i class="fa fa-sign-out" aria-hidden="true"></i>
+                  <button class="btn btn-secondary" onclick="location.href='/logout'">Logout</button>
+              </div>
+              
           </div>
+        </div>
             
                
             
@@ -117,7 +141,7 @@
                   </table>      
                 
            
-        
+        {% endblock %}
 
 
   <script src="../static/script.js"></script>

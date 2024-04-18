@@ -13,6 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>cart</title>
   <!-- Flash messages section -->
+  
   <style>
     .flash-message.error {
         color: white; /* White text for better contrast */
@@ -28,6 +29,7 @@
         border-radius: 5px; /* Add rounded corners for style */
     }
 </style>
+{% block content %}
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         <ul class="flash-messages">
@@ -40,7 +42,7 @@
 </head>
 
 <body>
-  <p class="align-text text-center">User Cart</p>
+  <p class="align-text text-center">Admin Edit</p>
 
    
         {% block cart_header%}
@@ -107,6 +109,11 @@
               </div>
 
               <p>${{item[4]}}</p>
+              <form method="post" action="/admin/update_cart">
+                <input type="hidden" name="item_id" value="{{item[6]}}">
+                <input type="number" name="new_price" step="0.01" min="0">
+                <button type="submit">Update Price</button>
+              </form>
             </div>
           </div>
         </div>
