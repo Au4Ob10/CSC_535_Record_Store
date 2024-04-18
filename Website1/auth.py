@@ -18,7 +18,7 @@ def login():
                 session['email'] = user_email  # Store the user's email in the session
                 session['name'] = first_name  # Store the user's name in the session
                 session['customer_id'] = customer_id  # Store the user's ID in the session
-                flash('Login successful!', 'success')
+                flash('Login successful!', 'info')
                 return redirect(url_for('auth1.portal'))
 
             # Check if the login credentials match a username in the staff_credentials table
@@ -28,11 +28,11 @@ def login():
                 username, isadmin = staff_data
                 if isadmin == 1:
                     session['username'] = username  # Store the username in the session
-                    flash('Admin Login!', 'success')
+                    flash('Admin Login!', 'info')
                     return redirect(url_for('admin.portal'))
                 else:
                     session['username'] = username  # Store the username in the session
-                    flash('Staff Login!', 'success')
+                    flash('Staff Login!', 'info')
                     return redirect(url_for('staff.portal'))
 
             flash('Invalid email/username or password. Please try again.', 'error')
@@ -118,7 +118,7 @@ def create_account():
 
 
 
-                    flash('Account created successfully!', 'success')
+                    flash('Account created successfully!', 'info')
                     session['email'] = email
                     session['name'] = first_name
                     session['customer_id'] = customer_id

@@ -104,7 +104,8 @@ def payment():
         # process the form data
         # process the form data
         return render_template('orderprocessed.html', title='Payment', form=form)
-    else: return render_template('payment.html', title='Payment', labels_and_inputs=labels_and_inputs[0:4], submit_btn=labels_and_inputs[4], form=form)
+    else: 
+        return render_template('payment.html', title='Payment', labels_and_inputs=labels_and_inputs[0:4], submit_btn=labels_and_inputs[4], form=form)
     
     
 @user.route('/remove_from_cart', methods=['GET', 'POST'])
@@ -133,3 +134,33 @@ def remove_from_cart():
     except Exception as e:
         store_db.rollback()
         return redirect(url_for('user.cart'))
+    
+@user.route('/record_details', methods=['GET','POST'])
+def record_detail():
+    try:
+        name = session.get('name')
+        id = session.get('customer_id')
+        record_id=request.form.get('record_id')
+        cur.execute('Select * from records_detail where record_id = %s',(record_id,))
+        record_data = cur.fetchall()
+        return render_template('record_detail.html', record_data=record_data, name=name, id=id)
+
+    except Exception as e:
+        flash('Unable to grab record_id','error')
+        return redirect(url_for('user.home'))
+    
+@user.route('/review_record',methods=['GET','POST'])
+def review_record():
+    try:
+        name = session.get('name')
+        id = session.get('customer_id')
+        record_id=request.form.get('record_id')
+        review=request.form.get('review')
+        cur.execute("INSERT INTO review_table (name,customer_id,record_id,review) Values(%s,%s,%s,%s)",(name,id,record_id,review,))
+        store_db.commit()
+        flash('Review has been posted thank you!','info')
+        return redirect(url_for('user.home'))
+    except Exception as e:
+        flash('Unable to upload review','error')
+        return redirect(url_for('user.home'))
+    
