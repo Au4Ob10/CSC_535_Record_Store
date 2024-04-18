@@ -164,3 +164,17 @@ def review_record():
         flash('Unable to upload review','error')
         return redirect(url_for('user.home'))
     
+@user.route('/search_logged', methods=['GET'])
+def search_records():
+    current_user = session.get('email')
+    print(current_user)
+    search_query = request.args.get('query')
+    cursor = store_db.cursor(dictionary=True)
+    cur.execute("Select cart from customer where email = %s", (current_user,)) 
+    cart_item_count = cur.fetchone()[0]
+    sql = "SELECT * FROM records_detail WHERE record_name LIKE %s OR artist LIKE %s OR genre LIKE %s"
+    cursor.execute(sql, ('%' + search_query + '%', '%' + search_query + '%', '%' + search_query + '%'))
+    records = cursor.fetchall()
+    print (records)
+    cursor.close()
+    return render_template('search_results_logged.html', current_user=current_user, cart_item_count=cart_item_count, records=records)

@@ -62,13 +62,13 @@
                 <p class="h4">Welcome, please sign in</p>
             </div>
               <div class="col">
-                <form class="d-flex">
-                 
+                <form class="d-flex" action="/search" method="GET">
                   <div class="input-group">
-                    <input class="form-control" type="search" placeholder="Search by name, album or genre" aria-label="Search">
-                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                      <input class="form-control" type="search" name="query" placeholder="Search by name, album or genre" aria-label="Search">
+                      <button class="btn btn-outline-primary" type="submit">Search</button>
                   </div>
-                </form>
+              </form>      
+
               </div>
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                 Account
