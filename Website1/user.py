@@ -17,7 +17,7 @@ class PaymentForm(FlaskForm):
     cardholder_name = StringField('Name on Card', validators=[DataRequired(), Length(min=2, max=100)])
     card_number = StringField('Card Number', validators=[DataRequired(), Length(min=16, max=16)])
     expiry_date = StringField('Expiration Date (MM/YY)', validators=[DataRequired(), Length(min=5, max=5)])
-    cvv = IntegerField('CVV', validators=[DataRequired(), Length(min=3, max=3)], render_kw={'readonly': True})
+    cvv = StringField('CVV', validators=[DataRequired(), Length(min=3, max=3)])
     submit = SubmitField()
     
 @user.route("/add_to_cart", methods=['POST'])
