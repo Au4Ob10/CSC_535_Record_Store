@@ -80,7 +80,7 @@
     <ul>
         {% for record in stock_data %}
         <li>
-            ID - {{ record[0] }} | RecordName - {{ record[1] }} | Artist - {{ record[2] }} | Quantity: {{ record[5] }}
+            ID - {{ record[0] }} | RecordName - {{ record[1] }} | Artist - {{ record[2] }} | Quantity: {{ record[6] }}
             <form method="post" action="/admin/addstock">
                 <input type="hidden" name="record_id" value="{{ record[0] }}">
                 <input type="number" name="quantity" min="1" value="1">
