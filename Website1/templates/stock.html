@@ -91,6 +91,10 @@
                 <input type="number" name="quantity" min="1" value="1">
                 <button type="submit" class="btn btn-danger">Remove</button>
             </form>
+            <form method="post" action="/admin/deleteRecord">
+                <input type="hidden" name="record_id" value="{{ record[0] }}">
+                <button type="submit" class="btn btn-danger">Remove Record</button>
+            </form>
         </li>
         {% endfor %}
     </ul>
