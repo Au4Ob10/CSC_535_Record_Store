@@ -73,6 +73,7 @@ CREATE TABLE IF NOT EXISTS `record_store`.`records_detail` (
   `img_link` VARCHAR(250),  -- Assuming the link can be up to 255 characters long
   `price` decimal(10, 2), -- Added price so that we can submit this in the forms
   `quantity` INT DEFAULT 0, -- Default quantity set to 0
+  `review_count` int DEFAULT 0,
   PRIMARY KEY (`record_id`)
 ) ENGINE = InnoDB;
 
@@ -178,38 +179,16 @@ VALUES
 (14, 5, 'Jacobson', '2020-07-22');
 
 
-#Sample data, delete later
-
-
-
-CREATE TABLE IF NOT EXISTS `john.doe@example.com_cart` (
-	`record_id` int NOT NULL,
-    `customer_id` int NOT NULL,
-    `order_id` int NOT NULL,
-    `price` numeric (6,2),
-    `quantity` int NOT NULL
-    );
-
-
-INSERT INTO `john.doe@example.com_cart` (`record_id`,`customer_id`,`order_id`,`price`,`quantity`)
-VALUES 
-(1, 1, 200, 19.99,2),
-(4, 1, 200, 21.99,1),
-(6, 1, 200, 15.99,1),
-(8, 1, 200, 18.99,1),
-(7, 1, 200, 17.99,1),
-(9, 1, 200, 17.99,3);
-
-SELECT img_link from records_detail
-INNER JOIN `john.doe@example.com_cart` 
-ON records_detail.record_id = `john.doe@example.com_cart`.record_id;
-
-	
-
-
-
-
-SELECT * FROM records_detail;
+CREATE TABLE IF NOT EXISTS `record_store`.`review_table` (
+  `list_id` INT NOT NULL AUTO_INCREMENT,
+  `customer_name` VARCHAR(100) NOT NULL,
+  `customer_id` INT NOT NULL,
+  `record_id` INT NOT NULL,
+  `review` TEXT,
+  PRIMARY KEY (`list_id`),
+  FOREIGN KEY (`customer_id`) REFERENCES `customer`(`customer_id`),
+  FOREIGN KEY (`record_id`) REFERENCES `records_detail`(`record_id`)
+) ENGINE = InnoDB;
 
 
 

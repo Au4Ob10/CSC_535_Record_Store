@@ -136,16 +136,19 @@ def remove_from_cart():
         return redirect(url_for('user.cart'))
     
 @user.route('/record_details', methods=['GET','POST'])
-def record_detail():
+def record_details():
     try:
-        name = session.get('name')
-        id = session.get('customer_id')
-        record_id=request.form.get('record_id')
+        current_user = session.get('email')
+        record_id = request.form.get('record_id')
+        cur.execute("Select cart from customer where email = %s", (current_user,)) 
+        cart_item_count = cur.fetchone()[0]
         cur.execute('Select * from records_detail where record_id = %s',(record_id,))
         record_data = cur.fetchall()
-        return render_template('record_detail.html', record_data=record_data, name=name, id=id)
-
+        cur.execute('Select * from review_table where record_id = %s',(record_id,))
+        review_data = cur.fetchall()
+        return render_template('deets.html',record_data=record_data, current_user=current_user, cart_item_count=cart_item_count,review_data=review_data)
     except Exception as e:
+        print(e)
         flash('Unable to grab record_id','error')
         return redirect(url_for('user.home'))
     
@@ -154,13 +157,96 @@ def review_record():
     try:
         name = session.get('name')
         id = session.get('customer_id')
-        record_id=request.form.get('record_id')
+        record_id = request.form.get('id')
         review=request.form.get('review')
-        cur.execute("INSERT INTO review_table (name,customer_id,record_id,review) Values(%s,%s,%s,%s)",(name,id,record_id,review,))
+        print(request.form)
+        print(record_id)
+        cur.execute("INSERT INTO review_table (customer_name,customer_id,record_id,review) Values(%s,%s,%s,%s)",(name,id,record_id,review,))
+        cur.execute("Update records_detail set review_count = review_count + 1 where record_id = %s",(record_id,))
         store_db.commit()
         flash('Review has been posted thank you!','info')
         return redirect(url_for('user.home'))
     except Exception as e:
+        print(e)
         flash('Unable to upload review','error')
         return redirect(url_for('user.home'))
+    
+@user.route('/search_logged', methods=['GET'])
+def search_records():
+    current_user = session.get('email')
+    print(current_user)
+    search_query = request.args.get('query')
+    cursor = store_db.cursor(dictionary=True)
+    cur.execute("Select cart from customer where email = %s", (current_user,)) 
+    cart_item_count = cur.fetchone()[0]
+    sql = "SELECT * FROM records_detail WHERE record_name LIKE %s OR artist LIKE %s OR genre LIKE %s"
+    cursor.execute(sql, ('%' + search_query + '%', '%' + search_query + '%', '%' + search_query + '%'))
+    records = cursor.fetchall()
+    print (records)
+    cursor.close()
+    return render_template('search_results_logged.html', current_user=current_user, cart_item_count=cart_item_count, records=records)
+
+@user.route('/profile', methods=['GET'])
+def profile():
+    try:
+        current_user = session.get('email')
+        cur.execute("Select * from customer where email = %s", (current_user,))
+        user_data = cur.fetchall()
+        return render_template('profile.html', user_data=user_data)
+        
+    except Exception as e:
+        flash('Unable to grab user data', 'error')
+        return redirect(url_for('user.home'))
+    
+@user.route('/change_password', methods=['GET','POST'])
+def change_password():
+    try:
+        current_user = session.get('email')
+        old_pass = request.form.get('old_pass')
+        new_pass1 = request.form.get('new_pass1')
+        new_pass2 = request.form.get('new_pass2')
+        cur.execute("Select passw from customer where email = %s", (current_user,))
+        if old_pass != cur.fetchone()[0]:
+            flash('Old password is incorrect', 'error')
+            return redirect(url_for('user.profile'))
+        else:
+            if new_pass1 != new_pass2:
+                flash('New passwords do not match', 'error')
+                return redirect(url_for('user.profile'))
+            else:
+                cur.execute("Update customer set passw = %s where email = %s", (new_pass1, current_user))
+                store_db.commit()
+                flash('Password has been changed successfully', 'info')
+                return redirect(url_for('user.profile'))
+    except Exception as e:
+        flash('Unable to grab user data', 'error')
+        return redirect(url_for('user.profile'))
+@user.route('/change_email', methods=['GET','POST'])
+def change_email():
+    try:
+        current_email = session.get('email')
+        old_email = request.form.get('old_email')
+        email1 = request.form.get('email1')
+        email2 = request.form.get('email2')
+        if current_email == old_email:
+            if email1 != email2:
+                flash('New emails do not match', 'error')
+                return redirect(url_for('user.profile'))
+            else:
+                cur.execute("Select email from customer where email = %s", (email1,))
+                if cur.fetchone():
+                    flash('Email already exists', 'error')
+                    return redirect(url_for('user.profile'))
+                else:
+                    cur.execute("Update customer set email = %s where email = %s", (email1, current_email))
+                    store_db.commit()
+                    session['email'] = email1
+                    flash('Email has been changed successfully', 'info')
+                    return redirect(url_for('user.profile'))
+        
+    except Exception as e:
+        flash('Unable to grab user data', 'error')
+        return redirect(url_for('user.profile'))
+    
+        
     
