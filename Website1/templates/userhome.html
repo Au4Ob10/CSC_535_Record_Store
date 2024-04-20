@@ -70,6 +70,9 @@
                 </form>      
   
                 </div>
+                <button type="button" class="btn btn-primary" onclick="window.location.href='{{ url_for('user.profile') }}';">
+                  Profile
+              </button>
               <button type="button" class="btn btn-primary" onclick="window.location.href='{{ url_for('auth1.logout') }}';">
                 Log Out
               </button>
@@ -143,6 +146,10 @@
                                 <input type="hidden" name = "record_id" value = "{{ record[0]}}">
                                 <input type="hidden" name = "price" value = "{{ record[4]}}">
                                 <button type="submit" class="btn btn-danger">Add to Cart</button>
+                            </form>
+                            <form method="post" action="/user/record_details">
+                                <input type="hidden" name = "record_id" value = "{{ record[0] }}">
+                                <button type="submit" class="btn btn-primary">View Record Details</button>
                             </form>
                             
                         </div>
