@@ -137,19 +137,22 @@
                     </div>
                     <div class="card border border-left-0" id="rec-img-card" style=" margin-left:-2rem; ">
                         <div class="card-body" id="rec_text_card_body" >
-
+                            
                             <p class="card-text mb-1">{{ record[1] }}</p>
                             
                             <p class="card-text mb-3">{{ record[2] }}</p>
-
-                            <form method="post" action="/user/add_to_cart">
+  
+                            
+                            <form method="POST" action="/user/add_to_cart">
+                                <input type="hidden" name = "cust_id" value= {{ current_user }}>
                                 <input type="hidden" name = "record_id" value = "{{ record[0]}}">
                                 <input type="hidden" name = "price" value = "{{ record[4]}}">
-                                <button type="submit" class="btn btn-danger">Add to Cart</button>
+                                <button type="submit" class="btn btn-success mb-2 btn-sm">Add to Cart</button>
+                                
                             </form>
                             <form method="post" action="/user/record_details">
                                 <input type="hidden" name = "record_id" value = "{{ record[0] }}">
-                                <button type="submit" class="btn btn-primary">View Record Details</button>
+                                <button type="submit" class="btn btn-primary btn-sm">View Record Details</button>
                             </form>
                             
                         </div>

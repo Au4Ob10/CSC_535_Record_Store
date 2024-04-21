@@ -2,6 +2,7 @@ from flask import Blueprint, request, session, redirect, render_template, url_fo
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, IntegerField
 from wtforms.validators import DataRequired, Length, Email
+import datetime
 
 
 from app import store_db, cur
@@ -23,27 +24,60 @@ class PaymentForm(FlaskForm):
 @user.route("/add_to_cart", methods=['POST'])
 def add_to_cart():
     try:
-        cur2 = store_db.cursor()
-        name = session.get('name')
-        id = session.get('customer_id')
-        record_id = request.form.get('record_id')
-        price = request.form.get('price')
-        quantity = 1
-        
-        
-        # Constructing the table name using current_user's email
-        table_name = f"{name}{id}_cart"
-        
-        # Constructing and executing the SQL query
-        sql = f"INSERT INTO `{table_name}` (record_id, customer_id, price, quantity) VALUES (%s, %s, %s, %s)"
-        cur2.execute(sql, (record_id, id, price, quantity))
-        
-        cur2.execute(f"Update customer set cart = cart + 1 where customer_id = {id}")
-        
-        store_db.commit()  
+        if request.method == 'POST':
+            
+            cur2 = store_db.cursor()
+            name = session.get('name')
+            id = session.get('customer_id')
+            record_id = request.form.get('record_id')
+            price = request.form.get('price')
+            
+            # Constructing the table name using current_user's email
+            table_name = f"{name}{id}_cart"
+            
+            cur2.execute(f"SELECT * FROM {table_name}")
+            myresults = cur2.fetchall()
+            
+            print(myresults)
 
-        print('Item added to cart successfully')
-        return redirect(url_for('user.home'))
+            # Create table if not exists
+    
+            cur2.execute(f"""CREATE TABLE IF NOT EXISTS {table_name} (
+                                record_id int NOT NULL,
+                                customer_id int NOT NULL,
+                                price int NOT NULL,
+                                quantity int NOT NULL,
+                                PRIMARY KEY(record_id)
+                                ) ENGINE = InnoDB;""")
+            # Commit the table creation
+            store_db.commit()
+            
+            rec_id_check = f"SELECT record_id FROM {table_name} WHERE record_id = %s;"
+            cur2.execute(rec_id_check, (record_id,))
+            id_result = cur2.fetchall()
+            
+            # Check if the record_id already exists in the table
+           
+            if not id_result:
+                # If the record_id doesn't exist, insert the new record
+                sql = f"INSERT INTO {table_name} (record_id, customer_id, price, quantity) VALUES (%s, %s, %s, %s);"
+                cur2.execute(sql, (record_id, id, price, 1))
+                print("this is true")
+                store_db.commit()
+
+            else:
+                # If the record_id exists, update the quantity
+                update_query = f"""UPDATE {table_name} 
+                                   SET quantity = quantity + 1
+                                   WHERE record_id = %s;"""
+                cur2.execute(update_query, (record_id,))
+                store_db.commit()
+            
+            cur2.close()
+
+            print('Item added to cart successfully')
+            return redirect(url_for('user.home'))
+
 
     except Exception as e:
         store_db.rollback()
@@ -52,12 +86,14 @@ def add_to_cart():
 @user.route('/home')
 def home():
     current_user = session.get('email')
-    print(current_user)
+    name = session.get('name')
+    id = session.get('customer_id')
+    # print(current_user)
     cur.execute("SELECT record_id, record_name, artist, img_link, price FROM records_detail")
     records = cur.fetchall()
     cur.execute("Select cart from customer where email = %s", (current_user,)) 
     cart_item_count = cur.fetchone()[0]
-    print(cart_item_count)
+    # print(cart_item_count)
     return render_template('userhome.html', current_user=current_user, cart_item_count=cart_item_count, records=records)
 
 @user.route('/cart', methods=['GET', 'POST'])
@@ -90,7 +126,6 @@ def cart():
 
 
 
-
 @user.route('/payment', methods=['GET', 'POST'])
 def payment():
     form = PaymentForm()
@@ -101,6 +136,7 @@ def payment():
         print("Card Number:", form.card_number.data)
         print("Expiry Date:", form.expiry_date.data)
         print("CVV:", form.cvv.data)
+       
         # process the form data
         # process the form data
         return render_template('orderprocessed.html', title='Payment', form=form)
