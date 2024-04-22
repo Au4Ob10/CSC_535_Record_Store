@@ -26,7 +26,7 @@ def add_to_cart():
     try:
         if request.method == 'POST':
             
-            cur2 = store_db.cursor()
+           
             name = session.get('name')
             id = session.get('customer_id')
             record_id = request.form.get('record_id')
@@ -35,48 +35,43 @@ def add_to_cart():
             # Constructing the table name using current_user's email
             table_name = f"{name}{id}_cart"
             
-            cur2.execute(f"SELECT * FROM {table_name}")
-            myresults = cur2.fetchall()
-            
-            print(myresults)
-
-            # Create table if not exists
-    
-            cur2.execute(f"""CREATE TABLE IF NOT EXISTS {table_name} (
-                                record_id int NOT NULL,
-                                customer_id int NOT NULL,
-                                price int NOT NULL,
-                                quantity int NOT NULL,
-                                PRIMARY KEY(record_id)
-                                ) ENGINE = InnoDB;""")
-            # Commit the table creation
-            store_db.commit()
-            
-            rec_id_check = f"SELECT record_id FROM {table_name} WHERE record_id = %s;"
-            cur2.execute(rec_id_check, (record_id,))
-            id_result = cur2.fetchall()
-            
-            # Check if the record_id already exists in the table
-           
-            if not id_result:
-                # If the record_id doesn't exist, insert the new record
-                sql = f"INSERT INTO {table_name} (record_id, customer_id, price, quantity) VALUES (%s, %s, %s, %s);"
-                cur2.execute(sql, (record_id, id, price, 1))
-                print("this is true")
+            with store_db.cursor() as cur2:
+                cur2.execute(f"SELECT * FROM {table_name}")
+                myresults = cur2.fetchall()
+                
+                print(myresults)
+                print(record_id)
+                # Create table if not exists
+        
+             
+                # Commit the table creation
                 store_db.commit()
-
-            else:
-                # If the record_id exists, update the quantity
-                update_query = f"""UPDATE {table_name} 
-                                   SET quantity = quantity + 1
-                                   WHERE record_id = %s;"""
-                cur2.execute(update_query, (record_id,))
-                store_db.commit()
+                
+                rec_id_check = f"SELECT record_id FROM {table_name} WHERE record_id = %s;"
+                cur2.execute(rec_id_check, (record_id,))
+                id_result = cur2.fetchall()
+                
+                # Check if the record_id already exists in the table
             
-            cur2.close()
+                if not id_result:
+                    # If the record_id doesn't exist, insert the new record
+                    sql = f"INSERT INTO {table_name} (record_id, customer_id, price, quantity) VALUES (%s, %s, %s, %s);"
+                    cur2.execute(sql, (record_id, id, price, 1))
+                    print("this is true")
+                    store_db.commit()
 
-            print('Item added to cart successfully')
-            return redirect(url_for('user.home'))
+                else:
+                    # If the record_id exists, update the quantity
+                    update_query = f"""UPDATE {table_name} 
+                                    SET quantity = quantity + 1
+                                    WHERE record_id = %s;"""
+                    cur2.execute(update_query, (record_id,))
+                    store_db.commit()
+                
+            
+               
+                print('Item added to cart successfully')
+                return redirect(url_for('user.home'))
 
 
     except Exception as e:
@@ -88,20 +83,37 @@ def home():
     current_user = session.get('email')
     name = session.get('name')
     id = session.get('customer_id')
-    # print(current_user)
-    cur.execute("SELECT record_id, record_name, artist, img_link, price FROM records_detail")
-    records = cur.fetchall()
-    cur.execute("Select cart from customer where email = %s", (current_user,)) 
-    cart_item_count = cur.fetchone()[0]
-    # print(cart_item_count)
-    return render_template('userhome.html', current_user=current_user, cart_item_count=cart_item_count, records=records)
+    table_name = f"{name}{id}_cart"
+    
+    with store_db.cursor() as cur:
+        cur.execute(f"""CREATE TABLE IF NOT EXISTS {table_name} (
+                                    record_id int NOT NULL,
+                                    customer_id int NOT NULL,
+                                    price int NOT NULL,
+                                    quantity int NOT NULL,
+                                    PRIMARY KEY(record_id)
+                                    ) ENGINE = InnoDB;""")
+        
+        # print(current_user)
+
+        cur.execute("SELECT record_id, record_name, artist, img_link, price FROM records_detail")
+        records = cur.fetchall()
+        cur.execute("Select cart from customer where email = %s", (current_user,)) 
+        cart_item_count = cur.fetchone()[0]
+        cur.execute(f"SELECT SUM(quantity) FROM {table_name}")
+        total_qty = cur.fetchone()[0]
+        
+        if not total_qty:
+            total_qty = 0
+        # print(cart_item_count)
+    return render_template('userhome.html', total_qty=total_qty, current_user=current_user, cart_item_count=cart_item_count, records=records)
 
 @user.route('/cart', methods=['GET', 'POST'])
 def cart():
     current_user = session.get('email')
     name = session.get('name')
     id = session.get('customer_id')
-    current_user_cart = f"`{name}{id}_cart`"
+    current_user_cart = f"{name}{id}_cart"
 
     cur.execute(f"""SELECT 
                            records_detail.record_name, 
@@ -110,7 +122,7 @@ def cart():
                            records_detail.img_link,
                            {current_user_cart}.price * {current_user_cart}.quantity,
                            {current_user_cart}.quantity,
-                           {current_user_cart}.itemID
+                           {current_user_cart}.record_id
                     FROM {current_user_cart}
                     INNER JOIN records_detail 
                     ON {current_user_cart}.record_id = records_detail.record_id;""")

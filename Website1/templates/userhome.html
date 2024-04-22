@@ -76,11 +76,12 @@
               <button type="button" class="btn btn-primary" onclick="window.location.href='{{ url_for('auth1.logout') }}';">
                 Log Out
               </button>
-              <button type="button" class="btn bg-primary ml-5 mr-3" id="viewCart" onclick="window.location.href='{{ url_for( 'user.cart') }}';"  >
-                <i class="fa fa-shopping-cart mr-2" aria-hidden="true"></i><span class="badge badge-primary" id="quantityBadge">{{ cart_item_count }}</span>
-                
+              {% block total_qty %}
+              <form method="POST" action="/user/cart">
+              <button type="submit" class="btn bg-primary ml-5 mr-3" id="viewCart">
+                <i class="fa fa-shopping-cart mr-2" aria-hidden="true"></i><span class="badge badge-primary" id="quantityBadge">{{ total_qty }}</span>
               </button>
-            
+              {% endblock %}
 
             </div>
           </div>

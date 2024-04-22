@@ -28,6 +28,8 @@ CREATE TABLE IF NOT EXISTS `record_store`.`carts` (
   PRIMARY KEY (`order_id`)
 ) ENGINE = InnoDB;
 
+use record_store;
+drop table John1_cart;
 
 
 INSERT INTO carts (order_id, customer_id,record_id,status,add_date,update_date)
