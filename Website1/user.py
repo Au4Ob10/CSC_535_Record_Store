@@ -133,7 +133,10 @@ def cart():
                               {current_user_cart}.quantity)
                               FROM {current_user_cart}""")
 
-    item_total = cur.fetchone()
+    item_total = cur.fetchone()[0]
+    
+    if not item_total:
+        item_total = 0
     return render_template('cart.html',cart_details=cart_details, item_total=item_total)
 
 
@@ -162,13 +165,13 @@ def remove_from_cart():
         cur2 = store_db.cursor()
         name = session.get('name')
         id = session.get('customer_id')
-        item_id = request.form.get('item_id')
+        item_id = request.form.get('record_id')
         
         # Constructing the table name using current_user's email
         table_name = f"{name}{id}_cart"
         
         # Constructing and executing the SQL query
-        sql = f"DELETE FROM `{table_name}` WHERE itemID = %s"
+        sql = f"DELETE FROM `{table_name}` WHERE record_id = %s"
         cur2.execute(sql, (item_id,))
         cur2.execute("Select cart from customer where customer_id = %s", (id,))
         cart_item_count = cur2.fetchone()[0]
@@ -178,6 +181,7 @@ def remove_from_cart():
         store_db.commit()  
 
         print('Item removed from cart successfully')
+        print(item_id)
         return redirect(url_for('user.cart'))
     except Exception as e:
         store_db.rollback()
