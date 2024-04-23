@@ -77,6 +77,63 @@ def add_to_cart():
     except Exception as e:
         store_db.rollback()
         return redirect(url_for('user.home'))
+    
+@user.route("/add_to_cart_", methods=['POST'])
+def add_to_cart_():
+    try:
+        if request.method == 'POST':
+            
+           
+            name = session.get('name')
+            id = session.get('customer_id')
+            record_id = request.form.get('record_id')
+            price = request.form.get('price')
+            
+            # Constructing the table name using current_user's email
+            table_name = f"{name}{id}_cart"
+            
+            with store_db.cursor() as cur2:
+                cur2.execute(f"SELECT * FROM {table_name}")
+                myresults = cur2.fetchall()
+                
+                print(myresults)
+                print(record_id)
+                # Create table if not exists
+        
+             
+                # Commit the table creation
+                store_db.commit()
+                
+                rec_id_check = f"SELECT record_id FROM {table_name} WHERE record_id = %s;"
+                cur2.execute(rec_id_check, (record_id,))
+                id_result = cur2.fetchall()
+                
+                # Check if the record_id already exists in the table
+            
+                if not id_result:
+                    # If the record_id doesn't exist, insert the new record
+                    sql = f"INSERT INTO {table_name} (record_id, customer_id, price, quantity) VALUES (%s, %s, %s, %s);"
+                    cur2.execute(sql, (record_id, id, price, 1))
+                    print("this is true")
+                    store_db.commit()
+
+                else:
+                    # If the record_id exists, update the quantity
+                    update_query = f"""UPDATE {table_name} 
+                                    SET quantity = quantity + 1
+                                    WHERE record_id = %s;"""
+                    cur2.execute(update_query, (record_id,))
+                    store_db.commit()
+                
+            
+               
+                print('Item added to cart successfully')
+                return redirect(url_for('user.cart'))
+
+
+    except Exception as e:
+        store_db.rollback()
+        return redirect(url_for('user.cart'))
 
 @user.route('/home')
 def home():

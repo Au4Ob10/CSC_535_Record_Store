@@ -102,7 +102,11 @@
                   <p>{{item[5]}}</p>
                 </div>
                 <div class="row">
-                  <button class="btn btn-secondary btn-sm mr-3 cart_update_btn">+</button>
+                  <form method="post" action="/user/add_to_cart_">
+                    <button class="btn btn-secondary btn-sm mr-3 cart_update_btn">+</button>
+                    <input type="hidden" name="record_id" value="{{ item[6] }}">
+                    <input type="hidden" name="price" value="{{ item[4] }}">
+                  </form>
                   <form method="post" action="/user/remove_from_cart">
                     <input type="hidden" name = "record_id" value = "{{ item[6]}}">
                     <button type="submit" class="btn btn-danger">Remove</button>
