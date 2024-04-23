@@ -8,9 +8,11 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Add Record</title>
-      </head>
       {% block content %}
-        <!-- Flash messages section -->
+    </head>
+      
+<body>
+  <!-- Flash messages section -->
   {% with messages = get_flashed_messages() %}
   {% if messages %}
   <div class="alert alert-dismissible alert-danger">
@@ -23,9 +25,6 @@
   </div>
   {% endif %}
   {% endwith %}
-   
-    </head>
-<body>
   <div class="container-fluid">
     <div class="row bg-secondary d-flex justify-content-center" id="nav-row">
         <div class="col text-center">
@@ -69,6 +68,8 @@
         <input type="text" id="genre" name="genre"><br>
         <label for="img_link">Image Link:</label><br>
         <input type="text" id="img_link" name="img_link"><br>
+        <label for="price">Price:</label><br>
+        <input type="number" id="price" name="price"><br>
         <label for="quantity">Quantity:</label><br>
         <input type="number" id="quantity" name="quantity" value="0"><br><br>
         <input type="submit" value="Submit">

@@ -25,20 +25,19 @@
               border-radius: 5px; /* Add rounded corners for style */
           }
   </style>
-  
-  
-    <!-- Flash messages section -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-              <ul class="flash-messages">
-                  {% for category, message in messages %}
-                      <li class="flash-message {{ category }}">{{ message }}</li>
-                  {% endfor %}
-              </ul>
-          {% endif %}
-      {% endwith %}
-</head>
 
+  </head>
+<body>
+<!-- Flash messages section -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<ul class="flash-messages">
+  {% for category, message in messages %}
+  <li class="flash-message {{ category }}">{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
 <div>
 
         <div class="container-fluid">

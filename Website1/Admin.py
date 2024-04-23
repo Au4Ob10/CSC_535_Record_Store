@@ -105,14 +105,15 @@ def addRecord():
         artist = request.form['artist']
         genre = request.form['genre']
         img_link = request.form['img_link']
+        price = request.form['price']
         quantity = request.form['quantity']
 
         # Insert record into the database
-        insert_query = "INSERT INTO records_detail (record_name, artist, genre, img_link, quantity) VALUES (%s, %s, %s, %s, %s)"
-        record_data = (record_name, artist, genre, img_link, quantity)
+        insert_query = "INSERT INTO records_detail (record_name, artist, genre, img_link, price, quantity) VALUES (%s, %s,%s, %s, %s, %s)"
+        record_data = (record_name, artist, genre, img_link,price,quantity)
         cur.execute(insert_query, record_data)
         store_db.commit()
-
+        flash('Record added to database','info')
         return redirect(url_for('admin.addRecord'))
     return render_template('add_record.html')
 

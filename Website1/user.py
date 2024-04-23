@@ -31,46 +31,45 @@ def add_to_cart():
             id = session.get('customer_id')
             record_id = request.form.get('record_id')
             price = request.form.get('price')
-            
-            # Constructing the table name using current_user's email
-            table_name = f"{name}{id}_cart"
-            
-            with store_db.cursor() as cur2:
-                cur2.execute(f"SELECT * FROM {table_name}")
-                myresults = cur2.fetchall()
-                
-                print(myresults)
-                print(record_id)
-                # Create table if not exists
-        
-             
-                # Commit the table creation
-                store_db.commit()
-                
-                rec_id_check = f"SELECT record_id FROM {table_name} WHERE record_id = %s;"
-                cur2.execute(rec_id_check, (record_id,))
-                id_result = cur2.fetchall()
-                
-                # Check if the record_id already exists in the table
-            
-                if not id_result:
-                    # If the record_id doesn't exist, insert the new record
-                    sql = f"INSERT INTO {table_name} (record_id, customer_id, price, quantity) VALUES (%s, %s, %s, %s);"
-                    cur2.execute(sql, (record_id, id, price, 1))
-                    print("this is true")
-                    store_db.commit()
 
-                else:
-                    # If the record_id exists, update the quantity
-                    update_query = f"""UPDATE {table_name} 
-                                    SET quantity = quantity + 1
-                                    WHERE record_id = %s;"""
-                    cur2.execute(update_query, (record_id,))
-                    store_db.commit()
-                
+            cur.execute("select quantity from records_detail where record_id=%s",(record_id,))
+            quantity=cur.fetchone()
+            if quantity is not None and quantity[0] != 0:
             
-               
-                print('Item added to cart successfully')
+                # Constructing the table name using current_user's email
+                table_name = f"{name}{id}_cart"
+                
+                with store_db.cursor() as cur2:
+                    
+                    
+                    rec_id_check = f"SELECT record_id FROM {table_name} WHERE record_id = %s;"
+                    cur2.execute(rec_id_check, (record_id,))
+                    id_result = cur2.fetchall()
+                    
+                    # Check if the record_id already exists in the table
+                
+                    if not id_result:
+                        # If the record_id doesn't exist, insert the new record
+                        sql = f"INSERT INTO {table_name} (record_id, customer_id, price, quantity) VALUES (%s, %s, %s, %s);"
+                        cur2.execute(sql, (record_id, id, price, 1))
+                        print("this is true")
+                        
+
+                    else:
+                        # If the record_id exists, update the quantity
+                        update_query = f"""UPDATE {table_name} 
+                                        SET quantity = quantity + 1
+                                        WHERE record_id = %s;"""
+                        cur2.execute(update_query, (record_id,))
+                        
+                    
+                
+                    cur.execute("Update records_detail Set quantity=quantity-1 where record_id = %s",(record_id,))
+                    store_db.commit()
+                    print('Item added to cart successfully')
+                    return redirect(url_for('user.home'))
+            else:
+                flash('Item is currently out of stock','error')
                 return redirect(url_for('user.home'))
 
 
@@ -88,46 +87,43 @@ def add_to_cart_():
             id = session.get('customer_id')
             record_id = request.form.get('record_id')
             price = request.form.get('price')
-            
-            # Constructing the table name using current_user's email
-            table_name = f"{name}{id}_cart"
-            
-            with store_db.cursor() as cur2:
-                cur2.execute(f"SELECT * FROM {table_name}")
-                myresults = cur2.fetchall()
-                
-                print(myresults)
-                print(record_id)
-                # Create table if not exists
-        
-             
-                # Commit the table creation
-                store_db.commit()
-                
-                rec_id_check = f"SELECT record_id FROM {table_name} WHERE record_id = %s;"
-                cur2.execute(rec_id_check, (record_id,))
-                id_result = cur2.fetchall()
-                
-                # Check if the record_id already exists in the table
-            
-                if not id_result:
-                    # If the record_id doesn't exist, insert the new record
-                    sql = f"INSERT INTO {table_name} (record_id, customer_id, price, quantity) VALUES (%s, %s, %s, %s);"
-                    cur2.execute(sql, (record_id, id, price, 1))
-                    print("this is true")
-                    store_db.commit()
 
-                else:
-                    # If the record_id exists, update the quantity
-                    update_query = f"""UPDATE {table_name} 
-                                    SET quantity = quantity + 1
-                                    WHERE record_id = %s;"""
-                    cur2.execute(update_query, (record_id,))
-                    store_db.commit()
-                
+            cur.execute("select quantity from records_detail where record_id=%s",(record_id,))
+            quantity=cur.fetchone()
+            if quantity is not None and quantity[0] != 0:
             
-               
-                print('Item added to cart successfully')
+                # Constructing the table name using current_user's email
+                table_name = f"{name}{id}_cart"
+                
+                with store_db.cursor() as cur2:
+                    
+                    
+                    rec_id_check = f"SELECT record_id FROM {table_name} WHERE record_id = %s;"
+                    cur2.execute(rec_id_check, (record_id,))
+                    id_result = cur2.fetchall()
+                    
+                    # Check if the record_id already exists in the table
+                
+                    if not id_result:
+                        # If the record_id doesn't exist, insert the new record
+                        sql = f"INSERT INTO {table_name} (record_id, customer_id, price, quantity) VALUES (%s, %s, %s, %s);"
+                        cur2.execute(sql, (record_id, id, price, 1))
+                        print("this is true")
+                        
+
+                    else:
+                        # If the record_id exists, update the quantity
+                        update_query = f"""UPDATE {table_name} 
+                                        SET quantity = quantity + 1
+                                        WHERE record_id = %s;"""
+                        cur2.execute(update_query, (record_id,))
+                        
+                    cur.execute("Update records_detail Set quantity=quantity-1 where record_id = %s",(record_id,))
+                    store_db.commit()
+                    print('Item added to cart successfully')
+                    return redirect(url_for('user.cart'))
+            else:
+                flash('Item is currently out of stock','error')
                 return redirect(url_for('user.cart'))
 
 
@@ -224,9 +220,11 @@ def remove_from_cart():
         id = session.get('customer_id')
         item_id = request.form.get('record_id')
         
+        
         # Constructing the table name using current_user's email
         table_name = f"{name}{id}_cart"
-        
+        cur.execute(f"Select quantity from `{table_name}` where record_id =%s",(item_id,))
+        quantity = cur.fetchone()[0]
         # Constructing and executing the SQL query
         sql = f"DELETE FROM `{table_name}` WHERE record_id = %s"
         cur2.execute(sql, (item_id,))
@@ -234,6 +232,7 @@ def remove_from_cart():
         cart_item_count = cur2.fetchone()[0]
         if cart_item_count > 0:
             cur2.execute(f"Update customer set cart = cart - 1 where customer_id = {id}")
+        cur.execute("Update records_detail Set quantity=quantity+%s where record_id = %s",(quantity,item_id,))
         
         store_db.commit()  
 
