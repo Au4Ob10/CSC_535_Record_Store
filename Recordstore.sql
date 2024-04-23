@@ -114,6 +114,25 @@ VALUES ('Born to Run', 'Bruce Springsteen', 'Rock', 'https://m.media-amazon.com/
 INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
 VALUES ('Purple Rain', 'Prince', 'Pop', 'https://th.bing.com/th/id/OIP.3Q35IUHs4EaWQlGJ55bG6wAAAA?rs=1&pid=ImgDetMain', 20, 85);
 
+Insert Into record_store.records_detail (record_name, artist, genre, img_link, price, quantity)
+VALUES ('American Idiot','Green Day','Punk','https://upload.wikimedia.org/wikipedia/en/thumb/e/ed/Green_Day_-_American_Idiot_album_cover.png/220px-Green_Day_-_American_Idiot_album_cover.png',14,200);
+
+Insert Into record_store.records_detail (record_name, artist, genre, img_link, price, quantity)
+VALUES ('How Did We Get So Dark','Royal Blood','Alternative Rock','https://upload.wikimedia.org/wikipedia/en/thumb/b/ba/Royal-Blood-How-Did-We-Get-So-Dark.jpg/220px-Royal-Blood-How-Did-We-Get-So-Dark.jpg',12,50);
+
+Insert Into record_store.records_detail (record_name, artist, genre, img_link, price, quantity)
+VALUES ('TRUE POWER','I Prevail','Metal Core','https://upload.wikimedia.org/wikipedia/en/5/5a/I_Prevail_-_True_Power.png',17,300);
+
+Insert Into record_store.records_detail (record_name, artist, genre, img_link, price, quantity)
+VALUES ('New Levels New Devils','Polyphia','Prog Rock','https://t2.genius.com/unsafe/300x300/https%3A%2F%2Fimages.genius.com%2F75d55012215799d3e17e5f40ee63cfa9.500x500x1.jpg',13,100);
+
+Insert Into record_store.records_detail (record_name, artist, genre, img_link, price, quantity)
+VALUES ('Unleashed','Kayzo','EDM','https://t2.genius.com/unsafe/300x0/https%3A%2F%2Fimages.genius.com%2F85aa2c19a77f687c4e8f562ab5f728e4.1000x1000x1.png',24,25);
+
+Insert Into record_store.records_detail (record_name, artist, genre, img_link, price, quantity)
+VALUES ('So Wrong Its Right','All Time Low','Pop Punk','https://t2.genius.com/unsafe/150x0/https%3A%2F%2Fimages.genius.com%2Fc78e3eb09ce90761646ec172a3336006.300x300x1.jpg',15,100);
+
+
 
 -- Table record_store.record_images
 
