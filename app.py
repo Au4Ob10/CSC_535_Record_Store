@@ -68,13 +68,6 @@ cur = store_db.cursor(buffered=True)
 
 
 
-
-
-
-
-
-
-
 from Website1.auth import auth1
 app.register_blueprint(auth1, url_prefix="")
 
@@ -87,13 +80,23 @@ app.register_blueprint(staff, url_prefix="/staff")
 from Website1.Admin import admin
 app.register_blueprint(admin, url_prefix="/admin")
 
+# from Website1.img_display import img_display
+# app.register_blueprint(img_display, url_prefix="/img_display")
 
 
+# @app.route('/', methods=['GET', 'POST'])
+# def index():
+#     return render_template('index.html')
 
+# @app.route('/vines_record', methods=['GET'])
+# def vines_record_page():
+#     return render_template('record_page.html')
+
+# @app.route('/user_cart', methods=['GET','POST'])
+# def user_cart_page():
+#     return render_template('customer_cart.html')
 
 
 
 if __name__=='__main__':
     app.run(debug=True)
-    
-

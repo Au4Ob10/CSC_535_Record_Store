@@ -1,17 +1,10 @@
 -- Active: 1708706294364@@127.0.0.1@3306
 
-DROP DATABASE IF EXISTS record_store;
+-- DROP DATABASE IF EXISTS record_store;
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
  
- CREATE TABLE IF NOT EXISTS table_name (
-                                record_id int NOT NULL,
-                                customer_id int NOT NULL,
-                                price int NOT NULL,
-                                quantity int NOT NULL,
-                                PRIMARY KEY(record_id))
-                                ENGINE = InnoDB);
 -- Schema record_store
 CREATE SCHEMA IF NOT EXISTS `record_store`;
 USE `record_store`;
@@ -28,8 +21,6 @@ CREATE TABLE IF NOT EXISTS `record_store`.`carts` (
   PRIMARY KEY (`order_id`)
 ) ENGINE = InnoDB;
 
-use record_store;
-drop table John1_cart;
 
 
 INSERT INTO carts (order_id, customer_id,record_id,status,add_date,update_date)
