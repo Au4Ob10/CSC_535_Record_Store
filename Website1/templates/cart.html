@@ -55,7 +55,7 @@
               <div class="row">
                 <div class="col d-flex nowrap flex-row mb-0">
                 <p class="h7 mr-1">Total:</p> 
-              <p class="h7">${{item_total[0]}}</p>
+              <p class="h7">${{item_total}}</p>
             </div>
             <div class="col-auto d-flex flex-row-reverse">
               <button class="h7 btn btn-primary" onclick="window.location.href='/user/payment'">
@@ -104,7 +104,7 @@
                 <div class="row">
                   <button class="btn btn-secondary btn-sm mr-3 cart_update_btn">+</button>
                   <form method="post" action="/user/remove_from_cart">
-                    <input type="hidden" name = "item_id" value = "{{ item[6]}}">
+                    <input type="hidden" name = "record_id" value = "{{ item[6]}}">
                     <button type="submit" class="btn btn-danger">Remove</button>
                 </form>
                 </div>

@@ -1,32 +1,43 @@
 -- Active: 1708706294364@@127.0.0.1@3306
 
--- DROP DATABASE IF EXISTS record_store;
+DROP DATABASE IF EXISTS record_store;
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
-
+ 
+ CREATE TABLE IF NOT EXISTS table_name (
+                                record_id int NOT NULL,
+                                customer_id int NOT NULL,
+                                price int NOT NULL,
+                                quantity int NOT NULL,
+                                PRIMARY KEY(record_id))
+                                ENGINE = InnoDB);
 -- Schema record_store
 CREATE SCHEMA IF NOT EXISTS `record_store`;
 USE `record_store`;
 
+-- SELECT * FROM `record_store.john.doe@example.com_cart`;
 -- Table record_store.carts
 CREATE TABLE IF NOT EXISTS `record_store`.`carts` (
-  `order_id` INT NOT NULL,
+  `order_id` INT AUTO_INCREMENT NOT NULL,
   `customer_id` INT NOT NULL,
-  `record_id` INT NULL,
-  `status` VARCHAR(45) NULL,
-  `add_date` DATE NULL,
-  `update_date` DATE NULL,
-  PRIMARY KEY (`customer_id`)
+  `record_id` INT NOT NULL,
+  `status` VARCHAR(45) NOT NULL,
+  `add_date` DATE NOT NULL,
+  `update_date` DATE NOT NULL,
+  PRIMARY KEY (`order_id`)
 ) ENGINE = InnoDB;
+
+use record_store;
+drop table John1_cart;
 
 
 INSERT INTO carts (order_id, customer_id,record_id,status,add_date,update_date)
 VALUES
-(10,1,1000,"fulfilled",'2022-01-22','2022-01-23'),
-(11,2,1001,"fulfilled",'2023-02-25','2022-02-26'),
-(12,3,1002,"fulfilled",'2022-05-23','2022-05-24'),
-(13,4,1003,"fulfilled",'2021-07-22','2022-07-23');
+(1, 2,1000,"fulfilled",'2022-01-22','2022-01-23'),
+(2, 3,1001,"fulfilled",'2023-02-25','2022-02-26'),
+(3, 4,1002,"fulfilled",'2022-05-23','2022-05-24'),
+(4, 5,1003,"fulfilled",'2021-07-22','2022-07-23');
 
 
 
@@ -79,34 +90,34 @@ CREATE TABLE IF NOT EXISTS `record_store`.`records_detail` (
 
 
 INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
-VALUES ('Thriller', 'Michael Jackson', 'Pop', 'https://i.redd.it/ehrrwwfwvz411.png', 20, 100);
+VALUES ('Thriller', 'Michael Jackson', 'Pop', 'https://i.redd.it/ehrrwwfwvz411.png', 25, 100);
 
 INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
 VALUES ('Back in Black', 'AC/DC', 'Rock', 'https://th.bing.com/th/id/OIP.rWVw2ui1moDt_hYlbdxidwAAAA?rs=1&pid=ImgDetMain', 20, 80);
 
 INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
-VALUES ('The Dark Side of the Moon', 'Pink Floyd', 'Progressive Rock', 'https://m.media-amazon.com/images/I/31PosC6TTdL._SX300_SY300_QL70_FMwebp_.jpg', 20, 90);
+VALUES ('The Dark Side of the Moon', 'Pink Floyd', 'Progressive Rock', 'https://m.media-amazon.com/images/I/31PosC6TTdL._SX300_SY300_QL70_FMwebp_.jpg', 19, 90);
 
 INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
-VALUES ('Abbey Road', 'The Beatles', 'Rock', 'https://m.media-amazon.com/images/I/91VxDWK6XUL._SY355_.jpg', 20, 110);
+VALUES ('Abbey Road', 'The Beatles', 'Rock', 'https://m.media-amazon.com/images/I/91VxDWK6XUL._SY355_.jpg', 30, 110);
 
 INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
-VALUES ('Rumours', 'Fleetwood Mac', 'Soft Rock', 'https://faroutmagazine.co.uk/static/uploads/2020/10/The-story-behind-Fleetwood-Macs-Rumours-cover-art.jpg', 20, 85);
+VALUES ('Rumours', 'Fleetwood Mac', 'Soft Rock', 'https://faroutmagazine.co.uk/static/uploads/2020/10/The-story-behind-Fleetwood-Macs-Rumours-cover-art.jpg', 24, 85);
 
 INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
-VALUES ('Led Zeppelin IV', 'Led Zeppelin', 'Hard Rock', 'https://th.bing.com/th/id/OIP.8BOmatWcTQNvA0xQvpbGxAHaHC?w=194&h=184&c=7&r=0&o=5&dpr=1.3&pid=1.7', 20, 95);
+VALUES ('Led Zeppelin IV', 'Led Zeppelin', 'Hard Rock', 'https://th.bing.com/th/id/OIP.8BOmatWcTQNvA0xQvpbGxAHaHC?w=194&h=184&c=7&r=0&o=5&dpr=1.3&pid=1.7', 25, 95);
 
 INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
-VALUES ('In Utero', 'Nirvana', 'Grunge', 'https://th.bing.com/th/id/OIP.tgcgZUruhb_FQhAIMT8pjQHaHa?w=171&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7', 20, 75);
+VALUES ('In Utero', 'Nirvana', 'Grunge', 'https://th.bing.com/th/id/OIP.tgcgZUruhb_FQhAIMT8pjQHaHa?w=171&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7', 23, 75);
 
 INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
-VALUES ('Hotel California', 'Eagles', 'Rock', 'https://pure-music.co.uk/wp-content/uploads/2019/04/Hotel-California-Album-Cover.png', 20, 105);
+VALUES ('Hotel California', 'Eagles', 'Rock', 'https://pure-music.co.uk/wp-content/uploads/2019/04/Hotel-California-Album-Cover.png', 29, 105);
 
 INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
-VALUES ('The Wall', 'Pink Floyd', 'Progressive Rock', 'https://s-media-cache-ak0.pinimg.com/originals/ee/66/17/ee66179ea3111626559a4326c394bab4.jpg', 20, 100);
+VALUES ('The Wall', 'Pink Floyd', 'Progressive Rock', 'https://s-media-cache-ak0.pinimg.com/originals/ee/66/17/ee66179ea3111626559a4326c394bab4.jpg', 30, 100);
 
 INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
-VALUES ('Sgt. Pepper''s Lonely Hearts Club Band', 'The Beatles', 'Rock', 'https://m.media-amazon.com/images/I/61vwcOLe47L._SX300_SY300_QL70_FMwebp_.jpg', 20, 100);
+VALUES ('Sgt. Pepper''s Lonely Hearts Club Band', 'The Beatles', 'Rock', 'https://m.media-amazon.com/images/I/61vwcOLe47L._SX300_SY300_QL70_FMwebp_.jpg', 35, 100);
 
 INSERT INTO record_store.records_detail (record_name, artist, genre, img_link, price, quantity) 
 VALUES ('Born to Run', 'Bruce Springsteen', 'Rock', 'https://m.media-amazon.com/images/I/51QxoecCysL._SY300_SX300_QL70_FMwebp_.jpg', 20, 70);
@@ -209,8 +220,22 @@ CREATE TABLE IF NOT EXISTS `record_store`.`review_table` (
   FOREIGN KEY (`record_id`) REFERENCES `records_detail`(`record_id`)
 ) ENGINE = InnoDB;
 
+CREATE TABLE IF NOT EXISTS `record_store`.`credit_card_info` (
+`cust_id` INT NOT NULL,
+`cardholder_name` varchar(50),
+`card_number` BIGINT NOT NULL,
+`expiry_date` varchar(5),
+`cvv` INT NOT NULL,
+PRIMARY KEY (`cust_id`)
+);
 
-
+INSERT INTO `record_store`.`credit_card_info` (`cust_id`, `cardholder_name`, `card_number`, `expiry_date`, `cvv`)
+VALUES 
+(1, 'John Doe', 1234567890123456, '5/25', 123),
+(2, 'Donald Smith', 6543210987654321, '4/27', 456),
+(3, 'Dale Johnson', 1234512345123451, '9/28', 789),
+(4, 'Jim Brown', 9876987698769876, '7/26', 12),
+(5, 'Kelly Jacobson', 3456345634563456, '9/25', 234);
 
 -- Add other table definitions here...
 
