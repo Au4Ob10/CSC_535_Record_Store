@@ -388,4 +388,47 @@ def change_email():
         return redirect(url_for('user.profile'))
     
         
+@user.route('/history', methods=['GET'])
+def history():
+    try:
+        name=session.get('name')
+        id=session.get('customer_id')
+        cur.execute('Select * from orders where customer_id = %s',(id,))
+        order_data = cur.fetchall()
+        return render_template('user_history.html', order_data=order_data)
+    except Exception as e:
+        flash('Unable to grab order history','error')
+        print(e)
+        return redirect(url_for('user.profile'))
+    
+@user.route('/order_details', methods=['GET','POST'])
+def order_details():
+    try:
+        name=session.get('name')
+        id=session.get('customer_id')
+        order_id = request.form.get('order_id')
+        usercart = f"`{name}{id}_cart{order_id}`"
+        cur.execute(f"""SELECT 
+                                records_detail.record_name, 
+                                records_detail.artist, 
+                                records_detail.genre, 
+                                records_detail.img_link,
+                                {usercart}.price * {usercart}.quantity,
+                                {usercart}.quantity,
+                                {usercart}.itemID
+                            FROM {usercart}
+                            INNER JOIN records_detail 
+                            ON {usercart}.record_id = records_detail.record_id;""")
+
+        cart_details = cur.fetchall()
+
+        cur.execute(f"""SELECT SUM({usercart}.price * 
+                                    {usercart}.quantity)
+                                    FROM {usercart}""")
+
+        item_total = cur.fetchone()
+        return render_template('history_details.html', cart_details=cart_details, item_total=item_total)
+    except Exception as e:
+        flash('Unable to grab order details','error')
+        return redirect(url_for('user.history'))
     

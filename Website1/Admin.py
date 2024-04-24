@@ -222,3 +222,35 @@ def discount():
         print(e)
         flash('An error occurred while updating cart. Please try again.', 'error')
         return redirect(url_for('admin.editcart'))
+    
+    
+@admin.route('/purchased_cart', methods=['POST'])
+def purchased_cart():
+    customerid = request.form['id']
+    name = request.form['name']
+    id = request.form['cart_id']
+    try:
+        usercart = f"`{name}{customerid}_cart{id}`"
+        cur.execute(f"""SELECT 
+                                records_detail.record_name, 
+                                records_detail.artist, 
+                                records_detail.genre, 
+                                records_detail.img_link,
+                                {usercart}.price * {usercart}.quantity,
+                                {usercart}.quantity,
+                                {usercart}.itemID
+                            FROM {usercart}
+                            INNER JOIN records_detail 
+                            ON {usercart}.record_id = records_detail.record_id;""")
+
+        cart_details = cur.fetchall()
+
+        cur.execute(f"""SELECT SUM({usercart}.price * 
+                                    {usercart}.quantity)
+                                    FROM {usercart}""")
+
+        item_total = cur.fetchone()
+        return render_template('purchased_cart.html', cart_details=cart_details, item_total=item_total)
+    except Exception as e:
+        print(e)
+        flash('An error occurred while retrieving cart data. Please try again.', 'error')
