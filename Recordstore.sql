@@ -9,29 +9,6 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 CREATE SCHEMA IF NOT EXISTS `record_store`;
 USE `record_store`;
 
--- SELECT * FROM `record_store.john.doe@example.com_cart`;
--- Table record_store.carts
-CREATE TABLE IF NOT EXISTS `record_store`.`carts` (
-  `order_id` INT AUTO_INCREMENT NOT NULL,
-  `customer_id` INT NOT NULL,
-  `record_id` INT NOT NULL,
-  `status` VARCHAR(45) NOT NULL,
-  `add_date` DATE NOT NULL,
-  `update_date` DATE NOT NULL,
-  PRIMARY KEY (`order_id`)
-) ENGINE = InnoDB;
-
-
-
-INSERT INTO carts (order_id, customer_id,record_id,status,add_date,update_date)
-VALUES
-(1, 2,1000,"fulfilled",'2022-01-22','2022-01-23'),
-(2, 3,1001,"fulfilled",'2023-02-25','2022-02-26'),
-(3, 4,1002,"fulfilled",'2022-05-23','2022-05-24'),
-(4, 5,1003,"fulfilled",'2021-07-22','2022-07-23');
-
-
-
 -- Table record_store.account
 CREATE TABLE IF NOT EXISTS `record_store`.`account` (
 `account_id` INT NOT NULL,
@@ -184,20 +161,14 @@ select * from staff_credentials;
 
 
 CREATE TABLE IF NOT EXISTS `orders` (
-`order_id` int NOT NULL,
+`order_id` INT NOT NULL AUTO_INCREMENT,
 `customer_id` int NOT NULL,
 `last_name` varchar(35) NOT NULL,
-`placement_date` DATE NOT NULL
+`cart_id` int NOT NULL,
+`placement_date` DATE NOT NULL,
+Primary KEY (`order_id`)
 )  ENGINE=InnoDB;
-USE record_store;
-SELECT * FROM orders;
-INSERT INTO orders (order_id,customer_id,last_name,placement_date)
-VALUES 
-(10,1,'Doe', '2022-01-22'),
-(11,2,'Smith', '2023-02-25'),
-(12,3,'Johnson', '2022-05-23'),
-(13,4,'Brown', '2021-07-22'),
-(14, 5, 'Jacobson', '2020-07-22');
+
 
 
 CREATE TABLE IF NOT EXISTS `record_store`.`review_table` (

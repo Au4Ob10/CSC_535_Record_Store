@@ -194,19 +194,53 @@ def cart():
 
 @user.route('/payment', methods=['GET', 'POST'])
 def payment():
+    first_name = session.get('name')
+    customer_id = session.get('customer_id')
+    order_table = f"{first_name}{customer_id}_cart"
     form = PaymentForm()
     labels_and_inputs = [(item.label, item) for item in form]
-    if form.validate_on_submit():
-        print("Form data:")
-        print("Cardholder Name:", form.cardholder_name.data)
-        print("Card Number:", form.card_number.data)
-        print("Expiry Date:", form.expiry_date.data)
-        print("CVV:", form.cvv.data)
-       
-        # process the form data
-        # process the form data
-        return render_template('orderprocessed.html', title='Payment', form=form)
-    else: 
+    try:
+        if form.validate_on_submit():
+            print("Form data:")
+            print("Cardholder Name:", form.cardholder_name.data)
+            print("Card Number:", form.card_number.data)
+            print("Expiry Date:", form.expiry_date.data)
+            print("CVV:", form.cvv.data)
+
+            purchase_time = datetime.datetime.now()
+
+            cur.execute('Update customer Set cart=cart+1 where customer_id=%s',(customer_id,))
+            cur.execute('Select cart from customer where customer_id = %s',(customer_id,))
+            order_id = cur.fetchone()[0]
+            print(order_id)
+        
+            cur.execute(f"""
+                        CREATE TABLE IF NOT EXISTS `{first_name}{customer_id}_cart{order_id}` (
+                            `itemID` INT NOT NULL AUTO_INCREMENT,
+                            `record_id` INT,
+                            `customer_id` INT,
+                            `price` DECIMAL(10, 2),
+                            `quantity` INT,
+                            PRIMARY KEY (`itemID`)
+                        )
+                        """)
+            order_history = f"{first_name}{customer_id}_cart{order_id}"
+            cur.execute(f"""Insert into {order_history} (itemID, record_id,customer_id,price,quantity) 
+                        Select itemID, record_id, customer_id, price,quantity 
+                        From {order_table}""")
+
+            cur.execute("Insert into orders(customer_id,last_name,cart_id,placement_date) Values(%s,%s,%s,%s)",(customer_id,first_name,order_id,purchase_time))
+
+            cur.execute(f"Delete From {first_name}{customer_id}_cart")
+            store_db.commit()
+            flash('Order placed!','info')
+            return render_template('orderprocessed.html', title='Payment', form=form)
+        else: 
+            return render_template('payment.html', title='Payment', labels_and_inputs=labels_and_inputs[0:4], submit_btn=labels_and_inputs[4], form=form)
+    except Exception as e:
+        flash('Error in order proccessing try again','error')
+        store_db.rollback()
+        print(e)
         return render_template('payment.html', title='Payment', labels_and_inputs=labels_and_inputs[0:4], submit_btn=labels_and_inputs[4], form=form)
     
     

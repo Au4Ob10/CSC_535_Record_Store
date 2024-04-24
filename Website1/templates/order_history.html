@@ -27,7 +27,9 @@
       border-radius: 5px; /* Add rounded corners for style */
   }
 </style>
-{% with messages = get_flashed_messages(with_categories=true) %}
+</head>
+<body class="order_history_body">
+  {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
       <ul class="flash-messages">
           {% for category, message in messages %}
@@ -36,8 +38,6 @@
       </ul>
   {% endif %}
 {% endwith %}
-</head>
-<body class="order_history_body">
   <div class="container-fluid">
     
     <div class="row bg-primary bg-gradient pt-2">
