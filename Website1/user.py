@@ -151,15 +151,13 @@ def home():
 
         cur.execute("SELECT record_id, record_name, artist, img_link, price FROM records_detail")
         records = cur.fetchall()
-        cur.execute("Select cart from customer where email = %s", (current_user,)) 
-        cart_item_count = cur.fetchone()[0]
         cur.execute(f"SELECT SUM(quantity) FROM {table_name}")
         total_qty = cur.fetchone()[0]
         
         if not total_qty:
             total_qty = 0
         # print(cart_item_count)
-    return render_template('userhome.html', total_qty=total_qty, current_user=current_user, cart_item_count=cart_item_count, records=records)
+    return render_template('userhome.html', total_qty=total_qty, current_user=current_user,records=records)
 
 @user.route('/cart', methods=['GET', 'POST'])
 def cart():
@@ -228,10 +226,6 @@ def remove_from_cart():
         # Constructing and executing the SQL query
         sql = f"DELETE FROM `{table_name}` WHERE record_id = %s"
         cur2.execute(sql, (item_id,))
-        cur2.execute("Select cart from customer where customer_id = %s", (id,))
-        cart_item_count = cur2.fetchone()[0]
-        if cart_item_count > 0:
-            cur2.execute(f"Update customer set cart = cart - 1 where customer_id = {id}")
         cur.execute("Update records_detail Set quantity=quantity+%s where record_id = %s",(quantity,item_id,))
         
         store_db.commit()  
@@ -247,14 +241,18 @@ def remove_from_cart():
 def record_details():
     try:
         current_user = session.get('email')
+        name = session.get('name')
+        id = session.get('customer_id')
+        table_name = f"{name}{id}_cart"
         record_id = request.form.get('record_id')
-        cur.execute("Select cart from customer where email = %s", (current_user,)) 
-        cart_item_count = cur.fetchone()[0]
+        
         cur.execute('Select * from records_detail where record_id = %s',(record_id,))
         record_data = cur.fetchall()
         cur.execute('Select * from review_table where record_id = %s',(record_id,))
         review_data = cur.fetchall()
-        return render_template('deets.html',record_data=record_data, current_user=current_user, cart_item_count=cart_item_count,review_data=review_data)
+        cur.execute(f"SELECT SUM(quantity) FROM {table_name}")
+        total_qty = cur.fetchone()[0]
+        return render_template('deets.html',record_data=record_data, current_user=current_user, total_qty=total_qty,review_data=review_data)
     except Exception as e:
         print(e)
         flash('Unable to grab record_id','error')
@@ -267,8 +265,6 @@ def review_record():
         id = session.get('customer_id')
         record_id = request.form.get('id')
         review=request.form.get('review')
-        print(request.form)
-        print(record_id)
         cur.execute("INSERT INTO review_table (customer_name,customer_id,record_id,review) Values(%s,%s,%s,%s)",(name,id,record_id,review,))
         cur.execute("Update records_detail set review_count = review_count + 1 where record_id = %s",(record_id,))
         store_db.commit()
@@ -282,17 +278,18 @@ def review_record():
 @user.route('/search_logged', methods=['GET'])
 def search_records():
     current_user = session.get('email')
-    print(current_user)
+    name = session.get('name')
+    id = session.get('customer_id')
+    table_name = f"{name}{id}_cart"
     search_query = request.args.get('query')
     cursor = store_db.cursor(dictionary=True)
-    cur.execute("Select cart from customer where email = %s", (current_user,)) 
-    cart_item_count = cur.fetchone()[0]
     sql = "SELECT * FROM records_detail WHERE record_name LIKE %s OR artist LIKE %s OR genre LIKE %s"
     cursor.execute(sql, ('%' + search_query + '%', '%' + search_query + '%', '%' + search_query + '%'))
     records = cursor.fetchall()
-    print (records)
+    cur.execute(f"SELECT SUM(quantity) FROM {table_name}")
+    total_qty = cur.fetchone()[0]
     cursor.close()
-    return render_template('search_results_logged.html', current_user=current_user, cart_item_count=cart_item_count, records=records)
+    return render_template('search_results_logged.html', current_user=current_user, total_qty=total_qty, records=records)
 
 @user.route('/profile', methods=['GET'])
 def profile():
