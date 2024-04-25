@@ -20,7 +20,15 @@ class PaymentForm(FlaskForm):
     expiry_date = StringField('Expiration Date (MM/YY)', validators=[DataRequired(), Length(min=5, max=5)])
     cvv = StringField('CVV', validators=[DataRequired(), Length(min=3, max=3)])
     submit = SubmitField()
-    
+
+@user.route('/about_us')
+def about_us():
+        return render_template('about_us.html')
+        
+@user.route('/locations')
+def locations():
+    return render_template('location.html')
+  
 @user.route("/add_to_cart", methods=['POST'])
 def add_to_cart():
     try:
@@ -431,4 +439,3 @@ def order_details():
     except Exception as e:
         flash('Unable to grab order details','error')
         return redirect(url_for('user.history'))
-    
