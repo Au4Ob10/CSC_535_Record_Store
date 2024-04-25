@@ -27,7 +27,9 @@
       border-radius: 5px; /* Add rounded corners for style */
   }
 </style>
-{% with messages = get_flashed_messages(with_categories=true) %}
+</head>
+<body class="order_history_body">
+  {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
       <ul class="flash-messages">
           {% for category, message in messages %}
@@ -36,8 +38,6 @@
       </ul>
   {% endif %}
 {% endwith %}
-</head>
-<body class="order_history_body">
   <div class="container-fluid">
     
     <div class="row bg-primary bg-gradient pt-2">
@@ -101,44 +101,36 @@
                       <tr>
                         <th scope="col">Order ID</th>
                         <th scope="col">Cust. ID</th>
-                        <th scope="col">Last Name</th>
+                        <th scope="col">FIRST NAME</th>
+                        <th scope="col">CART ID</th>
                         <th scope="col">Order Date</th>
+                        <th scope="col">VIEW CART</th>
                      
                       </tr>
                       
                     </thead>
                   
                     <tbody>
-                    
+                      {% for order in order_data %}
                       <tr>
-                    {% for ord_id in order_data[0] %}
-                      <td>{{ord_id}}</td>
-                      {%endfor%}
+                          <td>{{ order[0] }}</td>
+                          <td>{{ order[1] }}</td>
+                          <td>{{ order[2] }}</td>
+                          <td>{{ order[3] }}</td>
+                          <td>{{ order[4] }}</td>
+                          <td>
+                              <form action="/admin/purchased_cart" method="POST">
+                                  <input type="hidden" name="cart_id" value="{{ order[3] }}">
+                                  <input type="hidden" name="id" value="{{ order[1] }}">
+                                  <input type="hidden" name="name" value="{{ order[2] }}">
+                                  <button type="submit" class="btn btn-primary">View Cart</button>
+                              </form>
+                          </td>
                       </tr>
-               
-                      <tr>
-                      {% for cust_id in order_data[1] %}
-                      <td>{{cust_id}}</td>
-                      {%endfor%}
-                      </tr>
-                 
-
-                      <tr>
-                      {% for l_name in order_data[2] %}
-                      <td>{{l_name}}</td>
-                      {%endfor%}
-                      </tr>
-             
-
-                    <tr>
-                      {% for ord_date in order_data[3] %}
-                      <td>{{ord_date}}</td>
-                      {%endfor%}
-                    </tr>  
-              
-      
+                      {% endfor %}
                   </tbody>
-                  </table>      
+              </table>
+                      
                 
            
         {% endblock %}

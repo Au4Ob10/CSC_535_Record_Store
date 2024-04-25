@@ -69,13 +69,16 @@
                     </div>
                 </form>      
   
-                </div>
+                
               </div>
+              <button type="button" class="btn btn-primary" onclick="window.location.href='{{ url_for('user.home') }}';">
+                Home
+            </button>
               <button type="button" class="btn btn-primary" onclick="window.location.href='{{ url_for('auth1.logout') }}';">
                 Log Out
               </button>
               <button type="button" class="btn bg-primary ml-5 mr-3" id="viewCart" onclick="window.location.href='{{ url_for( 'user.cart') }}';"  >
-                <i class="fa fa-shopping-cart mr-2" aria-hidden="true"></i><span class="badge badge-primary" id="quantityBadge">{{ cart_item_count }}</span>
+                <i class="fa fa-shopping-cart mr-2" aria-hidden="true"></i><span class="badge badge-primary" id="quantityBadge">{{ total_qty }}</span>
                 
               </button>
             
@@ -138,10 +141,15 @@
                                 <p class="card-text mb-1">{{ record['record_name'] }}</p>
                                 <p class="card-text mb-3">{{ record['artist'] }}</p>
                                 <form method="post" action="/user/add_to_cart">
+                                    <input type="hidden" name="cust_id" value="{{ current_user }}">
                                     <input type="hidden" name="record_id" value="{{ record['record_id'] }}">
                                     <input type="hidden" name="price" value="{{ record['price'] }}">
                                     <button type="submit" class="btn btn-danger">Add to Cart</button>
                                 </form>
+                                <form method="post" action="/user/record_details">
+                                  <input type="hidden" name = "record_id" value = "{{ record['record_id'] }}">
+                                  <button type="submit" class="btn btn-primary btn-sm">View Record Details</button>
+                              </form>
                             </div>
                         </div>
                     </div>

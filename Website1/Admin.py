@@ -57,11 +57,17 @@ def Add():
             pass1 = request.form['pass1']
             pass2 = request.form['pass2']
             if pass1 == pass2:
-                cur.execute("Insert Into staff_credentials(username,password,email,isadmin) VALUES (%s,%s,%s,0)",
-                            (usern,pass1,email))
-                store_db.commit()
-                flash('Staff member added to database!','success')
-                return render_template("add_staff.html")
+                cur.execute("Select * from staff_credentials where username = %s", (usern,))
+                is_exist = cur.fetchall()
+                if is_exist:
+                    flash('Username already exists!','error')
+                    return render_template("add_staff.html")
+                else:
+                    cur.execute("Insert Into staff_credentials(username,password,email,isadmin) VALUES (%s,%s,%s,0)",
+                                (usern,pass1,email))
+                    store_db.commit()
+                    flash('Staff member added to database!','success')
+                    return render_template("add_staff.html")
         except Exception as e:
             print(e)
             store_db.rollback()
@@ -99,16 +105,27 @@ def addRecord():
         artist = request.form['artist']
         genre = request.form['genre']
         img_link = request.form['img_link']
+        price = request.form['price']
         quantity = request.form['quantity']
 
         # Insert record into the database
-        insert_query = "INSERT INTO records_detail (record_name, artist, genre, img_link, quantity) VALUES (%s, %s, %s, %s, %s)"
-        record_data = (record_name, artist, genre, img_link, quantity)
+        insert_query = "INSERT INTO records_detail (record_name, artist, genre, img_link, price, quantity) VALUES (%s, %s,%s, %s, %s, %s)"
+        record_data = (record_name, artist, genre, img_link,price,quantity)
         cur.execute(insert_query, record_data)
         store_db.commit()
-
-        return redirect(url_for('index'))
+        flash('Record added to database','info')
+        return redirect(url_for('admin.addRecord'))
     return render_template('add_record.html')
+
+@admin.route('/deleteRecord', methods=['GET','POST'])
+def deleteRecord():
+    if request.method == 'POST':
+        record_id = request.form['record_id']
+        cur.execute("DELETE FROM records_detail WHERE record_id = %s", (record_id,))
+        store_db.commit()
+        flash('Record deleted successfully!', 'success')
+        return redirect(url_for('admin.Showstock'))
+    return render_template('stock.html')
     
     
 
@@ -205,3 +222,35 @@ def discount():
         print(e)
         flash('An error occurred while updating cart. Please try again.', 'error')
         return redirect(url_for('admin.editcart'))
+    
+    
+@admin.route('/purchased_cart', methods=['POST'])
+def purchased_cart():
+    customerid = request.form['id']
+    name = request.form['name']
+    id = request.form['cart_id']
+    try:
+        usercart = f"`{name}{customerid}_cart{id}`"
+        cur.execute(f"""SELECT 
+                                records_detail.record_name, 
+                                records_detail.artist, 
+                                records_detail.genre, 
+                                records_detail.img_link,
+                                {usercart}.price * {usercart}.quantity,
+                                {usercart}.quantity,
+                                {usercart}.itemID
+                            FROM {usercart}
+                            INNER JOIN records_detail 
+                            ON {usercart}.record_id = records_detail.record_id;""")
+
+        cart_details = cur.fetchall()
+
+        cur.execute(f"""SELECT SUM({usercart}.price * 
+                                    {usercart}.quantity)
+                                    FROM {usercart}""")
+
+        item_total = cur.fetchone()
+        return render_template('purchased_cart.html', cart_details=cart_details, item_total=item_total)
+    except Exception as e:
+        print(e)
+        flash('An error occurred while retrieving cart data. Please try again.', 'error')
