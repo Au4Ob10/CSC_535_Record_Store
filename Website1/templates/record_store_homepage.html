@@ -48,9 +48,11 @@
          
         </div>
         <div class="col bg-primary d-flex justify-content-end">
-          <button type="button" class="btn btn-primary">About Us</button>
-          <button type="button" class="btn btn-primary ml-2">Our Locations</button>
-        </div>
+          <div class="col bg-primary d-flex justify-content-end">
+            <a href="{{ url_for('user.about_us') }}" class="btn btn-primary">About Us</a>
+            <a href="{{ url_for('user.locations') }}" class="btn btn-primary ml-2">Our Locations</a>
+          </div>
+        </div>          
         </div>
       </div>
    
