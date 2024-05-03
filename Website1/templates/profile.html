@@ -59,7 +59,7 @@
       <div class="container-fluid">
         <div class="row mt-3 mb-4 d-flex justify-content-between align-items-center">
             <div class="col-4 align-items-center">
-                <p class="h4">Welcome! {{ current_user }}</p>
+                <p class="h4">Welcome, {{ user_data[0][1] }} {{ user_data[0][2] }} </p>
             </div>
             <div class="col-8 text-right">
                 <button type="button" class="btn btn-primary" onclick="window.location.href='{{ url_for('user.home') }}';">Home</button>
@@ -72,34 +72,39 @@
         </div>
     
         <div class="row">
-            <div class="col-6">
-                <table class="table">
+            
+                
                     {% for user in user_data %}
-                    <tr>
-                        <td>First Name:{{ user[1] }}</td>
-                        <td>Last Name:{{ user[2] }}</td>
-                        <td>Email:{{ user[3] }}</td>
-                        <td>Phone Number:{{ user[5] }}</td>
-                    </tr>
+                    
+                    <div class="col-3 ml-5">
+                        <p class="font-weight-bold">Email</p>
+                        <p>{{ user[3] }}</p>
+                    
+                        <p class="font-weight-bold">Phone Number</p>
+                        <p>{{ user[5] }}</p> 
+        </div>
+   
+                    
                     {% endfor %}
-                </table>
-            </div>
-    
-            <div class="col-6">
+                
+           
+            <div class="col-3">
+                <p class="font-weight-bold text-center">Update Password</p>
                 <form method="post" action="/user/change_password" class="mb-3">
                     <label for="old_pass">Old Password:</label>
                     <input type="text" id="old_pass" name="old_pass" class="form-control">
-                    <label for="new_pass1">New Password:</label>
+                    <label class="mt-2" for="new_pass1">New Password:</label>
                     <input type="text" id="new_pass1" name="new_pass1" class="form-control">
                     <label for="new_pass2">Confirm New Password:</label>
                     <input type="text" id="new_pass2" name="new_pass2" class="form-control">
-                    <button type="submit" class="btn btn-primary mt-2">Update Password</button>
+                    <button type="submit" class="btn btn-primary mt-3">Update Password</button>
                 </form>
-    
+                
+                <p class="font-weight-bold text-center">Update Email</p>
                 <form method="post" action="/user/change_email">
                     <label for="old_email">Old Email:</label>
                     <input type="text" id="old_email" name="old_email" class="form-control">
-                    <label for="email1">New Email:</label>
+                    <label class="mt-2" for="email1">New Email:</label>
                     <input type="text" id="email1" name="email1" class="form-control">
                     <label for="email2">Confirm New Email:</label>
                     <input type="text" id="email2" name="email2" class="form-control">

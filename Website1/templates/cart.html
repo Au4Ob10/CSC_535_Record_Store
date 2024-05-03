@@ -58,9 +58,15 @@
               <p class="h7">${{item_total}}</p>
             </div>
             <div class="col-auto d-flex flex-row-reverse">
+              {% if item_total != 0 %}
               <button class="h7 btn btn-primary" onclick="window.location.href='/user/payment'">
                 Checkout
               </button>
+              {% else %}
+              <button class="h7 btn btn-primary" disabled>
+                Checkout
+              </button>
+              {% endif %}
             </div>
           </div>
         </div>

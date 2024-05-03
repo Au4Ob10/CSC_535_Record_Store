@@ -98,7 +98,7 @@ staff
 #admin-icon {
     font-size: 25px;
 }
-.fa-home {
+.fa, .fa-solid  {
     color: white;
 }
 

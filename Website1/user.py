@@ -403,7 +403,7 @@ def history():
         id=session.get('customer_id')
         cur.execute('Select * from orders where customer_id = %s',(id,))
         order_data = cur.fetchall()
-        return render_template('user_history.html', order_data=order_data)
+        return render_template('user_history.html', order_data=order_data, name=name)
     except Exception as e:
         flash('Unable to grab order history','error')
         print(e)
