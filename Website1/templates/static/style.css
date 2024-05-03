@@ -80,7 +80,7 @@ html, body {
 }
 
 
-.add-staff, .admin_home_body, .add_staff_body {
+.add-staff, .admin_home_body, .add_staff_body, .add_record_body {
     background-color: #0275d8;
     color: white;
 }

@@ -34,7 +34,8 @@
         {% endwith %}
         </head>
     <body>
-        <h1>Create Account</h1>
+        <h1 class="text-center">Create Account</h1>
+        <div class="d-flex justify-content-center">
         <form method="POST" action="/create_account">
             <label for="first_name">First Name:</label><br>
             <input type="text" id="first_name" name="first_name"><br>
@@ -60,5 +61,6 @@
             <input type="text" id="postal_code" name="postal_code"><br><br>
             <input type="submit" value="Create Account">
         </form>
+    </div>
     </body>
 </html>
