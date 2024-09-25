@@ -25,4 +25,7 @@ If all your information is correct the application will run
 
 3) Type "flask run" to start the local environment.
 
+-To log in as a customer, you can use 'john.doe@example.com' as the username and '0000' as the password (no quotes).
+
+-To log in to the admin account simply use 'admin' as both the username and password (no quotes).
 
