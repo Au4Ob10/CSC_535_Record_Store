@@ -17,48 +17,55 @@ app = Flask(__name__, template_folder='Website1/templates',static_folder='Websit
 
 app.secret_key = "csc-535-record-store-app"
 
+#Populate database on flask run
+def check_database():
+    connection = mysql.connector.connect(
+        host=environ.get('MYSQL_HOST'),
+        user=environ.get('MYSQL_USER'),
+        passwd=environ.get('MYSQL_PASSWORD'),
+        port=int(environ.get('MYSQL_PORT')),
+        auth_plugin="mysql_native_password"
+    )
+
+    # Check if the database exists
+    cursor = connection.cursor()
+    try:
+        cursor.execute("USE record_store")
+    except mysql.connector.Error as err:
+        # If the database does not exist, create it
+        if err.errno == mysql.connector.errorcode.ER_BAD_DB_ERROR:
+            create_database(cursor)
+            print("Database 'record_store' created successfully.")
+        else:
+            print(err)
+            exit(1)
+    finally:
+        print("databased")
+        cursor.close()
+        connection.close()
+#Populate database on flask run
+def create_database(cursor):
+    # Read SQL script from file
+    with open("Recordstore.sql", "r") as sql_file:
+        sql_script = sql_file.read()
+    # Execute SQL script to create the database
+    cursor.execute(sql_script, multi=True)
+
+    # Close the cursor
+    cursor.close()
+
+check_database()
+
 store_db = mysql.connector.connect(
-host= environ.get('MYSQL_HOST', 'localhost'),
+host= environ.get('MYSQL_HOST'),
 user= environ.get('MYSQL_USER'),
-passwd= environ.get('MYSQL_PASSWORD', 'root'),
+passwd= environ.get('MYSQL_PASSWORD'),
 database= environ.get('MYSQL_DB'),
 port= int(environ.get('MYSQL_PORT')),
 auth_plugin="mysql_native_password"
 )
 cur = store_db.cursor(buffered=True)
 
-
-
-
-
-
-
-
-# def test_mysql_connection():
-#     try:
-#         # Execute a simple query to test the connection
-#         cur.execute("SELECT VERSION()")
-
-#         # Fetch and print the result
-#         db_version = cur.fetchone()[0]
-#         print("MySQL Database Version:", db_version)
-
-#         # Close cursor and database connection
-
-#         return True  # Return True if connection and query execution were successful
-
-#     except mysql.connector.Error as err:
-#         # Print error message if connection or query execution fails
-#         print("Failed to connect to MySQL database:", err)
-#         return False  # Return False if there was an error
-
-
-# test_result = test_mysql_connection()
-
-# if test_result:
-#     print("Connection test successful!")
-# else:
-#     print("Connection test failed!")
 
 
 from Website1.auth import auth1
@@ -73,26 +80,25 @@ app.register_blueprint(staff, url_prefix="/staff")
 from Website1.Admin import admin
 app.register_blueprint(admin, url_prefix="/admin")
 
-from Website1.img_display import img_display
-app.register_blueprint(img_display, url_prefix="/img_display")
+# from Website1.img_display import img_display
+# app.register_blueprint(img_display, url_prefix="/img_display")
 
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    return render_template('index.html')
+# @app.route('/', methods=['GET', 'POST'])
+# def index():
+#     return render_template('index.html')
 
-@app.route('/vines_record', methods=['GET'])
-def vines_record_page():
-    return render_template('record_page.html')
+# @app.route('/vines_record', methods=['GET'])
+# def vines_record_page():
+#     return render_template('record_page.html')
 
-@app.route('/user_cart', methods=['GET','POST'])
-def user_cart_page():
-    return render_template('customer_cart.html')
+# @app.route('/user_cart', methods=['GET','POST'])
+# def user_cart_page():
+#     return render_template('customer_cart.html')
 
 
 
 if __name__=='__main__':
     app.run(debug=True)
     
-
 

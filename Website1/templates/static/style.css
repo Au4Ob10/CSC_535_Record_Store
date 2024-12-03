@@ -1,7 +1,74 @@
+
+
+{% comment %} cart.html  {% endcomment %}
+
+.attribute_heading, .cart_album_name {
+    font-weight: bold;
+}
+
+.cart_update_btn, .cart_delete_btn {
+    width: 6.25rem;
+}
+
+
+.cart-card-body {
+    line-height: 0.4;
+}
+
+.cart_img {
+    height: 140px;
+    width: 140px;
+}
+
+
+
+
+
+{% comment %} record_store_homepage.html {% endcomment %}
+
+
+
+
+#rec-info-card, #rec-img-card, #rec-img-card-body {
+border-color: #EEEEEE;
+}
+
+#rec-info-card, #rec-img-card {
+    background-color: #EEEEEE;
+}
+
+#companyNameHeading {
+    color: white;
+}
+
+#viewCart{
+    color: white;
+    width: 5rem;
+    
+}
+
+
+
+#record_cart_page_img {
+
+    width: 180px;
+    height: 180px;
+}
+
+#rec-img-card {
+   
+    border-right: none; 
+    
+}
+
+
+
 .row label {
     width: 13rem;
     display: inline-block;
 }
+
+{% comment %} Admin Pages {% endcomment %}
 
 
 #email_or_username, #password{
@@ -39,7 +106,7 @@ staff
     color: white;
 }
 
-.fa-id-badge, .fa-user, .fa-shopping-cart, .fa-sign-out{
+.fa-id-badge, .fa-user, .fa-sign-out{
     color: white;
     font-size: 16px; 
 }

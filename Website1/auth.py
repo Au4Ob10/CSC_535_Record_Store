@@ -11,11 +11,14 @@ def login():
 
         try:
             # Check if the login credentials match an email in the customer table
-            cur.execute("SELECT email FROM customer WHERE email = %s AND passw = %s", (email_or_username, password))
-            user_email = cur.fetchone()
-            if user_email:
-                session['email'] = user_email[0]  # Store the user's email in the session
-                flash('Login successful!', 'success')
+            cur.execute("SELECT customer_id, first_name, email  FROM customer WHERE email = %s AND passw = %s", (email_or_username, password))
+            result = cur.fetchone()
+            if result:
+                customer_id, first_name, user_email = result
+                session['email'] = user_email  # Store the user's email in the session
+                session['name'] = first_name  # Store the user's name in the session
+                session['customer_id'] = customer_id  # Store the user's ID in the session
+                flash('Login successful!', 'info')
                 return redirect(url_for('auth1.portal'))
 
             # Check if the login credentials match a username in the staff_credentials table
@@ -25,11 +28,11 @@ def login():
                 username, isadmin = staff_data
                 if isadmin == 1:
                     session['username'] = username  # Store the username in the session
-                    flash('Admin Login!', 'success')
+                    flash('Admin Login!', 'info')
                     return redirect(url_for('admin.portal'))
                 else:
                     session['username'] = username  # Store the username in the session
-                    flash('Staff Login!', 'success')
+                    flash('Staff Login!', 'info')
                     return redirect(url_for('staff.portal'))
 
             flash('Invalid email/username or password. Please try again.', 'error')
@@ -37,19 +40,33 @@ def login():
         except Exception as e:
             flash(f'Error occurred: {e}', 'error')
 
-    return render_template("index.html")
+    return redirect(url_for("auth1.index"))
 
 @auth1.route('/portal', methods=['GET', 'POST'])
 def portal():
     if 'email' not in session:
         flash('You need to login first.', 'error')
-        return redirect(url_for('auth1.login'))
-    
-    return render_template("index.html")
+        return redirect(url_for('auth1.login'))    
+    return redirect(url_for("user.home"))
+
 
 @auth1.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    cur.execute("SELECT record_name, artist, img_link FROM records_detail")
+    records = cur.fetchall()
+    return render_template('record_store_homepage.html',records=records)
+
+
+@auth1.route('/search', methods=['GET'])
+def search_records():
+    search_query = request.args.get('query')
+    cursor = store_db.cursor(dictionary=True)
+    sql = "SELECT * FROM records_detail WHERE record_name LIKE %s OR artist LIKE %s OR genre LIKE %s"
+    cursor.execute(sql, ('%' + search_query + '%', '%' + search_query + '%', '%' + search_query + '%'))
+    records = cursor.fetchall()
+    cursor.close()
+    return render_template('search_results.html', records=records)
+
 
 @auth1.route('/create_account_form', methods=['GET'])
 def create_account_form():
@@ -73,39 +90,55 @@ def create_account():
             postal_code = request.form['postal_code']
             # Check password 1 and 2 see if they match
             if passw == passw2:
+                # Check if Email is in Database
+                cur.execute("Select email from customer where email =%s",(email,))
+                result=cur.fetchone()
+                print(result)
+                if result:
+                    flash('User already exists in the database try again', 'error')
+                    return redirect(url_for('auth1.create_account_form'))
+                else:
+                    cur.execute("INSERT INTO customer (first_name, last_name, email, passw, phone_num, if_register) VALUES (%s, %s, %s, %s, %s, 1)",
+                                (first_name, last_name, email, passw, phone_num))
+                    # logging.debug('Created customer entry')
+                    print('Created customer entry')
+                    store_db.commit()
 
-                # Insert data into the database
-                cur.execute("INSERT INTO customer (first_name, last_name, email, passw, phone_num, if_register) VALUES (%s, %s, %s, %s, %s, 1)",
-                            (first_name, last_name, email, passw, phone_num))
-                store_db.commit()
+                    # Get the customer ID of the newly inserted record
+                    customer_id = cur.lastrowid
 
-                # Get the customer ID of the newly inserted record
-                customer_id = cur.lastrowid
+                    # Insert address into the database
+                    cur.execute("INSERT INTO address (customer_id, address, address2, city, state, postal_code) VALUES (%s, %s, %s, %s, %s, %s)",
+                                (customer_id, address, address2, city, state, postal_code))
+                    # logging.debug('Created address entry')
+                    print('Created address entry')
+                    store_db.commit()
 
-                # Insert address into the database
-                cur.execute("INSERT INTO address (customer_id, address, address2, city, state, postal_code) VALUES (%s, %s, %s, %s, %s, %s)",
-                            (customer_id, address, address2, city, state, postal_code))
-                store_db.commit()
-
-                cur.execute(f"""
-                        CREATE TABLE IF NOT EXISTS `{email}_cart` (
-                            `itemID` INT NOT NULL AUTO_INCREMENT,
-                            `record_id` INT,
-                            `customer_id` INT,
-                            PRIMARY KEY (`itemID`),
-                            FOREIGN KEY (`record_id`) REFERENCES `records_detail`(`record_id`),
-                            FOREIGN KEY (`customer_id`) REFERENCES `customer`(`customer_id`)
-                        )
+                    cur.execute(f"""
+                    CREATE TABLE IF NOT EXISTS `{first_name}{customer_id}_cart` (
+                        `itemID` INT NOT NULL AUTO_INCREMENT,
+                        `record_id` INT,
+                        `customer_id` INT,
+                        `price` DECIMAL(10, 2),
+                        `quantity` INT,
+                        PRIMARY KEY (`itemID`)
+                    )
                     """)
-                store_db.commit()
+                    # logging.debug('Created cart table')
+                    print('Created cart table')
+                    store_db.commit()
 
 
 
-                flash('Account created successfully!', 'success')
-                return redirect(url_for('index'))
+                    flash('Account created successfully!', 'info')
+                    session['email'] = email
+                    session['name'] = first_name
+                    session['customer_id'] = customer_id
+                    return redirect(url_for('user.home'))
             else:
                 flash('Passwords do not match. Please try again.', 'error')
                 return redirect(url_for('auth1.create_account_form'))
+                
 
 
         except Exception as e:
@@ -117,14 +150,18 @@ def create_account():
 
 
         finally:
-            cur.close()
+            # cur.close()
+            pass
+
 
 @auth1.route("/logout", methods=['GET','POST'])
 def logout():
+    cur.execute("SELECT record_name, artist, img_link FROM records_detail")
+    records = cur.fetchall()
     session['username'] = ''
     session['email'] = ''
     flash('Logged Out!', 'success')
-    return render_template('index.html')
+    return render_template('record_store_homepage.html',records=records)
 
 def orderList():
    my_cur = store_db.cursor()
