@@ -21,9 +21,9 @@ If all your information is correct the application will run
 
 2) Type "pip install -r requirements.txt" to install the necessary dependencies.
 
-2) Type ".venv/scripts/activate" to start the virtual environment
+3) Type ".venv/scripts/activate" to start the virtual environment
 
-3) Type "flask run" to start the local environment.
+4) Type "flask run" to start the local environment.
 
 -To log in as a customer, you can use 'john.doe@example.com' as the username and '0000' as the password (no quotes).
 
