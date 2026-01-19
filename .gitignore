@@ -1,5 +1,5 @@
 __pycache__
 createdb.py
-venv
+.venv
 .flaskenv
 app.py
