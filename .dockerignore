@@ -1,0 +1,10 @@
+# Exclude local Python environment
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Exclude local secrets and config
+.env
+*.ini
+.git/

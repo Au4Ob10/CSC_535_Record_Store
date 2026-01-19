@@ -1,0 +1,44 @@
+services:
+
+  db:
+    image: mysql:8.4
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: record_store
+      MYSQL_USER: username
+      MYSQL_PASSWORD: root
+    volumes:
+      - ./Recordstore.sql:/docker-entrypoint-initdb.d/Recordstore.sql
+      - db_data:/var/lib/mysql
+    
+    healthcheck:
+      test: ["CMD", "mysql", "ping", "-h", "localhost"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 10
+      start_period: 30s
+
+
+  app:
+    build: .
+    command: flask run --host=0.0.0.0
+    ports:
+    - "8080:8080"
+    depends_on:
+      db: 
+        condition: service_healthy
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_DEBUG=1
+      - MYSQL_HOST=db
+      - MYSQL_NAME=record_store
+      - MYSQL_USER=username
+      - MYSQL_PASSWORD=root
+      - MYSQL_PORT=3306
+volumes:
+  db_data:
+
+
+
+
