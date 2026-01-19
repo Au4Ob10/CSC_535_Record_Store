@@ -15,6 +15,7 @@ Make sure the Flask variables match to your app.py flask imports
 If all your information is correct the application will run 
 
 
+
 *** Before Starting ***
 
 1) Execute the sql commands in the provided .sql file in the root directory of the project in a program such as Mysql Workbench.
@@ -28,4 +29,8 @@ If all your information is correct the application will run
 -To log in as a customer, you can use 'john.doe@example.com' as the username and '0000' as the password (no quotes).
 
 -To log in to the admin account simply use 'admin' as both the username and password (no quotes).
+
+-**app can also run via docker
+
+
 
